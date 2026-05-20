@@ -41,7 +41,7 @@ uv sync
 ## Repository Structure
 
 ```
-Awesome-Human-AI-Coevolution-Paper-List/
+human-ai-coevolution.github.io/
 ├── papers.yaml                  ← canonical source of truth
 ├── adjacent.yaml                ← non-canonical supporting entries
 ├── README.md                    ← auto-generated; do not edit

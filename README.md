@@ -33,7 +33,7 @@ We welcome contributions from the community!
 
 ## Browse the index
 
-> Full searchable index: **<https://xli04.github.io/Awesome-Human-AI-Coevolution-Paper-List/>**. Structured source of truth: [`papers.yaml`](papers.yaml) (184 entries). Framework definitions: [`deep_research/phased_framework.md`](deep_research/phased_framework.md). Each paper is assigned a single phase, with `emerging-phase-X` for clear bridge cases; the secondary 5-category axis (CC/MA/HF/LH/PS) is also stored per entry.
+> Full searchable index: **<https://human-ai-coevolution.github.io/>**. Structured source of truth: [`papers.yaml`](papers.yaml) (184 entries). Framework definitions: [`deep_research/phased_framework.md`](deep_research/phased_framework.md). Each paper is assigned a single phase, with `emerging-phase-X` for clear bridge cases; the secondary 5-category axis (CC/MA/HF/LH/PS) is also stored per entry.
 
 ### Phase 1 — Humans Use AI as Tool  <sub>(50 papers)</sub>
 

@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Human–AI Coevolution Index — research on how humans must evolve to use AI well</title>
+<meta name="description" content="A curated research index on human-AI coevolution: how humans must evolve to use AI well as AI advances. 184+ papers organized by a four-phase framework (Tool, Assistant, Executor, Organization), a position paper, and a plain-language blog." />
+<meta name="keywords" content="human-AI coevolution, human-AI co-evolution, human-AI collaboration, human-AI alignment, AI literacy, AI capabilities, RLHF, preference learning, mutual adaptation, feedback loops, longitudinal HCI, AI agents, position paper, paper list, awesome list, four-phase framework" />
+<meta name="author" content="CHATS-Lab, Northeastern University" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+
+<link rel="canonical" href="https://human-ai-coevolution.github.io/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Human–AI Coevolution Index" />
+<meta property="og:title" content="Human–AI Coevolution Index — research on how humans must evolve to use AI well" />
+<meta property="og:description" content="A curated research index on human-AI coevolution. 184+ papers organized by a four-phase framework, plus a position paper and a plain-language blog." />
+<meta property="og:url" content="https://human-ai-coevolution.github.io/" />
+<meta property="og:image" content="https://human-ai-coevolution.github.io/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Human–AI Coevolution Index — research on how humans must evolve to use AI well." />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Human–AI Coevolution Index" />
+<meta name="twitter:description" content="A curated research index on human-AI coevolution. 184+ papers, a position paper, and a plain-language blog." />
+<meta name="twitter:image" content="https://human-ai-coevolution.github.io/og.png" />
+<meta name="twitter:image:alt" content="Human–AI Coevolution Index" />
+
+<!-- JSON-LD: Website + Dataset (paper index) + Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://human-ai-coevolution.github.io/#website",
+      "url": "https://human-ai-coevolution.github.io/",
+      "name": "Human–AI Coevolution Index",
+      "description": "A curated research index on human-AI coevolution: how humans must evolve to use AI well as AI advances.",
+      "inLanguage": "en",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": { "@type": "EntryPoint", "urlTemplate": "https://human-ai-coevolution.github.io/papers/?q={search_term_string}" },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://human-ai-coevolution.github.io/#dataset",
+      "name": "Human–AI Coevolution Paper Index",
+      "description": "A curated, openly maintained list of 184+ research papers on how humans must evolve to use AI well as AI advances. Organized by a four-phase framework spanning Tool, Assistant, Executor, and Organization uses of AI.",
+      "url": "https://human-ai-coevolution.github.io/papers/",
+      "keywords": ["human-AI coevolution", "human-AI collaboration", "human-AI alignment", "AI literacy", "RLHF", "mutual adaptation", "longitudinal HCI", "AI agents"],
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "creator": { "@id": "https://human-ai-coevolution.github.io/#org" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://human-ai-coevolution.github.io/#org",
+      "name": "CHATS-Lab",
+      "url": "https://wyshi.github.io/group.html",
+      "parentOrganization": { "@type": "EducationalOrganization", "name": "Northeastern University" }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg:           #ffffff;
+    --bg-soft:      #fafafa;
+    --text:         #111213;
+    --text-muted:   #6b7280;
+    --border:       rgba(17,18,19,0.10);
+    --border-soft:  rgba(17,18,19,0.06);
+    --link:         #2563eb;
+    --link-hover:   #1d4ed8;
+
+    --phase1-bg:    #eaf0fb;  --phase1-fg:    #1e40af;
+    --phase2-bg:    #e6f1ef;  --phase2-fg:    #0f766e;
+    --phase3-bg:    #efeafb;  --phase3-fg:    #6d28d9;
+    --phase4-bg:    #fbeae3;  --phase4-fg:    #c2410c;
+
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:           #0b0d10;
+      --bg-soft:      #131619;
+      --text:         #e7e8ea;
+      --text-muted:   #9aa0a6;
+      --border:       rgba(255,255,255,0.10);
+      --border-soft:  rgba(255,255,255,0.06);
+      --link:         #6ea8ff;
+      --link-hover:   #93bbff;
+
+      --phase1-bg:    #182238;  --phase1-fg:    #9fbcf3;
+      --phase2-bg:    #16282a;  --phase2-fg:    #5eead4;
+      --phase3-bg:    #221c38;  --phase3-fg:    #c4b5fd;
+      --phase4-bg:    #2a1d18;  --phase4-fg:    #fdba74;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection { background: rgba(37,99,235,0.18); color: var(--text); }
+
+  a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  a:hover { color: var(--link-hover); }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  /* ---------- 1. Header ---------- */
+  header.masthead { margin-bottom: 1.75rem; }
+  h1.title {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.005em;
+  }
+  .subtitle {
+    margin: 0 0 0.35rem;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+  .byline {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  /* ---------- 2. Inline link bar ---------- */
+  nav.linkbar {
+    margin: 1.5rem 0 0;
+    padding: 0.75rem 0;
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  nav.linkbar a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.15rem 0;
+  }
+  nav.linkbar a:hover { color: var(--link); }
+  nav.linkbar a:hover svg { color: var(--link); }
+  nav.linkbar svg {
+    width: 14px;
+    height: 14px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+  }
+  nav.linkbar .sep {
+    color: var(--text-muted);
+    padding: 0 0.7rem;
+    user-select: none;
+  }
+
+  /* ---------- generic section ---------- */
+  section { margin-top: 2rem; }
+  h2 {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin: 0 0 0.65rem;
+    letter-spacing: -0.003em;
+  }
+  .sec-lead {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .sec-lead a { color: var(--link); text-decoration: none; }
+  .sec-lead a:hover { text-decoration: underline; }
+  p { margin: 0 0 0.85rem; font-size: 14.5px; line-height: 1.65; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- 4. Framework visual block ---------- */
+  .framework {
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.1rem 1rem;
+    background: var(--bg-soft);
+  }
+  .framework .lbl {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .phase-card {
+    border-radius: 8px;
+    padding: 0.7rem 0.8rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .phase-card .ph {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .phase-card .word {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .p1 { background: var(--phase1-bg); color: var(--phase1-fg); }
+  .p2 { background: var(--phase2-bg); color: var(--phase2-fg); }
+  .p3 { background: var(--phase3-bg); color: var(--phase3-fg); }
+  .p4 { background: var(--phase4-bg); color: var(--phase4-fg); }
+  .framework .caption {
+    margin: 0.85rem 0 0;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  @media (min-width: 640px) {
+    .phase-grid { grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+  }
+
+  /* ---------- 5. Three-item teaser ---------- */
+  .three-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .three-card {
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 0.95rem;
+    background: var(--bg);
+  }
+  .three-card .lbl {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+  .three-card .ttl {
+    font-size: 14.5px;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+  .three-card p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  @media (min-width: 640px) {
+    .three-grid { grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+  }
+
+  /* ---------- 6. List section ---------- */
+  ul.entries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.entries li {
+    padding: 0.4rem 0;
+    border-top: 0.5px solid var(--border-soft);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  ul.entries li:first-child { border-top: none; padding-top: 0; }
+  ul.entries a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 400;
+  }
+  ul.entries a:hover { color: var(--link); text-decoration: underline; }
+  ul.entries .meta {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ---------- 7. Citation ---------- */
+  pre.bibtex {
+    margin: 0;
+    background: var(--bg-soft);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text);
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ---------- 8. Footer ---------- */
+  footer.foot {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  footer.foot a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 2px;
+  }
+  footer.foot a:hover { color: var(--text); text-decoration-color: var(--text-muted); }
+
+  /* ---------- responsive padding ---------- */
+  @media (max-width: 480px) {
+    .wrap { padding: 1.75rem 1.25rem 3rem; }
+    h1.title { font-size: 21px; }
+    nav.linkbar .sep { padding: 0 0.55rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 1. Header ============ -->
+  <header class="masthead">
+    <h1 class="title">Human–AI Coevolution Index</h1>
+    <p class="subtitle">A one-line subtitle placeholder describing the project at a glance.</p>
+    <p class="byline">Author One, Author Two — Lab Name</p>
+  </header>
+
+  <!-- ============ 2. Inline link bar ============ -->
+  <nav class="linkbar" aria-label="Project resources">
+    <a href="#paper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+        <path d="M17 21H7a2 2 0 0 1 -2 -2V5a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+        <line x1="9" y1="13" x2="15" y2="13"/>
+        <line x1="9" y1="17" x2="13" y2="17"/>
+      </svg>
+      <span>Paper</span>
+    </a>
+    <span class="sep">·</span>
+    <a href="#blog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
+        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"/>
+      </svg>
+      <span>Blog post</span>
+    </a>
+    <span class="sep">·</span>
+    <a href="#list">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="13" y1="6" x2="21" y2="6"/>
+        <line x1="13" y1="12" x2="21" y2="12"/>
+        <line x1="13" y1="18" x2="21" y2="18"/>
+        <line x1="4" y1="6" x2="6" y2="6"/>
+        <line x1="4" y1="12" x2="6" y2="12"/>
+        <line x1="4" y1="18" x2="6" y2="18"/>
+      </svg>
+      <span>Paper list</span>
+    </a>
+    <span class="sep">·</span>
+    <a href="#practice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 5H7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2V7a2 2 0 0 0 -2 -2h-2"/>
+        <rect x="9" y="3" width="6" height="4" rx="2"/>
+        <path d="M9 14l2 2 4 -4"/>
+      </svg>
+      <span>Practice guide</span>
+    </a>
+    <span class="sep">·</span>
+    <a href="#x">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 4l16 16"/>
+        <path d="M20 4L4 20"/>
+      </svg>
+      <span>X thread</span>
+    </a>
+    <span class="sep">·</span>
+    <a href="#contribute">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="6" cy="6" r="2"/>
+        <circle cx="6" cy="18" r="2"/>
+        <circle cx="18" cy="18" r="2"/>
+        <path d="M6 8v8"/>
+        <path d="M11 6h5a2 2 0 0 1 2 2v8"/>
+      </svg>
+      <span>Contribute</span>
+    </a>
+  </nav>
+
+  <!-- ============ 3. Overview ============ -->
+  <section>
+    <h2>Overview</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </section>
+
+  <!-- ============ 4. Framework visual block ============ -->
+  <section>
+    <div class="framework" role="group" aria-label="Four-phase framework">
+      <div class="lbl">Four-phase framework</div>
+      <div class="phase-grid">
+        <div class="phase-card p1"><span class="ph">Phase 1</span><span class="word">Tool</span></div>
+        <div class="phase-card p2"><span class="ph">Phase 2</span><span class="word">Assistant</span></div>
+        <div class="phase-card p3"><span class="ph">Phase 3</span><span class="word">Executor</span></div>
+        <div class="phase-card p4"><span class="ph">Phase 4</span><span class="word">Organization</span></div>
+      </div>
+      <p class="caption">Caption placeholder describing how the framework maps phases to capabilities.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5. Three-item teaser ============ -->
+  <section>
+    <h2>Section heading placeholder</h2>
+    <p class="sec-lead">One supporting line of placeholder text introducing the three items below. <a href="#">Read more →</a></p>
+    <div class="three-grid">
+      <div class="three-card">
+        <div class="lbl">Item 1</div>
+        <div class="ttl">Short bold title</div>
+        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
+      </div>
+      <div class="three-card">
+        <div class="lbl">Item 2</div>
+        <div class="ttl">Short bold title</div>
+        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
+      </div>
+      <div class="three-card">
+        <div class="lbl">Item 3</div>
+        <div class="ttl">Short bold title</div>
+        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. List section ============ -->
+  <section>
+    <h2>List section heading placeholder</h2>
+    <p class="sec-lead">One supporting line of placeholder text. <a href="#">View all →</a></p>
+    <ul class="entries">
+      <li><a href="#">Placeholder paper title one</a> <span class="meta">— Author et al., 2026</span></li>
+      <li><a href="#">Placeholder paper title two with a slightly longer name</a> <span class="meta">— Author et al., 2026</span></li>
+      <li><a href="#">Placeholder paper title three</a> <span class="meta">— Author et al., 2025</span></li>
+      <li><a href="#">Placeholder paper title four</a> <span class="meta">— Author et al., 2025</span></li>
+    </ul>
+  </section>
+
+  <!-- ============ 7. Citation ============ -->
+  <section>
+    <h2>Citation</h2>
+<pre class="bibtex">@article{placeholder2026,
+  title  = {Placeholder paper title goes here},
+  author = {Author One and Author Two and Author Three},
+  year   = {2026},
+  journal= {Venue Placeholder},
+  url    = {https://example.org/placeholder}
+}</pre>
+  </section>
+
+  <!-- ============ 8. Footer ============ -->
+  <footer class="foot">
+    Maintained by <a href="#">Lab Name</a> · <a href="#">GitHub repository</a> · Contributions and corrections welcome via pull request.
+  </footer>
+
+</div>
+</body>
+</html>

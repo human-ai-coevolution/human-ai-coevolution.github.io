@@ -27,8 +27,8 @@ Output goes to `site/dist/`.
 
 | Var | Purpose | Default |
 |---|---|---|
-| `BASE_PATH` | URL base path (project pages need `/REPO_NAME`) | `/Awesome-Human-AI-Coevolution-Paper-List` |
-| `SITE_URL` | Origin of the deployed site | `https://xli04.github.io` |
+| `BASE_PATH` | URL base path (project pages need `/REPO_NAME`) | `/<repo>` |
+| `SITE_URL` | Origin of the deployed site | `https://human-ai-coevolution.github.io` |
 | `STAR_COUNT` | Pre-fetched star count (skips a runtime GitHub API call) | unset → fetched at build |
 
 For local dev, run with `BASE_PATH=` to serve at the root:

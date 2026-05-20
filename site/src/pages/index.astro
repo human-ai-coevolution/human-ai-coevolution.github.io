@@ -25,7 +25,7 @@ const lastUpdated = canonical[0]?.date ?? '';
 const stars = await getStarCount();
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const siteUrl = (Astro.site ?? new URL('https://xli04.github.io')).toString().replace(/\/$/, '') + base;
+const siteUrl = (Astro.site ?? new URL('https://human-ai-coevolution.github.io')).toString().replace(/\/$/, '') + base;
 
 const description = `An index of ${canonical.length}+ research papers on how humans must evolve to use AI well as AI advances. Organized by the four-phase framework — Humans Use AI as Tool, Assistant, Executor, Organization.`;
 
@@ -33,6 +33,7 @@ const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': siteUrl + '/#website',
     name: 'Human–AI Coevolution Index',
     url: siteUrl + '/',
     description,
@@ -42,6 +43,26 @@ const jsonLd = [
       target: { '@type': 'EntryPoint', urlTemplate: `${siteUrl}/papers/?q={search_term_string}` },
       'query-input': 'required name=search_term_string',
     },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    '@id': siteUrl + '/#dataset',
+    name: 'Human–AI Coevolution Paper Index',
+    description: `A curated, openly maintained list of ${canonical.length}+ research papers on how humans must evolve to use AI well as AI advances. Organized by a four-phase framework spanning Tool, Assistant, Executor, and Organization uses of AI.`,
+    url: siteUrl + '/papers/',
+    keywords: ['human-AI coevolution', 'human-AI collaboration', 'human-AI alignment', 'AI literacy', 'RLHF', 'mutual adaptation', 'longitudinal HCI', 'AI agents'],
+    license: 'https://opensource.org/licenses/MIT',
+    isAccessibleForFree: true,
+    creator: { '@id': siteUrl + '/#org' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': siteUrl + '/#org',
+    name: MAINTAINER_NAME,
+    url: MAINTAINER_URL,
+    parentOrganization: { '@type': 'EducationalOrganization', name: MAINTAINER_AFFILIATION },
   },
 ];
 ---

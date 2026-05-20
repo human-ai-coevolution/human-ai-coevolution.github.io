@@ -1,6 +1,6 @@
 export const SITE_TITLE = 'Human–AI Coevolution Index';
 export const SITE_DESCRIPTION =
-  'An index of research on how humans must evolve to use AI well as AI advances. Organized by the four-phase framework — Humans Use AI as Tool, Assistant, Executor, Organization.';
+  'A curated research index on human-AI coevolution: how humans must evolve to use AI well as AI advances. 184+ papers organized by a four-phase framework (Tool, Assistant, Executor, Organization), plus a position paper and a plain-language blog. Maintained by CHATS-Lab at Northeastern.';
 export const REPO_OWNER = 'human-ai-coevolution';
 export const REPO_NAME = 'human-ai-coevolution.github.io';
 export const REPO_URL = `https://github.com/${REPO_OWNER}/${REPO_NAME}`;
