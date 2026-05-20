@@ -1,4 +1,4 @@
-export const SITE_TITLE = 'Human–AI Coevolution Index';
+export const SITE_TITLE = 'Human–AI Coevolution';
 export const SITE_DESCRIPTION =
   'A curated research index on human-AI coevolution: how humans must evolve to use AI well as AI advances. 184+ papers organized by a four-phase framework (Tool, Assistant, Executor, Organization), plus a position paper and a plain-language blog. Maintained by CHATS-Lab at Northeastern.';
 export const REPO_OWNER = 'human-ai-coevolution';
