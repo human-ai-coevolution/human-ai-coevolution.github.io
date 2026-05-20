@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/sitemap-index.xml

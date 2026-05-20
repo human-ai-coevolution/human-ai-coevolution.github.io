@@ -1,0 +1,65 @@
+---
+import { REPO_URL, ENV_ORDER, ENV_ABBREV, MAINTAINER_NAME, MAINTAINER_AFFILIATION, MAINTAINER_URL } from '../lib/site';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const year = new Date().getFullYear();
+---
+<footer class="mt-28 border-t border-paper-300 dark:border-ink-600">
+  <div class="mx-auto max-w-[1180px] px-6 py-12">
+
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-10">
+
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">Colophon</p>
+        <p class="mt-3 text-[12.5px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
+          Generated from a single YAML source. Set in Fraunces and IBM Plex.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-x-8 gap-y-6 text-[13px]">
+
+        <div>
+          <p class="meta-label">Index</p>
+          <ul class="mt-3 space-y-1.5">
+            {ENV_ORDER.map((env) => (
+              <li>
+                <a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/papers?env=${encodeURIComponent(env)}`}>
+                  <span class="font-mono text-[10.5px] text-accent dark:text-accent-dark mr-1.5 tabular-nums">{ENV_ABBREV[env]}</span>{env}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p class="meta-label">Pages</p>
+          <ul class="mt-3 space-y-1.5">
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/papers`}>Browse all</a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/blog/`}>Blog</a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/stats`}>Statistics</a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/about`}>About</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="meta-label">Source</p>
+          <ul class="mt-3 space-y-1.5">
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={REPO_URL} target="_blank" rel="noopener">GitHub repo <span class="font-mono">↗</span></a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/issues/new`} target="_blank" rel="noopener">Suggest a paper <span class="font-mono">↗</span></a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/blob/main/papers.yaml`} target="_blank" rel="noopener">papers.yaml <span class="font-mono">↗</span></a></li>
+            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/blob/main/CLAUDE.md`} target="_blank" rel="noopener">Entry schema <span class="font-mono">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-paper-300 dark:border-ink-600 text-[11.5px] font-mono uppercase tracking-[0.1em] text-ink-400 dark:text-ink-300">
+      <div class="flex flex-col sm:flex-row items-baseline gap-2 justify-between">
+        <div>© {year} <a class="hover:text-accent dark:hover:text-accent-dark transition-colors" href={MAINTAINER_URL} target="_blank" rel="noopener">{MAINTAINER_NAME}</a>, {MAINTAINER_AFFILIATION}</div>
+        <div>Open-source · MIT-licensed · Generated with Astro</div>
+      </div>
+      <p class="mt-3 normal-case tracking-normal text-[12px] font-sans text-ink-400 dark:text-ink-300 max-w-[64ch]">
+        Some of the design and scaffolding here is adapted from <a class="hover:text-accent dark:hover:text-accent-dark transition-colors underline underline-offset-[3px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-accent dark:hover:decoration-accent-dark" href="https://github.com/OSU-NLP-Group/GUI-Agents-Paper-List" target="_blank" rel="noopener">OSU-NLP-Group/GUI-Agents-Paper-List</a>. Thanks for their awesome work!
+      </p>
+    </div>
+  </div>
+</footer>

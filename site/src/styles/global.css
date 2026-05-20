@@ -1,0 +1,339 @@
+/* Webfonts — variable Fraunces (opsz axis) + IBM Plex Sans/Mono */
+@import "@fontsource-variable/fraunces/index.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/400-italic.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --font-display: 'Fraunces Variable', ui-serif, 'Iowan Old Style', Charter, Georgia, serif;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-family: var(--font-sans);
+}
+
+html.dark { color-scheme: dark; }
+
+html, body {
+  background-color: #faf9f5;
+  color: #1f1d1a;
+  font-family: var(--font-sans);
+}
+html.dark, html.dark body {
+  background-color: #10131a;
+  color: #e9e6df;
+}
+
+/* ─── Display typography ────────────────────────────── */
+
+.font-display,
+.kicker,
+.kicker-lg,
+.kicker-xl {
+  font-family: var(--font-display);
+  font-feature-settings: 'ss01';
+  font-weight: 500;
+  letter-spacing: -0.018em;
+}
+.kicker-xl {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+}
+.kicker-lg {
+  font-size: clamp(1.6rem, 3.3vw, 2.1rem);
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+}
+.kicker {
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+  line-height: 1.22;
+  letter-spacing: -0.008em;
+}
+
+.tabular-nums { font-feature-settings: 'tnum' 1, 'lnum' 1; }
+
+/* ─── New component primitives — replacing card/chip/btn ───────────────── */
+
+@layer components {
+
+  /* Links: navy/brass underline, no hover-color-shift. */
+  .a-text {
+    @apply text-accent dark:text-accent-dark underline underline-offset-[3px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-accent dark:hover:decoration-accent-dark transition-colors;
+  }
+
+  /* Frame: simple horizontal-rule bracket — used for sections.
+     Two thin rules, no card-like box. */
+  .frame {
+    border-top: 1px solid theme('colors.paper.300');
+    border-bottom: 1px solid theme('colors.paper.300');
+  }
+  :global(html.dark) .frame {
+    border-color: theme('colors.ink.600');
+  }
+
+  /* Topic marker: an inline tag that is not a pill.
+     Mono small caps, navy on light. Underline on hover. */
+  .topic-marker {
+    @apply inline-flex items-baseline gap-1 text-accent dark:text-accent-dark hover:underline underline-offset-[3px] cursor-pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Action link: a flat text affordance with right arrow. No filled button.
+     14.5px / small-caps so it reads as a clear CTA without being heavy. */
+  .action-link {
+    @apply inline-flex items-center gap-2 text-[14.5px] font-medium tracking-wide;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.08em;
+  }
+  .action-link--primary {
+    @apply text-accent dark:text-accent-dark underline underline-offset-[5px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-accent dark:hover:decoration-accent-dark transition-colors;
+  }
+  .action-link--ghost {
+    @apply text-ink-600 dark:text-ink-200 underline underline-offset-[5px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-ink-500 dark:hover:decoration-ink-300 transition-colors;
+  }
+
+  /* Section index in mono navy. */
+  .sec-idx {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: theme('colors.accent.DEFAULT');
+    font-weight: 500;
+  }
+  :global(html.dark) .sec-idx { color: theme('colors.accent.dark'); }
+
+  /* Phase badge — the four-phase framework is the contribution this
+     index is built around, so its codes get a bigger, slightly bolder
+     treatment than the secondary theme abbreviations. */
+  .phase-badge {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 600;
+    color: theme('colors.accent.DEFAULT');
+    letter-spacing: 0.02em;
+    line-height: 1;
+    display: inline-block;
+  }
+  :global(html.dark) .phase-badge { color: theme('colors.accent.dark'); }
+
+  /* Larger phase-badge used in the home-page TOC where it anchors the
+     whole framework. */
+  .phase-badge-xl {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: theme('colors.accent.DEFAULT');
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  :global(html.dark) .phase-badge-xl { color: theme('colors.accent.dark'); }
+
+  /* Tiny mono label — used for left-rail metadata column. */
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: theme('colors.ink.400');
+  }
+  :global(html.dark) .meta-label { color: theme('colors.ink.300'); }
+
+  /* Mono value (for category codes, year, etc.) */
+  .meta-value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: theme('colors.ink.700');
+  }
+  :global(html.dark) .meta-value { color: theme('colors.ink.50'); }
+
+  /* Entry row — vertical index entry style, replaces .card. */
+  .entry-row {
+    @apply grid gap-x-8 gap-y-2;
+    grid-template-columns: 96px 1fr;
+    padding: 1.5rem 0;
+    border-top: 1px solid theme('colors.paper.300');
+  }
+  @media (max-width: 640px) {
+    .entry-row { grid-template-columns: 1fr; gap-y: 0.5rem; }
+  }
+  :global(html.dark) .entry-row { border-top-color: theme('colors.ink.600'); }
+
+  /* Old-name compat shims — keep .card/.chip/.surface working in case any
+     untouched file still references them. They render minimally so nothing
+     visually regresses; new code should not use them. */
+  .card { @apply block; }
+  .chip {
+    @apply inline-flex items-baseline gap-1 text-accent dark:text-accent-dark hover:underline underline-offset-[3px];
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .chip-active {
+    @apply text-ink-700 dark:text-ink-50 underline decoration-accent dark:decoration-accent-dark;
+  }
+  .surface { @apply block; }
+  .input {
+    @apply w-full px-0 py-2.5 text-[15px]
+           bg-transparent
+           border-0 border-b border-paper-300/80 dark:border-ink-600/60
+           focus:outline-none focus:border-accent dark:focus:border-accent-dark
+           placeholder:text-ink-400/70;
+    font-family: var(--font-sans);
+  }
+  .btn-primary, .btn-ghost {
+    @apply action-link;
+  }
+  .btn-primary { @apply action-link--primary; }
+  .btn-ghost { @apply action-link--ghost; }
+
+  /* Eyebrow rule + small-caps mono label */
+  .heading-eyebrow {
+    @apply text-[11px] uppercase text-ink-400 dark:text-ink-300 inline-flex items-center gap-3;
+    font-family: var(--font-mono);
+    letter-spacing: 0.14em;
+  }
+  .heading-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1.5px;
+    background-color: theme('colors.accent.DEFAULT');
+    display: inline-block;
+  }
+  :global(html.dark) .heading-eyebrow::before {
+    background-color: theme('colors.accent.dark');
+  }
+
+  .eyebrow-plain {
+    @apply text-[11px] uppercase text-ink-400 dark:text-ink-300;
+    font-family: var(--font-mono);
+    letter-spacing: 0.14em;
+  }
+
+  .clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Decorative rule */
+.rule {
+  position: relative;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.12;
+}
+
+/* Hairline rule, full-bleed under section heads. */
+.hairline {
+  height: 1px;
+  background: theme('colors.paper.300');
+  border: 0;
+}
+html.dark .hairline { background: theme('colors.ink.600'); }
+
+/* Newly-appended infinite-scroll cards fade up. */
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card-enter {
+  animation: card-enter 260ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) { .card-enter { animation: none; } }
+
+/* Animated checkmark */
+@keyframes draw-check { to { stroke-dashoffset: 0; } }
+.copied-check {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw-check 380ms ease-out forwards;
+}
+
+/* Copy-success pulse */
+:global(html.dark) .copy-glow-source { --glow: rgba(124, 158, 201, 0.22); }
+.copy-glow-source { --glow: rgba(30, 58, 95, 0.16); }
+@keyframes copy-glow-var {
+  0%   { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+  30%  { box-shadow: 0 0 0 6px var(--glow); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+.copy-pulse { animation: copy-glow-var 700ms ease-out; }
+
+/* Toast */
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 2px;
+  background-color: #1f1d1a;
+  color: #faf9f5;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.32);
+  animation: toast-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Search-result highlight */
+mark.search-hl {
+  background-color: rgba(160, 130, 109, 0.28);
+  color: inherit;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+:global(html.dark) mark.search-hl {
+  background-color: rgba(160, 130, 109, 0.32);
+  color: #f5f3ee;
+}
+
+/* Page-load entrance — much subtler (no large translate, no stagger). */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.reveal, .reveal-stagger > * {
+  opacity: 0;
+  animation: fade-in 420ms ease-out forwards;
+}
+.reveal { animation-delay: 30ms; }
+.reveal-stagger > *:nth-child(1) { animation-delay: 30ms; }
+.reveal-stagger > *:nth-child(2) { animation-delay: 90ms; }
+.reveal-stagger > *:nth-child(3) { animation-delay: 150ms; }
+.reveal-stagger > *:nth-child(4) { animation-delay: 210ms; }
+.reveal-stagger > *:nth-child(5) { animation-delay: 270ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > * { animation: none; opacity: 1; }
+}
+
+/* Dark scrollbar */
+html.dark ::-webkit-scrollbar { width: 10px; height: 10px; }
+html.dark ::-webkit-scrollbar-track { background: #10131a; }
+html.dark ::-webkit-scrollbar-thumb { background: #2a3040; border-radius: 5px; }
+html.dark ::-webkit-scrollbar-thumb:hover { background: #3a4150; }
