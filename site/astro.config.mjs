@@ -3,8 +3,11 @@ import tailwind from '@astrojs/tailwind';
 import solid from '@astrojs/solid-js';
 import sitemap from '@astrojs/sitemap';
 
-const SITE_URL = process.env.SITE_URL ?? 'https://chats-lab.github.io';
-const BASE = process.env.BASE_PATH ?? '/Awesome-Human-AI-Coevolution-Paper-List';
+// User/org Pages site: serves at https://human-ai-coevolution.github.io/
+// with no project subpath, so BASE defaults to empty. The deploy
+// workflow overrides both via env vars derived from GITHUB_REPOSITORY.
+const SITE_URL = process.env.SITE_URL ?? 'https://human-ai-coevolution.github.io';
+const BASE = process.env.BASE_PATH ?? '';
 
 export default defineConfig({
   site: SITE_URL,

@@ -1203,7 +1203,7 @@ function buildReportUrl(p: BrowserPaper): string {
     labels: 'metadata-correction',
     template: 'metadata-correction.yml',
   });
-  return `https://github.com/xli04/Awesome-Human-AI-Coevolution-Paper-List/issues/new?${params.toString()}`;
+  return `https://github.com/human-ai-coevolution/human-ai-coevolution.github.io/issues/new?${params.toString()}`;
 }
 
 function PaperCardClient(props: CardProps) {

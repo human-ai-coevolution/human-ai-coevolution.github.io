@@ -1,0 +1,81 @@
+name: Deploy Astro site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - papers.yaml
+      - adjacent.yaml
+      - site/**
+      - .github/workflows/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # Resolve Pages base path + site URL from GITHUB_REPOSITORY.
+      # User/org Pages (repo name = <owner>.github.io) serves at root,
+      # so BASE_PATH stays empty. Project Pages serves at /<repo>.
+      - name: Resolve BASE_PATH + SITE_URL
+        id: resolve
+        run: |
+          NAME="${GITHUB_REPOSITORY##*/}"
+          OWNER_LC=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          if [[ "$NAME" == "${OWNER_LC}.github.io" ]]; then
+            echo "base=" >> "$GITHUB_OUTPUT"
+            echo "url=https://${OWNER_LC}.github.io" >> "$GITHUB_OUTPUT"
+            echo "Detected user/org Pages site: BASE empty, URL = https://${OWNER_LC}.github.io"
+          else
+            echo "base=/${NAME}" >> "$GITHUB_OUTPUT"
+            echo "url=https://${OWNER_LC}.github.io" >> "$GITHUB_OUTPUT"
+            echo "Detected project Pages site: BASE = /${NAME}, URL = https://${OWNER_LC}.github.io"
+          fi
+
+      - name: Build site
+        env:
+          BASE_PATH: ${{ steps.resolve.outputs.base }}
+          SITE_URL: ${{ steps.resolve.outputs.url }}
+        run: npm run build
+
+      - name: Disable Jekyll on Pages
+        run: touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

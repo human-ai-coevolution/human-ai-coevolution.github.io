@@ -1,8 +1,8 @@
 export const SITE_TITLE = 'Human–AI Coevolution Index';
 export const SITE_DESCRIPTION =
   'An index of research on how humans must evolve to use AI well as AI advances. Organized by the four-phase framework — Humans Use AI as Tool, Assistant, Executor, Organization.';
-export const REPO_OWNER = 'xli04';
-export const REPO_NAME = 'Awesome-Human-AI-Coevolution-Paper-List';
+export const REPO_OWNER = 'human-ai-coevolution';
+export const REPO_NAME = 'human-ai-coevolution.github.io';
 export const REPO_URL = `https://github.com/${REPO_OWNER}/${REPO_NAME}`;
 export const REPO_RAW_BLOB = `${REPO_URL}/blob/main`;
 
