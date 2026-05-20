@@ -1,4 +1,5 @@
 ---
+import Base from '../layouts/Base.astro';
 import { loadAllPapers } from '../lib/parsePapers';
 import {
   SITE_TITLE,
@@ -10,6 +11,7 @@ import {
 
 const { canonical } = loadAllPapers();
 const paperCount = canonical.length;
+const lastYear = new Date().getFullYear();
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const siteOrigin = (Astro.site ?? new URL('https://human-ai-coevolution.github.io'))
@@ -17,7 +19,6 @@ const siteOrigin = (Astro.site ?? new URL('https://human-ai-coevolution.github.i
   .replace(/\/$/, '');
 const siteUrl = siteOrigin + base + '/';
 
-const pageTitle = `${SITE_TITLE} — research on how humans must evolve to use AI well`;
 const description = `A curated research index on human-AI coevolution: how humans must evolve to use AI well as AI advances. ${paperCount}+ papers organized by a four-phase framework (Tool, Assistant, Executor, Organization), a position paper, and a plain-language blog.`;
 
 const jsonLd = [
@@ -56,321 +57,244 @@ const jsonLd = [
     parentOrganization: { '@type': 'EducationalOrganization', name: MAINTAINER_AFFILIATION },
   },
 ];
+
+// Inline icons in the existing site's restrained style: thin stroke, currentColor.
+const ICONS = {
+  paper:    `<path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1 -2 -2V5a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>`,
+  blog:     `<path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/><line x1="13.5" y1="6.5" x2="17.5" y2="10.5"/>`,
+  list:     `<line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/><line x1="4" y1="6" x2="6" y2="6"/><line x1="4" y1="12" x2="6" y2="12"/><line x1="4" y1="18" x2="6" y2="18"/>`,
+  practice: `<path d="M9 5H7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2V7a2 2 0 0 0 -2 -2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 14l2 2 4 -4"/>`,
+  x:        `<path d="M4 4l16 16"/><path d="M20 4L4 20"/>`,
+  contrib:  `<circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M6 8v8"/><path d="M11 6h5a2 2 0 0 1 2 2v8"/>`,
+};
+const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>{pageTitle}</title>
-<meta name="description" content={description} />
-<meta name="keywords" content="human-AI coevolution, human-AI co-evolution, human-AI collaboration, human-AI alignment, AI literacy, AI capabilities, RLHF, preference learning, mutual adaptation, feedback loops, longitudinal HCI, AI agents, position paper, paper list, awesome list, four-phase framework" />
-<meta name="author" content={`${MAINTAINER_NAME}, ${MAINTAINER_AFFILIATION}`} />
-<meta name="robots" content="index, follow, max-image-preview:large" />
+<Base
+  title="Research on how humans must evolve to use AI well"
+  description={description}
+  jsonLd={jsonLd}
+>
 
-<link rel="canonical" href={siteUrl} />
+  {/* ─── Hero / header ─────────────────────────────────────────── */}
+  <header class="mx-auto max-w-[1180px] px-6 pt-14 pb-10 reveal-stagger">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-8">
 
-<!-- Open Graph -->
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:title" content={pageTitle} />
-<meta property="og:description" content={description} />
-<meta property="og:url" content={siteUrl} />
-<meta property="og:image" content={`${siteOrigin}${base}/og.png`} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={`${SITE_TITLE} — research on how humans must evolve to use AI well.`} />
-<meta property="og:locale" content="en_US" />
+      <aside class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">Index № 01</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">v1 · {lastYear}</p>
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={SITE_TITLE} />
-<meta name="twitter:description" content="A curated research index on human-AI coevolution: 184+ papers, a position paper, and a plain-language blog." />
-<meta name="twitter:image" content={`${siteOrigin}${base}/og.png`} />
-<meta name="twitter:image:alt" content={SITE_TITLE} />
+        <dl class="mt-7 space-y-3 text-[12.5px]">
+          <div>
+            <dt class="meta-label">Entries</dt>
+            <dd class="meta-value mt-0.5 tabular-nums">{paperCount}</dd>
+          </div>
+          <div>
+            <dt class="meta-label">Phases</dt>
+            <dd class="meta-value mt-0.5 tabular-nums">4 + 3 emerging</dd>
+          </div>
+        </dl>
+      </aside>
 
-{jsonLd.map((d) => (
-  <script type="application/ld+json" set:html={JSON.stringify(d)} />
-))}
+      <div>
+        <p class="heading-eyebrow">Human–AI Coevolution Index</p>
 
-<style is:global>
-  :root {
-    --bg:           #ffffff;
-    --bg-soft:      #fafafa;
-    --text:         #111213;
-    --text-muted:   #6b7280;
-    --border:       rgba(17,18,19,0.10);
-    --border-soft:  rgba(17,18,19,0.06);
-    --link:         #2563eb;
-    --link-hover:   #1d4ed8;
+        <h1 class="kicker-xl mt-5 text-ink-700 dark:text-ink-50 max-w-[24ch]">
+          A one-line subtitle placeholder describing the project at a glance.
+        </h1>
 
-    --phase1-bg:    #eaf0fb;  --phase1-fg:    #1e40af;
-    --phase2-bg:    #e6f1ef;  --phase2-fg:    #0f766e;
-    --phase3-bg:    #efeafb;  --phase3-fg:    #6d28d9;
-    --phase4-bg:    #fbeae3;  --phase4-fg:    #c2410c;
-
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg:           #0b0d10;
-      --bg-soft:      #131619;
-      --text:         #e7e8ea;
-      --text-muted:   #9aa0a6;
-      --border:       rgba(255,255,255,0.10);
-      --border-soft:  rgba(255,255,255,0.06);
-      --link:         #6ea8ff;
-      --link-hover:   #93bbff;
-
-      --phase1-bg:    #182238;  --phase1-fg:    #9fbcf3;
-      --phase2-bg:    #16282a;  --phase2-fg:    #5eead4;
-      --phase3-bg:    #221c38;  --phase3-fg:    #c4b5fd;
-      --phase4-bg:    #2a1d18;  --phase4-fg:    #fdba74;
-    }
-  }
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.55;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  ::selection { background: rgba(37,99,235,0.18); color: var(--text); }
-
-  a {
-    color: var(--link);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-  }
-  a:hover { color: var(--link-hover); }
-
-  .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
-
-  /* 1. header */
-  header.masthead { margin-bottom: 1.75rem; }
-  h1.title { font-size: 22px; font-weight: 500; line-height: 1.25; margin: 0 0 0.4rem; letter-spacing: -0.005em; }
-  .subtitle { margin: 0 0 0.35rem; color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 1.45; }
-  .byline { margin: 0; color: var(--text-muted); font-size: 12.5px; font-weight: 400; }
-
-  /* 2. linkbar */
-  nav.linkbar {
-    margin: 1.5rem 0 0;
-    padding: 0.75rem 0;
-    border-top: 0.5px solid var(--border);
-    border-bottom: 0.5px solid var(--border);
-    display: flex; flex-wrap: wrap; align-items: center; gap: 0;
-    font-size: 13.5px; line-height: 1.6;
-  }
-  nav.linkbar a { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); text-decoration: none; padding: 0.15rem 0; }
-  nav.linkbar a:hover { color: var(--link); }
-  nav.linkbar a:hover svg { color: var(--link); }
-  nav.linkbar svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: color 0.15s ease; }
-  nav.linkbar .sep { color: var(--text-muted); padding: 0 0.7rem; user-select: none; }
-
-  /* generic section */
-  section { margin-top: 2rem; }
-  h2 { font-size: 17px; font-weight: 500; line-height: 1.3; margin: 0 0 0.65rem; letter-spacing: -0.003em; }
-  .sec-lead { margin: 0 0 1rem; color: var(--text-muted); font-size: 13.5px; line-height: 1.55; }
-  .sec-lead a { color: var(--link); text-decoration: none; }
-  .sec-lead a:hover { text-decoration: underline; }
-  p { margin: 0 0 0.85rem; font-size: 14.5px; line-height: 1.65; }
-  p:last-child { margin-bottom: 0; }
-
-  /* 4. framework */
-  .framework { border: 0.5px solid var(--border); border-radius: 12px; padding: 1.1rem 1.1rem 1rem; background: var(--bg-soft); }
-  .framework .lbl { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
-  .phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-  .phase-card { border-radius: 8px; padding: 0.7rem 0.8rem 0.8rem; display: flex; flex-direction: column; gap: 0.25rem; }
-  .phase-card .ph { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.8; }
-  .phase-card .word { font-size: 15px; font-weight: 500; line-height: 1.2; }
-  .p1 { background: var(--phase1-bg); color: var(--phase1-fg); }
-  .p2 { background: var(--phase2-bg); color: var(--phase2-fg); }
-  .p3 { background: var(--phase3-bg); color: var(--phase3-fg); }
-  .p4 { background: var(--phase4-bg); color: var(--phase4-fg); }
-  .framework .caption { margin: 0.85rem 0 0; color: var(--text-muted); font-size: 12.5px; line-height: 1.5; }
-  @media (min-width: 640px) { .phase-grid { grid-template-columns: repeat(4, 1fr); gap: 0.6rem; } }
-
-  /* 5. three-item */
-  .three-grid { display: grid; grid-template-columns: 1fr; gap: 0.7rem; }
-  .three-card { border: 0.5px solid var(--border); border-radius: 10px; padding: 0.85rem 0.95rem; background: var(--bg); }
-  .three-card .lbl { font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
-  .three-card .ttl { font-size: 14.5px; font-weight: 500; margin-bottom: 0.25rem; line-height: 1.3; }
-  .three-card p { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
-  @media (min-width: 640px) { .three-grid { grid-template-columns: repeat(3, 1fr); gap: 0.7rem; } }
-
-  /* 6. list */
-  ul.entries { list-style: none; padding: 0; margin: 0; }
-  ul.entries li { padding: 0.4rem 0; border-top: 0.5px solid var(--border-soft); font-size: 14px; line-height: 1.5; }
-  ul.entries li:first-child { border-top: none; padding-top: 0; }
-  ul.entries a { color: var(--text); text-decoration: none; font-weight: 400; }
-  ul.entries a:hover { color: var(--link); text-decoration: underline; }
-  ul.entries .meta { color: var(--text-muted); font-size: 13px; }
-
-  /* 7. citation */
-  pre.bibtex {
-    margin: 0; background: var(--bg-soft); border: 0.5px solid var(--border);
-    border-radius: 10px; padding: 0.9rem 1rem;
-    font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: var(--text);
-    overflow-x: auto; white-space: pre;
-  }
-
-  /* 8. footer */
-  footer.foot { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border); font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
-  footer.foot a { color: var(--text-muted); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 2px; }
-  footer.foot a:hover { color: var(--text); text-decoration-color: var(--text-muted); }
-
-  @media (max-width: 480px) {
-    .wrap { padding: 1.75rem 1.25rem 3rem; }
-    h1.title { font-size: 21px; }
-    nav.linkbar .sep { padding: 0 0.55rem; }
-  }
-</style>
-</head>
-<body>
-<div class="wrap">
-
-  <header class="masthead">
-    <h1 class="title">Human–AI Coevolution Index</h1>
-    <p class="subtitle">A one-line subtitle placeholder describing the project at a glance.</p>
-    <p class="byline">Author One, Author Two — Lab Name</p>
+        <p class="mt-5 text-[13.5px] text-ink-500 dark:text-ink-300 font-mono tracking-wide">
+          Author One, Author Two — Lab Name
+        </p>
+      </div>
+    </div>
   </header>
 
-  <nav class="linkbar" aria-label="Project resources">
-    <a href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
-        <path d="M17 21H7a2 2 0 0 1 -2 -2V5a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
-        <line x1="9" y1="13" x2="15" y2="13"/>
-        <line x1="9" y1="17" x2="13" y2="17"/>
-      </svg>
-      <span>Paper</span>
-    </a>
-    <span class="sep">·</span>
-    <a href={`${base}/blog/`}>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/>
-        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"/>
-      </svg>
-      <span>Blog post</span>
-    </a>
-    <span class="sep">·</span>
-    <a href={`${base}/papers/`}>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="13" y1="6" x2="21" y2="6"/>
-        <line x1="13" y1="12" x2="21" y2="12"/>
-        <line x1="13" y1="18" x2="21" y2="18"/>
-        <line x1="4" y1="6" x2="6" y2="6"/>
-        <line x1="4" y1="12" x2="6" y2="12"/>
-        <line x1="4" y1="18" x2="6" y2="18"/>
-      </svg>
-      <span>Paper list</span>
-    </a>
-    <span class="sep">·</span>
-    <a href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M9 5H7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2V7a2 2 0 0 0 -2 -2h-2"/>
-        <rect x="9" y="3" width="6" height="4" rx="2"/>
-        <path d="M9 14l2 2 4 -4"/>
-      </svg>
-      <span>Practice guide</span>
-    </a>
-    <span class="sep">·</span>
-    <a href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 4l16 16"/>
-        <path d="M20 4L4 20"/>
-      </svg>
-      <span>X thread</span>
-    </a>
-    <span class="sep">·</span>
-    <a href={REPO_URL} target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="6" cy="6" r="2"/>
-        <circle cx="6" cy="18" r="2"/>
-        <circle cx="18" cy="18" r="2"/>
-        <path d="M6 8v8"/>
-        <path d="M11 6h5a2 2 0 0 1 2 2v8"/>
-      </svg>
-      <span>Contribute</span>
-    </a>
+  {/* ─── Inline link bar ───────────────────────────────────────── */}
+  <nav
+    class="mx-auto max-w-[1180px] px-6 reveal"
+    aria-label="Project resources"
+  >
+    <div class="frame py-4">
+      <div class="flex flex-wrap items-center gap-x-7 gap-y-3 text-[13.5px]">
+        <a href="#" class="link-row"><Fragment set:html={linkSvg(ICONS.paper)} /><span>Paper</span></a>
+        <span class="link-sep">·</span>
+        <a href={`${base}/blog/`} class="link-row"><Fragment set:html={linkSvg(ICONS.blog)} /><span>Blog post</span></a>
+        <span class="link-sep">·</span>
+        <a href={`${base}/papers/`} class="link-row"><Fragment set:html={linkSvg(ICONS.list)} /><span>Paper list</span></a>
+        <span class="link-sep">·</span>
+        <a href="#" class="link-row"><Fragment set:html={linkSvg(ICONS.practice)} /><span>Practice guide</span></a>
+        <span class="link-sep">·</span>
+        <a href="#" class="link-row"><Fragment set:html={linkSvg(ICONS.x)} /><span>X thread</span></a>
+        <span class="link-sep">·</span>
+        <a href={REPO_URL} target="_blank" rel="noopener" class="link-row"><Fragment set:html={linkSvg(ICONS.contrib)} /><span>Contribute</span></a>
+      </div>
+    </div>
   </nav>
 
-  <section>
-    <h2>Overview</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-  </section>
-
-  <section>
-    <div class="framework" role="group" aria-label="Four-phase framework">
-      <div class="lbl">Four-phase framework</div>
-      <div class="phase-grid">
-        <div class="phase-card p1"><span class="ph">Phase 1</span><span class="word">Tool</span></div>
-        <div class="phase-card p2"><span class="ph">Phase 2</span><span class="word">Assistant</span></div>
-        <div class="phase-card p3"><span class="ph">Phase 3</span><span class="word">Executor</span></div>
-        <div class="phase-card p4"><span class="ph">Phase 4</span><span class="word">Organization</span></div>
+  {/* ─── §01 Overview ──────────────────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">§01</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Overview</p>
       </div>
-      <p class="caption">Caption placeholder describing how the framework maps phases to capabilities.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Section heading placeholder</h2>
-    <p class="sec-lead">One supporting line of placeholder text introducing the three items below. <a href={`${base}/blog/`}>Read more →</a></p>
-    <div class="three-grid">
-      <div class="three-card">
-        <div class="lbl">Item 1</div>
-        <div class="ttl">Short bold title</div>
-        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
-      </div>
-      <div class="three-card">
-        <div class="lbl">Item 2</div>
-        <div class="ttl">Short bold title</div>
-        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
-      </div>
-      <div class="three-card">
-        <div class="lbl">Item 3</div>
-        <div class="ttl">Short bold title</div>
-        <p>One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.</p>
+      <div class="max-w-[64ch] text-[15.5px] text-ink-700 dark:text-ink-100 leading-[1.78] space-y-5">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>List section heading placeholder</h2>
-    <p class="sec-lead">One supporting line of placeholder text. <a href={`${base}/papers/`}>View all →</a></p>
-    <ul class="entries">
-      <li><a href="#">Placeholder paper title one</a> <span class="meta">— Author et al., 2026</span></li>
-      <li><a href="#">Placeholder paper title two with a slightly longer name</a> <span class="meta">— Author et al., 2026</span></li>
-      <li><a href="#">Placeholder paper title three</a> <span class="meta">— Author et al., 2025</span></li>
-      <li><a href="#">Placeholder paper title four</a> <span class="meta">— Author et al., 2025</span></li>
-    </ul>
+  {/* ─── §02 Framework visual block ────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">§02</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Framework</p>
+        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
+          Four phases of how humans use AI as AI advances.
+        </p>
+      </div>
+
+      <div class="max-w-[64ch]">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="rounded-md bg-paper-200 dark:bg-ink-700/40 px-4 py-3.5">
+            <p class="meta-label text-accent dark:text-accent-dark">Phase 1</p>
+            <p class="kicker mt-1 text-[18px] text-ink-700 dark:text-ink-50">Tool</p>
+          </div>
+          <div class="rounded-md bg-paper-200 dark:bg-ink-700/40 px-4 py-3.5">
+            <p class="meta-label text-accent dark:text-accent-dark">Phase 2</p>
+            <p class="kicker mt-1 text-[18px] text-ink-700 dark:text-ink-50">Assistant</p>
+          </div>
+          <div class="rounded-md bg-paper-200 dark:bg-ink-700/40 px-4 py-3.5">
+            <p class="meta-label text-accent dark:text-accent-dark">Phase 3</p>
+            <p class="kicker mt-1 text-[18px] text-ink-700 dark:text-ink-50">Executor</p>
+          </div>
+          <div class="rounded-md bg-paper-200 dark:bg-ink-700/40 px-4 py-3.5">
+            <p class="meta-label text-accent dark:text-accent-dark">Phase 4</p>
+            <p class="kicker mt-1 text-[18px] text-ink-700 dark:text-ink-50">Organization</p>
+          </div>
+        </div>
+        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed">
+          Caption placeholder describing how the framework maps phases to capabilities.
+        </p>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Citation</h2>
-<pre class="bibtex">@article&lbrace;placeholder2026,
+  {/* ─── §03 Three-item teaser ─────────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">§03</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Section heading placeholder</p>
+        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
+          One supporting line of placeholder text. <a href={`${base}/blog/`} class="a-text">Read more →</a>
+        </p>
+      </div>
+
+      <div class="max-w-[64ch] grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[1, 2, 3].map((n) => (
+          <div class="frame py-4 px-5">
+            <p class="meta-label">Item {n}</p>
+            <p class="kicker mt-1.5 text-[16px] text-ink-700 dark:text-ink-50">Short bold title</p>
+            <p class="mt-1.5 text-[13.5px] text-ink-500 dark:text-ink-300 leading-relaxed">
+              One sentence of Lorem ipsum dolor sit amet, consectetur adipiscing elit placeholder text.
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ─── §04 List section ──────────────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">§04</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">List section heading placeholder</p>
+        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
+          One supporting line of placeholder text. <a href={`${base}/papers/`} class="a-text">View all →</a>
+        </p>
+      </div>
+
+      <ol class="list-none p-0 max-w-[64ch]">
+        {[
+          { ttl: 'Placeholder paper title one', meta: 'Author et al., 2026' },
+          { ttl: 'Placeholder paper title two with a slightly longer name', meta: 'Author et al., 2026' },
+          { ttl: 'Placeholder paper title three', meta: 'Author et al., 2025' },
+          { ttl: 'Placeholder paper title four', meta: 'Author et al., 2025' },
+        ].map((item) => (
+          <li class="border-t border-paper-300 dark:border-ink-600 py-3 text-[14px] leading-relaxed">
+            <a href="#" class="a-text font-medium text-ink-700 dark:text-ink-50">{item.ttl}</a>
+            <span class="ml-1.5 text-ink-500 dark:text-ink-300">— {item.meta}</span>
+          </li>
+        ))}
+        <li><div class="border-t border-paper-300 dark:border-ink-600"></div></li>
+      </ol>
+    </div>
+  </section>
+
+  {/* ─── §05 Citation ──────────────────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-12 pb-16 reveal">
+    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
+      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
+        <p class="meta-label">§05</p>
+        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Citation</p>
+      </div>
+      <div class="max-w-[64ch]">
+<pre class="bibtex-block">@article&lbrace;placeholder2026,
   title  = &lbrace;Placeholder paper title goes here&rbrace;,
   author = &lbrace;Author One and Author Two and Author Three&rbrace;,
   year   = &lbrace;2026&rbrace;,
   journal= &lbrace;Venue Placeholder&rbrace;,
   url    = &lbrace;https://example.org/placeholder&rbrace;
 &rbrace;</pre>
+      </div>
+    </div>
   </section>
 
-  <footer class="foot">
-    Maintained by <a href={MAINTAINER_URL} target="_blank" rel="noopener">{MAINTAINER_NAME}</a>, {MAINTAINER_AFFILIATION} · <a href={REPO_URL} target="_blank" rel="noopener">GitHub repository</a> · Contributions and corrections welcome via pull request.
-  </footer>
+</Base>
 
-</div>
-</body>
-</html>
+<style>
+  .link-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: theme('colors.ink.700');
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  :global(html.dark) .link-row { color: theme('colors.ink.50'); }
+  .link-row:hover { color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .link-row:hover { color: theme('colors.accent.dark'); }
+  .link-row svg { color: theme('colors.ink.400'); transition: color 0.15s ease; }
+  :global(html.dark) .link-row svg { color: theme('colors.ink.300'); }
+  .link-row:hover svg { color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .link-row:hover svg { color: theme('colors.accent.dark'); }
+  .link-sep {
+    color: theme('colors.ink.300');
+    user-select: none;
+  }
+  :global(html.dark) .link-sep { color: theme('colors.ink.500'); }
+
+  .bibtex-block {
+    margin: 0;
+    background: theme('colors.paper.200');
+    border: 1px solid theme('colors.paper.300');
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: theme('colors.ink.700');
+    overflow-x: auto;
+    white-space: pre;
+  }
+  :global(html.dark) .bibtex-block {
+    background: theme('colors.ink.800');
+    border-color: theme('colors.ink.600');
+    color: theme('colors.ink.100');
+  }
+</style>
