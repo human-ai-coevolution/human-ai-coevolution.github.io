@@ -1,6 +1,9 @@
-/* Webfonts — variable Fraunces (opsz axis) + IBM Plex Sans/Mono */
-@import "@fontsource-variable/fraunces/index.css";
-@import "@fontsource-variable/fraunces/opsz-italic.css";
+/* Webfonts — Cormorant Garamond (display serif) + IBM Plex Sans/Mono */
+@import "@fontsource/cormorant-garamond/300.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/300-italic.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
 @import "@fontsource/ibm-plex-sans/400.css";
 @import "@fontsource/ibm-plex-sans/500.css";
 @import "@fontsource/ibm-plex-sans/600.css";
@@ -14,7 +17,7 @@
 
 :root {
   color-scheme: light;
-  --font-display: 'Fraunces Variable', ui-serif, 'Iowan Old Style', Charter, Georgia, serif;
+  --font-display: 'Cormorant Garamond', ui-serif, 'Iowan Old Style', Charter, Georgia, serif;
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 }
@@ -40,29 +43,34 @@ html.dark, html.dark body {
 
 /* ─── Display typography ────────────────────────────── */
 
+/* Cormorant Garamond is a delicate, small-x-height face — it carries a
+   light weight beautifully at display sizes and wants near-zero tracking,
+   so each tier is set a step larger than a Fraunces equivalent would be. */
 .font-display,
 .kicker,
 .kicker-lg,
 .kicker-xl {
   font-family: var(--font-display);
-  font-feature-settings: 'ss01';
   font-weight: 500;
-  letter-spacing: -0.018em;
+  letter-spacing: 0;
+  font-variant-numeric: lining-nums;
 }
 .kicker-xl {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  line-height: 1.04;
-  letter-spacing: -0.024em;
-}
-.kicker-lg {
-  font-size: clamp(1.6rem, 3.3vw, 2.1rem);
-  line-height: 1.14;
+  font-size: clamp(2.9rem, 6vw, 4.6rem);
+  line-height: 1.06;
+  font-weight: 300;
   letter-spacing: -0.012em;
 }
+.kicker-lg {
+  font-size: clamp(1.95rem, 3.9vw, 2.7rem);
+  line-height: 1.12;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
 .kicker {
-  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
-  line-height: 1.22;
-  letter-spacing: -0.008em;
+  font-size: clamp(1.35rem, 2.5vw, 1.62rem);
+  line-height: 1.2;
+  font-weight: 500;
 }
 
 .tabular-nums { font-feature-settings: 'tnum' 1, 'lnum' 1; }
@@ -270,8 +278,8 @@ html.dark .hairline { background: theme('colors.ink.600'); }
 }
 
 /* Copy-success pulse */
-:global(html.dark) .copy-glow-source { --glow: rgba(124, 158, 201, 0.22); }
-.copy-glow-source { --glow: rgba(30, 58, 95, 0.16); }
+:global(html.dark) .copy-glow-source { --glow: rgba(118, 189, 182, 0.24); }
+.copy-glow-source { --glow: rgba(46, 107, 104, 0.16); }
 @keyframes copy-glow-var {
   0%   { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
   30%  { box-shadow: 0 0 0 6px var(--glow); }

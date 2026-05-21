@@ -22,14 +22,14 @@ function paperColors() {
         text: '#e9e6df',
         muted: '#9a978d',
         faint: 'rgba(255,255,255,0.04)',
-        bar: '#7c9ec9',                 // navy on dark
-        barAlt: '#a5bdd4',
-        line: '#7c9ec9',
+        bar: '#76bdb6',                 // teal on dark
+        barAlt: '#9ecdc8',
+        line: '#76bdb6',
         // Primary axis — five phase bands. We collapse emerging-phase-N
         // into the corresponding main phase for the stacked area / donut
         // so the visual story stays legible.
         phaseColors: {
-          'phase-1':   '#7c9ec9',   // navy — Tool
+          'phase-1':   '#76bdb6',   // teal — Tool
           'phase-2':   '#cdb89f',   // brass — Assistant
           'phase-3':   '#9ab0a0',   // olive — Executor
           'phase-4':   '#b89a78',   // bronze — Organization (currently empty)
@@ -38,14 +38,14 @@ function paperColors() {
         // Secondary axis — five theme categories. Slightly desaturated
         // so they don't compete with the phase palette.
         envColors: {
-          'Collaboration & Co-Creation': '#7c9ec9',
+          'Collaboration & Co-Creation': '#76bdb6',
           'Mutual Adaptation': '#cdb89f',
           'Human Feedback Loops': '#9ab0a0',
           'Longitudinal HCI Studies': '#b89a78',
           'Position & Survey': '#a8a8b8',
         } as Record<string, string>,
-        donut: ['#7c9ec9', '#cdb89f', '#9ab0a0', '#b89a78', '#a8a8b8'],
-        treemapTones: ['#283a52', '#2f4258', '#374b5f', '#3f5466', '#475d6d', '#506674', '#586f7a', '#617881'],
+        donut: ['#76bdb6', '#cdb89f', '#9ab0a0', '#b89a78', '#a8a8b8'],
+        treemapTones: ['#234e4b', '#2c5754', '#35605d', '#3e6966', '#47716e', '#507a77', '#56827f', '#5f8b87'],
         cardBorder: 'rgba(233,230,223,0.08)',
         tooltipBg: '#171b23',
         tooltipBorder: 'rgba(255,255,255,0.08)',
@@ -55,26 +55,26 @@ function paperColors() {
         text: '#2f2d28',
         muted: '#6e6c64',
         faint: 'rgba(0,0,0,0.04)',
-        bar: '#1e3a5f',
-        barAlt: '#516b85',
-        line: '#1e3a5f',
-        phaseColors: {                 // navy + brass + olive + bronze family
-          'phase-1':   '#1e3a5f',
+        bar: '#2e6b68',
+        barAlt: '#5f928e',
+        line: '#2e6b68',
+        phaseColors: {                 // teal + brass + olive + bronze family
+          'phase-1':   '#2e6b68',
           'phase-2':   '#a0826d',
           'phase-3':   '#5b7461',
           'phase-4':   '#7d5e47',
           'framework': '#6b6b87',
         } as Record<string, string>,
         envColors: {
-          'Collaboration & Co-Creation': '#1e3a5f',
+          'Collaboration & Co-Creation': '#2e6b68',
           'Mutual Adaptation': '#a0826d',
           'Human Feedback Loops': '#5b7461',
           'Longitudinal HCI Studies': '#7d5e47',
           'Position & Survey': '#6b6b87',
         } as Record<string, string>,
-        donut: ['#1e3a5f', '#a0826d', '#5b7461', '#7d5e47', '#6b6b87'],
-        // single-hue navy treemap progression
-        treemapTones: ['#1e3a5f', '#2a466b', '#365176', '#425d82', '#4f6a8d', '#5b7799', '#6884a4', '#7591b0'],
+        donut: ['#2e6b68', '#a0826d', '#5b7461', '#7d5e47', '#6b6b87'],
+        // single-hue teal treemap progression
+        treemapTones: ['#2e6b68', '#3d7774', '#4c8380', '#5b8f8c', '#699a97', '#78a6a3', '#87b2af', '#96beba'],
         cardBorder: 'rgba(31,29,26,0.08)',
         tooltipBg: '#faf9f5',
         tooltipBorder: 'rgba(31,29,26,0.12)',
