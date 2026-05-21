@@ -103,16 +103,16 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
         </p>
 
         <p class="mt-6 text-[14px] text-ink-600 dark:text-ink-200 leading-[1.7] max-w-[58ch]">
-          <span class="font-medium text-ink-700 dark:text-ink-50">Xu Li</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Simon Yu</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Derek Chong</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Bo Liu</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Qianou Ma</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Marwa Abdulhai</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Diyi Yang</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Tongshuang Wu</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Hua Shen</span>,
-          <span class="font-medium text-ink-700 dark:text-ink-50">Weiyan Shi</span>
+          <a href="https://xuli0929.github.io/" target="_blank" rel="noopener" class="author-link">Xu Li</a>,
+          <a href="https://simonucl.github.io/" target="_blank" rel="noopener" class="author-link">Simon Yu</a>,
+          <a href="https://nlp.stanford.edu/~derekch/" target="_blank" rel="noopener" class="author-link">Derek Chong</a>,
+          <a href="https://benjamin-eecs.github.io/" target="_blank" rel="noopener" class="author-link">Bo Liu</a>,
+          <a href="https://qianouma.com/en/about.html" target="_blank" rel="noopener" class="author-link">Qianou Ma</a>,
+          <a href="https://abdulhaim.github.io/" target="_blank" rel="noopener" class="author-link">Marwa Abdulhai</a>,
+          <a href="https://cs.stanford.edu/~diyiy/" target="_blank" rel="noopener" class="author-link">Diyi Yang</a>,
+          <a href="https://www.cs.cmu.edu/~sherryw/" target="_blank" rel="noopener" class="author-link">Tongshuang Wu</a>,
+          <a href="https://hua-shen.org/" target="_blank" rel="noopener" class="author-link">Hua Shen</a>,
+          <a href="https://wyshi.github.io/" target="_blank" rel="noopener" class="author-link">Weiyan Shi</a>
         </p>
       </div>
     </div>
@@ -406,4 +406,20 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
   @media (prefers-reduced-motion: reduce) {
     .phase-panel--in { animation: none; }
   }
+
+  /* Byline author links — read as plain bold names, reveal on hover */
+  .author-link {
+    color: theme('colors.ink.700');
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .author-link:hover {
+    color: theme('colors.accent.DEFAULT');
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  :global(html.dark) .author-link { color: theme('colors.ink.50'); }
+  :global(html.dark) .author-link:hover { color: theme('colors.accent.dark'); }
 </style>
