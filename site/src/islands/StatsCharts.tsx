@@ -100,6 +100,16 @@ const PHASE_AGG_LABEL: Record<string, string> = {
   'framework': 'Surveys & Position',
 };
 
+// Abbreviated labels for the donut's outside text on narrow (mobile)
+// viewports — the bottom legend still carries the full names.
+const PHASE_AGG_SHORT: Record<string, string> = {
+  'phase-1':   'P1 · Tool',
+  'phase-2':   'P2 · Assistant',
+  'phase-3':   'P3 · Executor',
+  'phase-4':   'P4 · Org.',
+  'framework': 'Surveys',
+};
+
 const PHASE_AGG_ORDER = ['phase-1', 'phase-2', 'phase-3', 'phase-4', 'framework'];
 
 const SHARED_TEXT = {
@@ -165,6 +175,7 @@ export default function StatsCharts(props: Props) {
     for (const c of charts) c.dispose();
     charts.length = 0;
     const c = paperColors();
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
 
     // === 1. Quarterly trend — stacked by aggregated phase ===
     // The framework's central distribution claim becomes a chart:
@@ -251,7 +262,7 @@ export default function StatsCharts(props: Props) {
       grid: { left: 4, right: 4, top: 26, bottom: 8, containLabel: false },
       xAxis: { type: 'value', show: false, max: totalBar },
       yAxis: { type: 'category', show: false, data: ['Keywords'] },
-      series: topBarKw.map(([k, v], i) => ({
+      series: topBarKw.map(([k, v]) => ({
         name: k,
         type: 'bar',
         stack: 'kw',
@@ -314,7 +325,9 @@ export default function StatsCharts(props: Props) {
         formatter: (name: string) => PHASE_AGG_LABEL[name] ?? name,
       },
       series: [{
-        type: 'pie', radius: ['54%', '78%'], center: ['50%', '42%'],
+        type: 'pie',
+        radius: isMobile ? ['31%', '47%'] : ['54%', '78%'],
+        center: ['50%', isMobile ? '38%' : '42%'],
         avoidLabelOverlap: true,
         itemStyle: {
           borderColor: isDark() ? '#161a21' : '#faf9f5',
@@ -322,14 +335,18 @@ export default function StatsCharts(props: Props) {
         },
         label: {
           show: true,
-          formatter: (p: any) => `{n|${PHASE_AGG_LABEL[p.name] ?? p.name}}\n{v|${p.value}}`,
+          formatter: (p: any) => `{n|${(isMobile ? PHASE_AGG_SHORT : PHASE_AGG_LABEL)[p.name] ?? p.name}}\n{v|${p.value}}`,
           rich: {
-            n: { color: c.text, fontSize: 12, fontWeight: 600, ...SHARED_TEXT, lineHeight: 18 },
-            v: { color: c.muted, fontSize: 11, ...SHARED_TEXT },
+            n: { color: c.text, fontSize: isMobile ? 10 : 12, fontWeight: 600, ...SHARED_TEXT, lineHeight: isMobile ? 14 : 18 },
+            v: { color: c.muted, fontSize: isMobile ? 9.5 : 11, ...SHARED_TEXT },
           },
-          alignTo: 'edge', edgeDistance: 6,
+          alignTo: 'edge', edgeDistance: isMobile ? 2 : 6,
         },
-        labelLine: { lineStyle: { color: c.muted, width: 1 }, length: 10, length2: 10 },
+        labelLine: {
+          lineStyle: { color: c.muted, width: 1 },
+          length: isMobile ? 6 : 10,
+          length2: isMobile ? 6 : 10,
+        },
         data: phaseEntries.map(([k, v]) => ({
           name: k, value: v,
           itemStyle: { color: c.phaseColors[k] ?? c.donut[0] },
@@ -363,7 +380,9 @@ export default function StatsCharts(props: Props) {
         icon: 'circle', itemWidth: 8, itemHeight: 8, itemGap: 14,
       },
       series: [{
-        type: 'pie', radius: ['48%', '70%'], center: ['50%', '42%'],
+        type: 'pie',
+        radius: isMobile ? ['40%', '60%'] : ['48%', '70%'],
+        center: ['50%', isMobile ? '40%' : '42%'],
         avoidLabelOverlap: true,
         itemStyle: {
           borderColor: isDark() ? '#161a21' : '#faf9f5',
@@ -532,7 +551,7 @@ export default function StatsCharts(props: Props) {
 
       {/* ─── Hero: distribution by phase ─────────────────────────── */}
       <section>
-        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4">
+        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
           <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Distribution by phase</h2>
           <span class="text-xs text-ink-400 dark:text-ink-300">primary axis · aggregated to 5 bands</span>
         </div>
@@ -544,7 +563,7 @@ export default function StatsCharts(props: Props) {
 
       {/* ─── Quarterly trend stacked by phase ─────────────────────── */}
       <section>
-        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4">
+        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
           <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Quarterly publication trend</h2>
           <span class="text-xs text-ink-400 dark:text-ink-300">stacked by phase</span>
         </div>
@@ -567,7 +586,7 @@ export default function StatsCharts(props: Props) {
 
       {/* ─── Secondary axis: theme split ──────────────────────────── */}
       <section>
-        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4">
+        <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
           <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Theme split</h2>
           <span class="text-xs text-ink-400 dark:text-ink-300">secondary axis · CC / MA / HF / LH / PS</span>
         </div>
