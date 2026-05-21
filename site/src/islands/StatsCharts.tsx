@@ -170,6 +170,9 @@ export default function StatsCharts(props: Props) {
 
   const [, setTick] = createSignal(0);
   const [longTail, setLongTail] = createSignal<Array<{ k: string; v: number }>>([]);
+  // Top keywords shown as full-name chips on mobile, where the stacked
+  // bar's segments are too narrow to carry readable inline labels.
+  const [topKw, setTopKw] = createSignal<Array<{ k: string; v: number }>>([]);
 
   function build() {
     for (const c of charts) c.dispose();
@@ -247,6 +250,32 @@ export default function StatsCharts(props: Props) {
     const topBarKw = sortedKw.slice(0, 6);
     const maxKw = topBarKw[0]?.[1] ?? 1;
     const totalBar = topBarKw.reduce((s, [, v]) => s + v, 0);
+    // Pre-measure how much label each stacked segment can hold at the
+    // current chart width, so a long keyword never spills into the
+    // neighbouring segment. Full name + count if it fits; else drop the
+    // count; else ellipsis-truncate the name.
+    const kwInnerW = Math.max(0, kwEl.clientWidth - 8); // grid left + right
+    const kwDisplay = new Map<string, { name: string; count: string }>();
+    {
+      const NAME_CH = 6.6;  // px per char at 11px bold
+      const CNT_CH = 6.2;   // px per char at 10px
+      const PAD = 16;       // label padding + breathing room
+      const GAP = 8;        // gap before the count
+      for (const [k, v] of topBarKw) {
+        const segW = totalBar ? (v / totalBar) * kwInnerW : 0;
+        const avail = segW - PAD;
+        const cnt = String(v);
+        const cntW = cnt.length * CNT_CH + GAP;
+        if (k.length * NAME_CH + cntW <= avail) {
+          kwDisplay.set(k, { name: k, count: cnt });
+        } else if (k.length * NAME_CH <= avail) {
+          kwDisplay.set(k, { name: k, count: '' });
+        } else {
+          const max = Math.floor(avail / NAME_CH) - 1;
+          kwDisplay.set(k, { name: max >= 2 ? k.slice(0, max) + '…' : '', count: '' });
+        }
+      }
+    }
     const kwChart = echarts.init(kwEl, null, { renderer: 'canvas' });
     kwChart.setOption({
       backgroundColor: c.bg,
@@ -274,12 +303,16 @@ export default function StatsCharts(props: Props) {
           borderWidth: 2,
         },
         label: {
-          show: true, position: 'inside', align: 'left',
+          // insideLeft anchors the label to the segment's left edge so
+          // it flows rightward within the segment — combined with the
+          // width-aware truncation above, it can't spill into the next
+          // segment. ('inside' anchors at the centre, so long labels
+          // overflow both sides.)
+          show: !isMobile, position: 'insideLeft', align: 'left',
           formatter: (info: any) => {
-            const pct = info.value / totalBar;
-            const name = info.seriesName.length > 18 ? info.seriesName.slice(0, 17) + '…' : info.seriesName;
-            // With 6 segments each is ≥ ~8% by construction.
-            return pct >= 0.07 ? `{n|${name}}  {v|${info.value}}` : `{n|${name}}`;
+            const d = kwDisplay.get(info.seriesName);
+            if (!d || !d.name) return '';
+            return d.count ? `{n|${d.name}}  {v|${d.count}}` : `{n|${d.name}}`;
           },
           rich: {
             n: { color: '#fbf6ec', fontSize: 11, fontWeight: 600, ...SHARED_TEXT },
@@ -297,6 +330,7 @@ export default function StatsCharts(props: Props) {
     charts.push(kwChart);
     // Stash the long-tail list for the chip cloud rendered below.
     setLongTail(sortedKw.slice(6, 56).map(([k, v]) => ({ k, v })));
+    setTopKw(topBarKw.map(([k, v]) => ({ k, v })));
 
     // === 3. Phase donut — the primary distribution chart. Aggregated to
     //        five bands (P1 / P2+EP2 / P3+EP3 / P4+EP4 / Surveys). ===
@@ -539,11 +573,19 @@ export default function StatsCharts(props: Props) {
 
   onMount(() => {
     build();
-    const ro = new ResizeObserver(() => resizeAll());
+    // Resize: snap-resize every chart immediately, then (debounced)
+    // rebuild so width-dependent layout — the mobile breakpoint and the
+    // keyword-bar label truncation — is recomputed for the new width.
+    let rebuildTimer: ReturnType<typeof setTimeout> | undefined;
+    const ro = new ResizeObserver(() => {
+      resizeAll();
+      clearTimeout(rebuildTimer);
+      rebuildTimer = setTimeout(() => build(), 200);
+    });
     [trendEl, kwEl, phaseEl, themeEl, instEl, authorEl, pubEl].forEach((el) => ro.observe(el));
     const mo = new MutationObserver(() => { build(); setTick((x) => x + 1); });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    onCleanup(() => { ro.disconnect(); mo.disconnect(); for (const c of charts) c.dispose(); });
+    onCleanup(() => { clearTimeout(rebuildTimer); ro.disconnect(); mo.disconnect(); for (const c of charts) c.dispose(); });
   });
 
   return (
@@ -576,6 +618,13 @@ export default function StatsCharts(props: Props) {
         <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50 mb-1">Top keywords</h2>
         <p class="text-xs text-ink-400 dark:text-ink-300 mb-4 max-w-[64ch]">Width is paper count, darker is more frequent. Click any segment or chip to filter.</p>
         <div ref={(el) => (kwEl = el)} class="w-full h-[68px]"></div>
+        {/* Mobile: bar segments are too narrow for inline labels — name
+            the top keywords as full chips directly beneath the bar. */}
+        <Show when={topKw().length > 0}>
+          <div class="mt-3 sm:hidden">
+            <KeywordCloud items={topKw()} basePath={props.basePath} />
+          </div>
+        </Show>
         <Show when={longTail().length > 0}>
           <div class="mt-6">
             <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-300 mb-3">Long tail</div>
