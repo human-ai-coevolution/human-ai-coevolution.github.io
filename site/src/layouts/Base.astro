@@ -28,7 +28,11 @@ const {
   extraHead,
 } = Astro.props as Props;
 
-const fullTitle = title ? `${title} · ${SITE_TITLE}` : `${SITE_TITLE} · A curated list of human-AI coevolution research`;
+// Homepage (no `title` prop) gets the bare brand as its <title>, so
+// Google reads "Human–AI Coevolution" as the site name instead of
+// defaulting to "GitHub" for the *.github.io host. Inner pages keep
+// the "Page · Brand" pattern.
+const fullTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
 const desc = description ?? SITE_DESCRIPTION;
 const starCount = await getStarCount();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
