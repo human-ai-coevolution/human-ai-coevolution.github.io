@@ -4,6 +4,7 @@
 @import "@fontsource/cormorant-garamond/500.css";
 @import "@fontsource/cormorant-garamond/300-italic.css";
 @import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cormorant-garamond/500-italic.css";
 @import "@fontsource/ibm-plex-sans/400.css";
 @import "@fontsource/ibm-plex-sans/500.css";
 @import "@fontsource/ibm-plex-sans/600.css";
@@ -43,9 +44,10 @@ html.dark, html.dark body {
 
 /* ─── Display typography ────────────────────────────── */
 
-/* Cormorant Garamond is a delicate, small-x-height face — it carries a
-   light weight beautifully at display sizes and wants near-zero tracking,
-   so each tier is set a step larger than a Fraunces equivalent would be. */
+/* Cormorant Garamond is a delicate, small-x-height face — it wants
+   near-zero tracking and is set a step larger than a Fraunces
+   equivalent would be. Held at medium (500) so the high-contrast
+   strokes still read with weight at display sizes. */
 .font-display,
 .kicker,
 .kicker-lg,
@@ -58,19 +60,16 @@ html.dark, html.dark body {
 .kicker-xl {
   font-size: clamp(2.9rem, 6vw, 4.6rem);
   line-height: 1.06;
-  font-weight: 300;
   letter-spacing: -0.012em;
 }
 .kicker-lg {
   font-size: clamp(1.95rem, 3.9vw, 2.7rem);
   line-height: 1.12;
-  font-weight: 400;
   letter-spacing: -0.005em;
 }
 .kicker {
   font-size: clamp(1.35rem, 2.5vw, 1.62rem);
   line-height: 1.2;
-  font-weight: 500;
 }
 
 .tabular-nums { font-feature-settings: 'tnum' 1, 'lnum' 1; }
