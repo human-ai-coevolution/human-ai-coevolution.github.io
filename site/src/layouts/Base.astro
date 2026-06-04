@@ -8,6 +8,9 @@ import { getStarCount } from '../lib/star';
 
 interface Props {
   title?: string;
+  /** Full <title> verbatim, used as-is. Overrides the "Page · Brand"
+   *  pattern. */
+  titleOverride?: string;
   description?: string;
   /** Path-only OG image (e.g. /og.png); defaults to site fallback. */
   ogImage?: string;
@@ -21,6 +24,7 @@ interface Props {
 
 const {
   title,
+  titleOverride,
   description,
   ogImage,
   ogType = 'website',
@@ -28,11 +32,11 @@ const {
   extraHead,
 } = Astro.props as Props;
 
-// Homepage (no `title` prop) gets the bare brand as its <title>, so
-// Google reads "Human–AI Coevolution" as the site name instead of
-// defaulting to "GitHub" for the *.github.io host. Inner pages keep
-// the "Page · Brand" pattern.
-const fullTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
+// Title resolution: titleOverride (verbatim) > "Page · Brand" > bare
+// brand. The homepage sets titleOverride so Google reads
+// "Human–AI Coevolution" as the title instead of defaulting the
+// *.github.io host name to "GitHub".
+const fullTitle = titleOverride ?? (title ? `${title} · ${SITE_TITLE}` : SITE_TITLE);
 const desc = description ?? SITE_DESCRIPTION;
 const starCount = await getStarCount();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
