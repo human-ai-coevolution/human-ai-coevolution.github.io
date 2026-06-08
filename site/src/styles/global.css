@@ -157,6 +157,9 @@ html.dark, html.dark body {
     color: theme('colors.ink.400');
   }
   :global(html.dark) .meta-label { color: theme('colors.ink.300'); }
+  /* section markers (§01 …) — larger than a plain meta-label */
+  .section-no { font-size: 20px; letter-spacing: 0.04em; color: theme('colors.ink.500'); }
+  :global(html.dark) .section-no { color: theme('colors.ink.200'); }
 
   /* Mono value (for category codes, year, etc.) */
   .meta-value {
