@@ -58,7 +58,7 @@ export default {
           'sans-serif',
         ],
         display: [
-          '"Cormorant Garamond"',
+          '"Fraunces Variable"',
           'ui-serif',
           'Iowan Old Style',
           'Charter',
@@ -66,7 +66,7 @@ export default {
           'serif',
         ],
         serif: [
-          '"Cormorant Garamond"',
+          '"Fraunces Variable"',
           'ui-serif',
           'Iowan Old Style',
           'Charter',

@@ -1,0 +1,292 @@
+---
+/**
+ * PhaseFlow — the four phases as a two-sided conversation. The HUMAN speaks
+ * on the left (left spine), the AI answers on the right (right spine), and a
+ * clickable copy-card on the far right doubles as the phase description AND
+ * the "browse the index by this phase" entry point.
+ *
+ * Each phase escalates how much the human delegates: ask a question → ask
+ * for a piece → hand off a whole task → ask for an outcome the AI
+ * self-coordinates. The AI mark grows AND carries a role badge per phase
+ * (answering / drafting / executing / coordinating) so the four read apart.
+ * Turns reveal cumulatively as you scroll (and play back out on scroll up).
+ */
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+interface Card { code: string; name: string; tag: string; count: number; }
+const { phaseCards = [] } = Astro.props as { phaseCards?: Card[] };
+const card = (i: number): Card => phaseCards[i] ?? { code: '', name: '', tag: '', count: 0 };
+
+const person = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.4" r="4.1"/><path d="M3.6 20.8c0-4.7 3.8-8.3 8.4-8.3s8.4 3.6 8.4 8.3z"/></svg>`;
+const bot = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="3"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>`;
+const docSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h6.5L17 7v13.5H7z"/><path d="M9.5 8h3M9.5 11h5M9.5 14h5"/></svg>`;
+
+// per-phase AI role badges
+const bAnswer = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M21 21l-4.6-4.6"/></svg>`;
+const bDraft  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l4-1L18.6 8.4a2 2 0 0 0-2.8-2.8L5 16.2 4 20z"/><path d="M14.5 7 17 9.5"/></svg>`;
+const bRun    = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3.1M12 18.3v3.1M2.6 12h3.1M18.3 12h3.1M5.3 5.3 7.5 7.5M16.5 16.5 18.7 18.7M18.7 5.3 16.5 7.5M7.5 16.5 5.3 18.7"/></svg>`;
+const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M7.9 8.4 10.6 15.8M16.1 8.4 13.4 15.8M8.4 7h7.2"/></svg>`;
+---
+
+<div class="pf" id="phaseflow">
+  <ol class="pf-thread">
+    {/* ─────────── Phase 1 · Tool — ask a question ─────────── */}
+    <li class="pf-phase" data-phase="1">
+      <div class="pf-convo">
+        <div class="pf-row pf-row--h pf-rev">
+          <span class="pf-node pf-node--h" set:html={person} />
+          <div class="pf-bub pf-bub--h"><span class="pf-tag">Human</span><span class="pf-content">“How does a Bloom filter work?”</span></div>
+          <span class="pf-to">→</span>
+        </div>
+        <div class="pf-row pf-row--a pf-rev">
+          <div class="pf-bub pf-bub--a"><span class="pf-tag pf-tag--a">AI</span><span class="pf-ans"><span class="pf-ln"></span><span class="pf-ln"></span><span class="pf-ln pf-ln--short"></span></span></div>
+          <span class="pf-node pf-node--a pf-ai--1"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bAnswer} /></span>
+        </div>
+      </div>
+      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(0).tag}`}>
+        <p class="pf-code">Phase 1</p>
+        <h3 class="pf-name">Tool</h3>
+        <p class="pf-body">AI answers your questions; you still do the work. Demands <strong>critical thinking</strong> to judge what it gives you.</p>
+        <span class="pf-browse"><span class="pf-count">{card(0).count}</span> papers <span class="pf-arr">→</span></span>
+      </a>
+    </li>
+
+    {/* ─────────── Phase 2 · Assistant — ask for a piece ─────────── */}
+    <li class="pf-phase" data-phase="2">
+      <div class="pf-convo">
+        <div class="pf-row pf-row--h pf-rev">
+          <span class="pf-node pf-node--h" set:html={person} />
+          <div class="pf-bub pf-bub--h"><span class="pf-tag">Human</span><span class="pf-content">“Write a <code>parseDate()</code> helper.”</span></div>
+          <span class="pf-to">→</span>
+        </div>
+        <div class="pf-row pf-row--a pf-rev">
+          <div class="pf-bub pf-bub--a"><span class="pf-tag pf-tag--a">AI</span><span class="pf-draft"><span class="pf-draft-ic" set:html={docSvg} /><span class="pf-draft-tx">draft</span><span class="pf-verify">✓</span></span></div>
+          <span class="pf-node pf-node--a pf-ai--2"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bDraft} /></span>
+        </div>
+      </div>
+      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(1).tag}`}>
+        <p class="pf-code">Phase 2</p>
+        <h3 class="pf-name">Assistant</h3>
+        <p class="pf-body">AI drafts the pieces; you verify and ship. Demands <strong>evaluative expertise</strong> to integrate the artifacts well.</p>
+        <span class="pf-browse"><span class="pf-count">{card(1).count}</span> papers <span class="pf-arr">→</span></span>
+      </a>
+    </li>
+
+    {/* ─────────── Phase 3 · Executor — hand off a whole task ─────────── */}
+    <li class="pf-phase" data-phase="3">
+      <div class="pf-convo">
+        <div class="pf-row pf-row--h pf-rev">
+          <span class="pf-node pf-node--h" set:html={person} />
+          <div class="pf-bub pf-bub--h"><span class="pf-tag">Human</span><span class="pf-content">“Migrate the whole service to TypeScript.”</span></div>
+          <span class="pf-to">→</span>
+        </div>
+        <div class="pf-row pf-row--a pf-rev">
+          <div class="pf-bub pf-bub--a"><span class="pf-tag pf-tag--a">AI</span><span class="pf-system"><span class="pf-system-tag">runs the workflow</span><span class="pf-sysrow"><span class="pf-flow"><span class="pf-fstep"></span><span class="pf-fdash"></span><span class="pf-fstep"></span><span class="pf-fdash"></span><span class="pf-fstep pf-fstep--done">✓</span></span></span></span></div>
+          <span class="pf-node pf-node--a pf-ai--3"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bRun} /></span>
+        </div>
+      </div>
+      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(2).tag}`}>
+        <p class="pf-code">Phase 3</p>
+        <h3 class="pf-name">Executor</h3>
+        <p class="pf-body">You hand off a whole task; one AI runs the workflow end to end. Demands <strong>metacognitive monitoring</strong> to supervise it.</p>
+        <span class="pf-browse"><span class="pf-count">{card(2).count}</span> papers <span class="pf-arr">→</span></span>
+      </a>
+    </li>
+
+    {/* ─────────── Phase 4 · Organization — ask for an outcome ─────────── */}
+    <li class="pf-phase" data-phase="4">
+      <div class="pf-convo">
+        <div class="pf-row pf-row--h pf-rev">
+          <span class="pf-node pf-node--h pf-node--out" set:html={person} />
+          <div class="pf-bub pf-bub--h pf-bub--gov"><span class="pf-tag">Human</span><span class="pf-content">“Stand up and run our data platform.”</span></div>
+          <span class="pf-to">→</span>
+        </div>
+        <div class="pf-row pf-row--a pf-rev">
+          <div class="pf-bub pf-bub--a"><span class="pf-tag pf-tag--a">AI</span><span class="pf-system"><span class="pf-system-tag">coordinates other AIs</span><span class="pf-sysrow"><span class="pf-node pf-node--a pf-ai--w"><span class="pf-bot" set:html={bot} /></span><span class="pf-node pf-node--a pf-ai--w"><span class="pf-bot" set:html={bot} /></span><span class="pf-node pf-node--a pf-ai--w"><span class="pf-bot" set:html={bot} /></span></span></span></div>
+          <span class="pf-node pf-node--a pf-ai--4"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bCoord} /></span>
+        </div>
+      </div>
+      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(3).tag}`}>
+        <p class="pf-code">Phase 4 <span class="pf-fwd">(forward-looking)</span></p>
+        <h3 class="pf-name">Organization</h3>
+        <p class="pf-body">AI coordinates whole systems of agents; you govern. Demands <strong>systems thinking</strong> to set the rules before you deploy.</p>
+        <span class="pf-browse"><span class="pf-count">{card(3).count}</span> papers <span class="pf-arr">→</span></span>
+      </a>
+    </li>
+  </ol>
+</div>
+
+<style>
+  .pf { --slot: 54px; --descW: 268px; --gap: 36px; position: relative; padding: 8px 0 10px; }
+
+  /* the two spines (behind the icons) */
+  .pf::before, .pf::after { content: ''; position: absolute; top: 30px; bottom: 30px; width: 2px; z-index: 0; }
+  .pf::before { left: calc(var(--slot) / 2 - 1px); background: linear-gradient(theme('colors.ink.400'), theme('colors.paper.400')); opacity: 0.4; }
+  .pf::after  { right: calc(var(--descW) + var(--gap) + var(--slot) / 2 - 1px); background: linear-gradient(theme('colors.paper.400'), theme('colors.accent.DEFAULT')); opacity: 0.5; }
+  :global(html.dark) .pf::before { background: linear-gradient(theme('colors.ink.300'), theme('colors.ink.500')); }
+  :global(html.dark) .pf::after  { background: linear-gradient(theme('colors.ink.500'), theme('colors.accent.dark')); }
+
+  .pf-thread { list-style: none; margin: 0; padding: 0; }
+  .pf-phase {
+    display: grid; grid-template-columns: minmax(0, 1fr) var(--descW); gap: var(--gap);
+    align-items: center; padding: 22px 0;
+  }
+  .pf-phase + .pf-phase { border-top: 1px solid theme('colors.paper.300'); padding-top: 28px; }
+  :global(html.dark) .pf-phase + .pf-phase { border-top-color: theme('colors.ink.600'); }
+  @media (max-width: 760px) {
+    .pf-phase { grid-template-columns: 1fr; gap: 14px; }
+    .pf::after { display: none; }
+  }
+
+  .pf-convo { display: flex; flex-direction: column; gap: 18px; }
+  .pf-row { display: flex; align-items: center; gap: 12px; }
+  .pf-row--h { justify-content: flex-start; }
+  .pf-row--a { justify-content: flex-end; }
+
+  /* nodes sit above the spine lines */
+  .pf-node { position: relative; z-index: 1; display: grid; place-items: center; border-radius: 999px; flex: none; }
+  .pf-node--h { width: var(--slot); height: var(--slot); background: theme('colors.paper.100'); border: 1.6px solid theme('colors.ink.400'); color: theme('colors.ink.600'); }
+  .pf-node--h :global(svg) { width: 27px; height: 27px; fill: currentColor; stroke: none; }
+  :global(html.dark) .pf-node--h { background: theme('colors.nightbg.DEFAULT'); border-color: theme('colors.ink.300'); color: theme('colors.ink.100'); }
+  .pf-node--out { border-style: dashed; }
+  .pf-node--a { background: theme('colors.accent.DEFAULT'); }
+  .pf-bot { display: grid; place-items: center; }
+  .pf-bot :global(svg) { fill: none; stroke: theme('colors.paper.50'); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  :global(html.dark) .pf-node--a { background: theme('colors.accent.dark'); }
+  :global(html.dark) .pf-bot :global(svg) { stroke: theme('colors.nightbg.DEFAULT'); }
+  /* the AI disc grows each phase */
+  .pf-ai--1 { width: 44px; height: 44px; } .pf-ai--1 .pf-bot :global(svg) { width: 26px; height: 26px; }
+  .pf-ai--2 { width: 50px; height: 50px; } .pf-ai--2 .pf-bot :global(svg) { width: 29px; height: 29px; }
+  .pf-ai--3 { width: 56px; height: 56px; box-shadow: 0 0 0 5px theme('colors.accent.DEFAULT' / 14%); } .pf-ai--3 .pf-bot :global(svg) { width: 32px; height: 32px; }
+  .pf-ai--4 { width: 60px; height: 60px; box-shadow: 0 0 0 6px theme('colors.accent.DEFAULT' / 16%); } .pf-ai--4 .pf-bot :global(svg) { width: 34px; height: 34px; }
+  .pf-ai--w { width: 32px; height: 32px; } .pf-ai--w .pf-bot :global(svg) { width: 19px; height: 19px; }
+  :global(html.dark) .pf-ai--3 { box-shadow: 0 0 0 4px theme('colors.accent.dark' / 18%); }
+  :global(html.dark) .pf-ai--4 { box-shadow: 0 0 0 5px theme('colors.accent.dark' / 20%); }
+
+  /* per-phase AI role badge (corner) */
+  .pf-badge {
+    position: absolute; right: -4px; bottom: -4px;
+    width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center;
+    background: theme('colors.paper.50'); border: 1.6px solid theme('colors.accent.DEFAULT');
+  }
+  .pf-badge :global(svg) { width: 17px; height: 17px; fill: none; stroke: theme('colors.accent.DEFAULT'); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+  :global(html.dark) .pf-badge { background: theme('colors.nightbg.DEFAULT'); border-color: theme('colors.accent.dark'); }
+  :global(html.dark) .pf-badge :global(svg) { stroke: theme('colors.accent.dark'); }
+
+  /* bubbles */
+  .pf-bub { position: relative; border-radius: 16px; padding: 13px 18px; max-width: 78%; }
+  .pf-bub--h { display: inline-flex; flex-direction: column; gap: 2px; background: theme('colors.paper.50'); border: 1.4px solid theme('colors.ink.300'); }
+  :global(html.dark) .pf-bub--h { background: theme('colors.nightbg.DEFAULT'); border-color: theme('colors.ink.500'); }
+  .pf-bub--h::before { content: ''; position: absolute; left: -7px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 10px; height: 10px; background: inherit; border-left: 1.4px solid theme('colors.ink.300'); border-bottom: 1.4px solid theme('colors.ink.300'); border-bottom-left-radius: 3px; }
+  :global(html.dark) .pf-bub--h::before { border-color: theme('colors.ink.500'); }
+  .pf-bub--gov { border-style: dashed; }
+  .pf-bub--a { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; background: color-mix(in srgb, theme('colors.accent.DEFAULT') 9%, theme('colors.paper.50')); border: 1.4px solid color-mix(in srgb, theme('colors.accent.DEFAULT') 35%, transparent); }
+  :global(html.dark) .pf-bub--a { background: color-mix(in srgb, theme('colors.accent.dark') 16%, theme('colors.nightbg.DEFAULT')); border-color: color-mix(in srgb, theme('colors.accent.dark') 40%, transparent); }
+  .pf-bub--a::after { content: ''; position: absolute; right: -7px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 10px; height: 10px; background: inherit; border-right: 1.4px solid color-mix(in srgb, theme('colors.accent.DEFAULT') 35%, transparent); border-top: 1.4px solid color-mix(in srgb, theme('colors.accent.DEFAULT') 35%, transparent); border-top-right-radius: 3px; }
+  :global(html.dark) .pf-bub--a::after { border-color: color-mix(in srgb, theme('colors.accent.dark') 40%, transparent); }
+
+  .pf-tag { font-family: theme('fontFamily.mono'); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: theme('colors.ink.400'); }
+  :global(html.dark) .pf-tag { color: theme('colors.ink.300'); }
+  .pf-tag--a { color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-tag--a { color: theme('colors.accent.dark'); }
+  .pf-content { font-size: 16.5px; color: theme('colors.ink.700'); line-height: 1.4; }
+  :global(html.dark) .pf-content { color: theme('colors.ink.50'); }
+  .pf-content :global(code) { font-family: theme('fontFamily.mono'); font-size: 15px; }
+  .pf-to { color: theme('colors.ink.400'); font-size: 20px; }
+  :global(html.dark) .pf-to { color: theme('colors.ink.300'); }
+
+  /* AI bubble contents */
+  .pf-ans { display: inline-flex; flex-direction: column; gap: 4px; }
+  .pf-ln { display: block; height: 2.5px; border-radius: 2px; background: theme('colors.accent.DEFAULT'); opacity: 0.7; }
+  :global(html.dark) .pf-ln { background: theme('colors.accent.dark'); }
+  .pf-ln { height: 3px; }
+  .pf-ln:nth-of-type(1) { width: 150px; } .pf-ln:nth-of-type(2) { width: 188px; } .pf-ln--short { width: 100px; }
+  .pf-draft { display: inline-flex; align-items: center; gap: 8px; }
+  .pf-draft-ic :global(svg) { width: 24px; height: 24px; fill: none; stroke: theme('colors.ink.500'); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  :global(html.dark) .pf-draft-ic :global(svg) { stroke: theme('colors.ink.200'); }
+  .pf-draft-tx { font-family: theme('fontFamily.mono'); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: theme('colors.ink.500'); }
+  :global(html.dark) .pf-draft-tx { color: theme('colors.ink.300'); }
+  .pf-verify { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 999px; background: theme('colors.accent.DEFAULT'); color: theme('colors.paper.50'); font-size: 12px; }
+  :global(html.dark) .pf-verify { background: theme('colors.accent.dark'); color: theme('colors.nightbg.DEFAULT'); }
+  .pf-flow { display: inline-flex; align-items: center; gap: 5px; }
+  .pf-fstep { width: 16px; height: 16px; border-radius: 5px; border: 1.6px solid theme('colors.ink.400'); display: grid; place-items: center; font-size: 11px; color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-fstep { border-color: theme('colors.ink.300'); color: theme('colors.accent.dark'); }
+  .pf-fstep--done { border-color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-fstep--done { border-color: theme('colors.accent.dark'); }
+  .pf-fdash { width: 11px; height: 1.8px; background: repeating-linear-gradient(90deg, theme('colors.ink.400') 0 2px, transparent 2px 4px); }
+  .pf-flow-tx { font-family: theme('fontFamily.mono'); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: theme('colors.ink.400'); margin-left: 4px; }
+  :global(html.dark) .pf-flow-tx { color: theme('colors.ink.300'); }
+  .pf-system { display: inline-flex; flex-direction: column; gap: 7px; }
+  .pf-system-tag { font-family: theme('fontFamily.mono'); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: theme('colors.ink.400'); }
+  :global(html.dark) .pf-system-tag { color: theme('colors.ink.300'); }
+  .pf-sysrow { display: inline-flex; gap: 8px; }
+
+  /* right-hand copy card (description + browse link) */
+  .pf-card { align-self: center; display: block; text-decoration: none; border-radius: 14px; padding: 16px 18px; border: 1px solid transparent; transition: background 200ms ease, border-color 200ms ease; }
+  .pf-card:hover { background: theme('colors.paper.200'); border-color: theme('colors.paper.300'); }
+  :global(html.dark) .pf-card:hover { background: theme('colors.ink.700' / 40%); border-color: theme('colors.ink.600'); }
+  .pf-code { font-family: theme('fontFamily.mono'); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-code { color: theme('colors.accent.dark'); }
+  .pf-role { color: theme('colors.ink.400'); }
+  :global(html.dark) .pf-role { color: theme('colors.ink.300'); }
+  .pf-fwd { color: theme('colors.ink.400'); text-transform: none; letter-spacing: 0; }
+  :global(html.dark) .pf-fwd { color: theme('colors.ink.300'); }
+  .pf-name { font-family: theme('fontFamily.display', theme('fontFamily.serif')); font-size: 1.85rem; line-height: 1.08; letter-spacing: -0.01em; color: theme('colors.ink.700'); margin: 0.4rem 0 0.6rem; }
+  :global(html.dark) .pf-name { color: theme('colors.ink.50'); }
+  .pf-card:hover .pf-name { color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-card:hover .pf-name { color: theme('colors.accent.dark'); }
+  .pf-cap { display: inline-block; font-family: theme('fontFamily.mono'); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; color: theme('colors.accent.DEFAULT'); border: 1px solid theme('colors.accent.DEFAULT'); border-radius: 999px; padding: 3px 10px; }
+  :global(html.dark) .pf-cap { color: theme('colors.accent.dark'); border-color: theme('colors.accent.dark'); }
+  .pf-body { margin: 0.6rem 0 0.95rem; font-size: 15px; line-height: 1.6; color: theme('colors.ink.600'); }
+  :global(html.dark) .pf-body { color: theme('colors.ink.200'); }
+  .pf-body :global(strong) { font-weight: 600; color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-body :global(strong) { color: theme('colors.accent.dark'); }
+  .pf-browse { display: inline-flex; align-items: baseline; gap: 6px; font-family: theme('fontFamily.mono'); font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; color: theme('colors.ink.400'); }
+  :global(html.dark) .pf-browse { color: theme('colors.ink.300'); }
+  .pf-count { font-size: 16px; color: theme('colors.accent.DEFAULT'); }
+  :global(html.dark) .pf-count { color: theme('colors.accent.dark'); }
+  .pf-arr { color: theme('colors.accent.DEFAULT'); transition: transform 200ms ease; display: inline-block; }
+  :global(html.dark) .pf-arr { color: theme('colors.accent.dark'); }
+  .pf-card:hover .pf-arr { transform: translateX(3px); }
+
+  /* cumulative reveal */
+  .pf-rev { opacity: 0; transform: translateY(12px); transition: opacity 480ms ease, transform 480ms ease; }
+  .pf-rev.shown { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) { .pf-rev { opacity: 1; transform: none; transition: none; } }
+</style>
+
+<script>
+  function initPhaseFlow() {
+    const root = document.getElementById('phaseflow');
+    if (!root) return;
+    const els = [...root.querySelectorAll<HTMLElement>('.pf-rev')];
+    if (!els.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach((el) => el.classList.add('shown'));
+      return;
+    }
+
+    // Single threshold line: everything scrolled above it is revealed and
+    // stays revealed; scrolling up drops items back below the line, hiding
+    // them in reverse. Clean one-directional cumulative reveal.
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const line = window.innerHeight * 0.82;
+      for (const el of els) {
+        el.classList.toggle('shown', el.getBoundingClientRect().top < line);
+      }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    }, { once: true });
+  }
+  document.addEventListener('astro:page-load', initPhaseFlow);
+</script>

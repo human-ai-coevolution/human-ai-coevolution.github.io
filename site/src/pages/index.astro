@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PhaseFlow from '../components/PhaseFlow.astro';
 import { loadAllPapers } from '../lib/parsePapers';
 import {
   SITE_TITLE,
@@ -14,6 +15,18 @@ const paperCount = canonical.length;
 const lastYear = new Date().getFullYear();
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Four-phase filter cards under the §02 diagram. Each links into the
+// paper index filtered by phase. Phase 4 (Organization) is intentionally
+// empty in the data — no domain has officially entered it — so its card
+// points at emerging-phase-4, the closest existing literature.
+const phaseCount = (tag: string) => canonical.filter((p) => p.phase === tag).length;
+const phaseCards = [
+  { code: 'P1', name: 'Tool',         tag: 'phase-1' },
+  { code: 'P2', name: 'Assistant',    tag: 'phase-2' },
+  { code: 'P3', name: 'Executor',     tag: 'phase-3' },
+  { code: 'P4', name: 'Organization', tag: 'emerging-phase-4' },
+].map((c) => ({ ...c, count: phaseCount(c.tag) }));
 const siteOrigin = (Astro.site ?? new URL('https://human-ai-coevolution.github.io'))
   .toString()
   .replace(/\/$/, '');
@@ -152,63 +165,19 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
     </div>
   </section>
 
-  {/* ─── §02 Framework visual block ────────────────────────────── */}
+  {/* ─── §02 Framework — two-sided conversation ────────────────── */}
   <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
     <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
       <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
         <p class="meta-label">§02</p>
         <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Framework</p>
         <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
-          Four phases of how humans use AI, by how much they delegate. Select a phase to see what it asks of you.
+          Four phases of how humans use AI, by how much they delegate. Scroll to watch the human role recede as AI takes on more.
         </p>
       </div>
 
-      <div class="max-w-[64ch]" id="phase-framework">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="tablist" aria-label="Four-phase framework">
-          <button type="button" role="tab" data-phase="1" id="phase-tab-1" aria-controls="phase-panel-1" aria-selected="true" class="phase-card rounded-md bg-paper-200 dark:bg-ink-700/40 hover:bg-paper-300 dark:hover:bg-ink-700/70 px-4 py-3.5 text-left w-full h-full transition-colors">
-            <span class="meta-label block text-accent dark:text-accent-dark">Phase 1</span>
-            <span class="phase-name mt-1 block text-[16px] font-medium tracking-tight text-ink-700 dark:text-ink-50">Tool</span>
-          </button>
-          <button type="button" role="tab" data-phase="2" id="phase-tab-2" aria-controls="phase-panel-2" aria-selected="false" class="phase-card rounded-md bg-paper-200 dark:bg-ink-700/40 hover:bg-paper-300 dark:hover:bg-ink-700/70 px-4 py-3.5 text-left w-full h-full transition-colors">
-            <span class="meta-label block text-accent dark:text-accent-dark">Phase 2</span>
-            <span class="phase-name mt-1 block text-[16px] font-medium tracking-tight text-ink-700 dark:text-ink-50">Assistant</span>
-          </button>
-          <button type="button" role="tab" data-phase="3" id="phase-tab-3" aria-controls="phase-panel-3" aria-selected="false" class="phase-card rounded-md bg-paper-200 dark:bg-ink-700/40 hover:bg-paper-300 dark:hover:bg-ink-700/70 px-4 py-3.5 text-left w-full h-full transition-colors">
-            <span class="meta-label block text-accent dark:text-accent-dark">Phase 3</span>
-            <span class="phase-name mt-1 block text-[16px] font-medium tracking-tight text-ink-700 dark:text-ink-50">Executor</span>
-          </button>
-          <button type="button" role="tab" data-phase="4" id="phase-tab-4" aria-controls="phase-panel-4" aria-selected="false" class="phase-card rounded-md bg-paper-200 dark:bg-ink-700/40 hover:bg-paper-300 dark:hover:bg-ink-700/70 px-4 py-3.5 text-left w-full h-full transition-colors">
-            <span class="meta-label block text-accent dark:text-accent-dark">Phase 4</span>
-            <span class="phase-name mt-1 block text-[16px] font-medium tracking-tight text-ink-700 dark:text-ink-50">Organization</span>
-          </button>
-        </div>
-
-        <div class="mt-3 min-h-[104px] sm:min-h-[80px]">
-          <div class="phase-panel" id="phase-panel-1" data-panel="1" role="tabpanel" aria-labelledby="phase-tab-1">
-            <p class="text-[13.5px] text-ink-600 dark:text-ink-200 leading-relaxed">
-              <strong class="font-medium text-ink-700 dark:text-ink-50">Knowledge queries.</strong> AI answers; the human still does the work. Demands <strong class="font-medium text-ink-700 dark:text-ink-50">critical thinking</strong>: predict the answer before you ask, so AI sharpens your reasoning instead of replacing it.
-            </p>
-          </div>
-          <div class="phase-panel" id="phase-panel-2" data-panel="2" role="tabpanel" aria-labelledby="phase-tab-2" hidden>
-            <p class="text-[13.5px] text-ink-600 dark:text-ink-200 leading-relaxed">
-              <strong class="font-medium text-ink-700 dark:text-ink-50">Produced artifacts.</strong> AI drafts; the human verifies and ships. Demands <strong class="font-medium text-ink-700 dark:text-ink-50">evaluative expertise</strong>: decide what an output must pass before you rely on it.
-            </p>
-          </div>
-          <div class="phase-panel" id="phase-panel-3" data-panel="3" role="tabpanel" aria-labelledby="phase-tab-3" hidden>
-            <p class="text-[13.5px] text-ink-600 dark:text-ink-200 leading-relaxed">
-              <strong class="font-medium text-ink-700 dark:text-ink-50">Autonomous workflows.</strong> AI runs whole tasks end to end; the human sets goals and supervises. Demands <strong class="font-medium text-ink-700 dark:text-ink-50">metacognitive monitoring</strong>: choose where to check in before the work runs.
-            </p>
-          </div>
-          <div class="phase-panel" id="phase-panel-4" data-panel="4" role="tabpanel" aria-labelledby="phase-tab-4" hidden>
-            <p class="text-[13.5px] text-ink-600 dark:text-ink-200 leading-relaxed">
-              <strong class="font-medium text-ink-700 dark:text-ink-50">Governed systems.</strong> AI coordinates whole systems of agents; the human governs. Demands <strong class="font-medium text-ink-700 dark:text-ink-50">systems thinking</strong>: set the rules up front, then audit samples of what the system does.
-            </p>
-          </div>
-        </div>
-
-        <p class="mt-3 text-[12.5px] text-ink-400 dark:text-ink-300">
-          Each phase demands a different human capability. <a class="a-text" href={`${base}/blog/#sec-phases`}>See the full breakdown →</a>
-        </p>
+      <div>
+        <PhaseFlow phaseCards={phaseCards} />
       </div>
     </div>
   </section>
@@ -295,47 +264,6 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
 
 </Base>
 
-<script>
-  // §02 — clickable four-phase selector. Each tab reveals its panel
-  // with a short fade. Re-initialised on view-transition navigation.
-  function initPhaseFramework() {
-    const root = document.getElementById('phase-framework');
-    if (!root) return;
-    const tabs = [...root.querySelectorAll<HTMLElement>('[data-phase]')];
-    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
-
-    function select(n: string, focus = false) {
-      for (const t of tabs) t.setAttribute('aria-selected', String(t.dataset.phase === n));
-      for (const p of panels) {
-        const on = p.dataset.panel === n;
-        p.hidden = !on;
-        if (on) {
-          p.classList.remove('phase-panel--in');
-          void p.offsetWidth; // restart the animation
-          p.classList.add('phase-panel--in');
-        }
-      }
-      if (focus) tabs.find((t) => t.dataset.phase === n)?.focus();
-    }
-
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => select(tab.dataset.phase!));
-      tab.addEventListener('keydown', (e) => {
-        let j: number | null = null;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % tabs.length;
-        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + tabs.length) % tabs.length;
-        else if (e.key === 'Home') j = 0;
-        else if (e.key === 'End') j = tabs.length - 1;
-        if (j !== null) {
-          e.preventDefault();
-          select(tabs[j].dataset.phase!, true);
-        }
-      });
-    });
-  }
-  document.addEventListener('astro:page-load', initPhaseFramework);
-</script>
-
 <style>
   .link-row {
     display: inline-flex;
@@ -375,37 +303,6 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
     background: theme('colors.ink.800');
     border-color: theme('colors.ink.600');
     color: theme('colors.ink.100');
-  }
-
-  /* §02 — interactive four-phase selector */
-  .phase-card {
-    border: 1px solid transparent;
-    cursor: pointer;
-  }
-  .phase-card[aria-selected='true'] {
-    border-color: theme('colors.accent.DEFAULT');
-  }
-  :global(html.dark) .phase-card[aria-selected='true'] {
-    border-color: theme('colors.accent.dark');
-  }
-  .phase-card[aria-selected='true'] .phase-name {
-    color: theme('colors.accent.DEFAULT');
-  }
-  :global(html.dark) .phase-card[aria-selected='true'] .phase-name {
-    color: theme('colors.accent.dark');
-  }
-  .phase-card:focus-visible {
-    outline: 2px solid theme('colors.accent.DEFAULT');
-    outline-offset: 2px;
-  }
-
-  @keyframes phase-fade {
-    from { opacity: 0; transform: translateY(3px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .phase-panel--in { animation: phase-fade 0.28s ease both; }
-  @media (prefers-reduced-motion: reduce) {
-    .phase-panel--in { animation: none; }
   }
 
   /* Byline author links — read as plain bold names, reveal on hover */
