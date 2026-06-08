@@ -51,7 +51,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
 <style>
   :root {
@@ -75,7 +75,7 @@
     --brass:#a0826d;
     --brass-l:#cdb89f;
     --brass-ll:#ece3d8;
-    --serif: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", Times, serif;
+    --serif: "Fraunces", ui-serif, Georgia, "Times New Roman", Times, serif;
     --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
   }
@@ -110,7 +110,7 @@
   }
   @media (min-width: 1180px) {
     .wrap {
-      max-width: 1400px;
+      max-width: 1180px;
       display: grid;
       grid-template-columns: 196px minmax(0, 1fr);
       column-gap: 56px;
@@ -366,16 +366,20 @@
     gap: 22px;
   }
   @media (min-width: 880px) {
-    .phases { grid-template-columns: 1fr 1fr; gap: 22px; }
+    .phases { gap: 26px; }
   }
   .phase {
     background: var(--paper);
     border: 1px solid var(--g200);
     border-radius: 14px;
-    padding: 24px 26px 22px;
+    padding: 30px 32px 28px;
     position: relative;
-    transition: transform .18s ease, box-shadow .18s ease;
+    transition: transform .18s ease, box-shadow .18s ease, opacity .6s ease;
   }
+  /* reveal one phase at a time on scroll (gated by JS to avoid hiding without it) */
+  .phases.reveal-on .phase { opacity: 0; }
+  .phases.reveal-on .phase.in { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .phases.reveal-on .phase { opacity: 1 !important; transition: none; } }
   .phase:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 22px rgba(20,20,19,0.06);
@@ -410,19 +414,19 @@
   .phase dl {
     margin: 0;
     display: grid;
-    grid-template-columns: 100px 1fr;
-    row-gap: 12px;
-    column-gap: 14px;
-    font-size: 14.5px;
-    line-height: 1.55;
+    grid-template-columns: 132px 1fr;
+    row-gap: 15px;
+    column-gap: 18px;
+    font-size: 15.5px;
+    line-height: 1.6;
   }
   .phase dt {
     font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .1em;
+    font-size: 12.5px;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    color: var(--g500);
-    padding-top: 4px;
+    color: var(--accent);
+    padding-top: 3px;
   }
   .phase dd { margin: 0; color: var(--g700); }
   .phase dd strong { color: var(--slate); }
@@ -487,10 +491,11 @@
     padding: 28px 28px 24px;
   }
   .heatmap-caption {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--g500);
     margin-bottom: 18px;
   }
@@ -1021,12 +1026,12 @@
         <h2>The conversation we're not having</h2>
       </div>
       <div class="sec-intro">
-        <p>Most of what you hear about AI focuses on one side of the equation: making the AI smarter. <strong>We think this is the wrong place to put all the attention.</strong> Our position paper argues that <em>human evolution should be treated as a goal within human-AI co-evolution, not just a means to better AI</em>. As we delegate more work to AI, the skills we need to use increasingly capable AI well don't appear automatically. The same automation that makes us productive often removes our chances to practice them.</p>
+        <p>Most of the AI conversation is about one thing: making the model smarter. <strong>We think that's the wrong place to put all the attention.</strong> Our position paper argues that <em>human evolution should be a goal of human-AI co-evolution, not just a means to better AI</em>. As we delegate more, the skills to use capable AI well don't appear on their own; the same automation that makes us productive removes our chances to practice them.</p>
       </div>
 
       <div class="body-text">
-        <p>When you silently accept a polished-but-wrong AI answer, that's not just a personal cost. The signal, <em>"human approved"</em>, flows into how the next generation of AI is trained. Models learn that confident, agreeable answers get rewarded. The result is sycophantic AI taught by humans who stopped checking.</p>
-        <p>The uncomfortable question: as AI gets dramatically more capable, can <em>we</em> use it well naturally? Or do we need something else?</p>
+        <p>It compounds. When you accept a polished-but-wrong answer, the <em>"human approved"</em> signal feeds the next round of training. Models learn that confident, agreeable answers win: sycophantic AI, taught by humans who stopped checking.</p>
+        <p>The uncomfortable question: as AI gets dramatically more capable, can <em>we</em> use it well on our own? Or do we need something else?</p>
       </div>
     </section>
 
@@ -1406,6 +1411,24 @@ function onCellClick(ev){
     });
   }, { rootMargin: "-30% 0px -60% 0px", threshold: 0 });
   map.forEach((_, el) => io.observe(el));
+})();
+
+// Reveal the four phase cards one at a time as they scroll into view.
+(function () {
+  var wrap = document.querySelector('.phases');
+  if (!wrap) return;
+  var cards = [].slice.call(wrap.querySelectorAll('.phase'));
+  if (!cards.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  wrap.classList.add('reveal-on');
+  if (reduce || !('IntersectionObserver' in window)) {
+    cards.forEach(function (c) { c.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -22% 0px', threshold: 0.18 });
+  cards.forEach(function (c) { io.observe(c); });
 })();
 </script>
 </body>

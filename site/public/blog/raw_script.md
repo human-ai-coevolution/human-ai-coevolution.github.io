@@ -22,15 +22,17 @@ AI Is Evolving. *Are You?*
 [[subtitle]]
 The more capable AI gets, the more skill it takes to use it well. That skill is yours to keep evolving.
 
+The two intro paragraphs below now sit inside an "Overview" callout box
+(tinted, with the label shown above them).
+
+[[overview-label]]
+Overview
+
 [[intro-1]]
-A friend uses ChatGPT to draft an email to her boss. She skims it, hits send, feels efficient. However, the reply comes back confused. She reads her own email, really reads it for the first time, and realizes she doesn't quite agree with what she sent under her own name.
+Over the past two years, we've been able to hand AI steadily more complex work — and as it gains more execution authority, our own role in the collaboration shifts with it. To use AI well, and to grow into each new role, we have to evolve our own skills to match.
 
 [[intro-2]]
-This is the quiet pattern of modern AI use. We ask. We accept. We ship. Each moment feels like a small win. Stack them together, and the muscles we need to use well (judging, verifying, paying attention) get a little weaker each time we skip them.
-
-[[byline]]
-A plain-language companion to *our position paper*
-"Human Evolution Should Be Treated as a Goal in Human-AI Co-Evolution"
+This piece walks through [four phases](../) of that shift, and for each one: why human evolution is needed, how to evolve, and how AI can redesign its interaction patterns to support it.
 
 ---
 
@@ -72,13 +74,13 @@ Human evolution makes us use AI more effectively. Better usage feeds back into b
 The conversation we're not having
 
 [[s01-intro]]
-Most of what you hear about AI focuses on one side of the equation: making the AI smarter. **We think this is the wrong place to put all the attention.** Our position paper argues that *human evolution should be treated as a goal within human-AI co-evolution, not just a means to better AI*. As we delegate more work to AI, the skills we need to use increasingly capable AI well don't appear automatically. The same automation that makes us productive often removes our chances to practice them.
+Most of the AI conversation is about one thing: making the model smarter. **We think that's the wrong place to put all the attention.** Our position paper argues that *human evolution should be a goal of human-AI co-evolution, not just a means to better AI*. As we delegate more, the skills to use capable AI well don't appear on their own; the same automation that makes us productive removes our chances to practice them.
 
 [[s01-body-1]]
-When you silently accept a polished-but-wrong AI answer, that's not just a personal cost. The signal, *"human approved"*, flows into how the next generation of AI is trained. Models learn that confident, agreeable answers get rewarded. The result is sycophantic AI taught by humans who stopped checking.
+It compounds. When you accept a polished-but-wrong answer, the *"human approved"* signal feeds the next round of training. Models learn that confident, agreeable answers win: sycophantic AI, taught by humans who stopped checking.
 
 [[s01-body-2]]
-The uncomfortable question: as AI gets dramatically more capable, can *we* use it well naturally? Or do we need something else?
+The uncomfortable question: as AI gets dramatically more capable, can *we* use it well on our own? Or do we need something else?
 
 ---
 
@@ -126,8 +128,8 @@ We mapped four phases of how people actually use AI, based on how much work you 
 [[p4-name]] Organization
 [[p4-scenario]] You: "Build this database system from scratch." → Meta-agent: "Agent 1: infra. Agent 2: interfaces. ..."
 [[p4-whyevolution]] **Governance becomes opaque.** You see the final output, not how the work was divided or rerouted. When something's off, you can't tell whether the result still aligns with your original intent.
-[[p4-practice]] **Systems thinking.** Define rubrics before you deploy: what's forbidden, where the risk thresholds are, what gets escalated. Then audit *samples* of trajectories.
-[[p4-aiadapation]] Actively summarize coordination decisions in plain language. Preserve audit trails linking actions to the original goal. Flag high-risk branches.
+[[p4-practice]] **Systems thinking.** Define rules before you deploy: what's forbidden, where the risk thresholds are, what gets escalated. Then audit *samples* of trajectories.
+[[p4-aiadapation]] Summarize coordination decisions in plain language. Preserve audit trails linking actions to the original goal. Flag high-risk branches.
 [[p4-stat]] Phase 4 is forward-looking. The risk is structural: *outcome-only feedback* can't tell whether a failure came from one weak agent or from bad orchestration, so the coordination layer stays under-improved.
 
 <!-- [[s02-takeaway]]
