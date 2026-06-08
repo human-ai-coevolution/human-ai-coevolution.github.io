@@ -195,6 +195,28 @@
   }
   .byline a { color: var(--g500); text-decoration-color: var(--g300); }
 
+  /* overview callout — sets the piece up in one block */
+  .overview {
+    margin: 4px 0 30px;
+    max-width: 68ch;
+    padding: 18px 22px 20px;
+    background: var(--accent-l);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+  }
+  .overview .ov-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent-d);
+    margin-bottom: 12px;
+  }
+  .overview .intro { margin: 0 0 12px; max-width: none; }
+  .overview .intro:last-of-type { margin-bottom: 0; }
+  .overview .intro a { color: var(--accent-d); text-decoration-color: var(--accent); }
+
   /* big hero figure (right column) */
   .hero-figure {
     background: var(--paper);
@@ -755,9 +777,11 @@
         <h1 class="title">AI Is Evolving. <em>Are You?</em></h1>
         <p class="subtitle">The more capable AI gets, the more skill it takes to use it well. That skill is yours to keep evolving.</p>
 
-        <p class="intro">Over the past two years, we've been able to hand AI steadily more complex work — and as it gains more execution authority, our own role in the collaboration shifts with it. To use AI well, and to grow into each new role, we have to evolve our own skills to match.</p>
-
-        <p class="intro">This piece walks through <a href="../">four phases</a> of that shift, and for each one: why human evolution is needed, how to evolve, and how AI can redesign its interaction patterns to support it.</p>
+        <div class="overview">
+          <span class="ov-label">Overview</span>
+          <p class="intro">Over the past two years, we've been able to hand AI steadily more complex work — and as it gains more execution authority, our own role in the collaboration shifts with it. To use AI well, and to grow into each new role, we have to evolve our own skills to match.</p>
+          <p class="intro">This piece walks through <a href="../">four phases</a> of that shift, and for each one: why human evolution is needed, how to evolve, and how AI can redesign its interaction patterns to support it.</p>
+        </div>
       </div>
 
       <!-- RIGHT: big Fig-3-style diagram -->
