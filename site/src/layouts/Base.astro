@@ -20,6 +20,8 @@ interface Props {
   jsonLd?: unknown | unknown[];
   /** Extra <meta>/<link> elements rendered into <head>. */
   extraHead?: string;
+  /** Hide the top navigation bar (used on the bare landing page). */
+  hideTopBar?: boolean;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   ogType = 'website',
   jsonLd,
   extraHead,
+  hideTopBar = false,
 } = Astro.props as Props;
 
 // Title resolution: titleOverride (verbatim) > "Page · Brand" > bare
@@ -103,7 +106,7 @@ const jsonLdArr: unknown[] = jsonLd
     </script>
   </head>
   <body class="min-h-screen flex flex-col">
-    <TopBar starCount={starCount} transition:name="topbar" transition:persist />
+    {!hideTopBar && <TopBar starCount={starCount} transition:name="topbar" transition:persist />}
     <main class="flex-1 relative z-10" transition:animate="fade">
       <slot />
     </main>

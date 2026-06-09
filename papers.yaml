@@ -52,7 +52,7 @@
   envs:
   - Collaboration & Co-Creation
   - Longitudinal HCI Studies
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - self-regulated learning
   - RCT
@@ -83,7 +83,7 @@
   envs:
   - Longitudinal HCI Studies
   - Collaboration & Co-Creation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - ChatGPT
   - essay writing
@@ -184,7 +184,7 @@
   envs:
   - Position & Survey
   - Mutual Adaptation
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - trust
   - finance
@@ -242,7 +242,7 @@
   envs:
   - Position & Survey
   - Mutual Adaptation
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - mutualism
   - governance
@@ -280,7 +280,7 @@
   envs:
   - Longitudinal HCI Studies
   - Collaboration & Co-Creation
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - SWE-chat
   - coding agents
@@ -314,7 +314,7 @@
   envs:
   - Collaboration & Co-Creation
   - Mutual Adaptation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - triadic loop
   - livestreaming
@@ -345,7 +345,7 @@
   publisher: arXiv
   envs:
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - sycophancy
   - intersectionality
@@ -385,7 +385,7 @@
   envs:
   - Position & Survey
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - multi-agent
   - AI organizations
@@ -493,7 +493,7 @@
   envs:
   - Longitudinal HCI Studies
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - augmentation trap
   - cognitive offloading
@@ -529,7 +529,7 @@
   envs:
   - Collaboration & Co-Creation
   - Mutual Adaptation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - AI-mediated negotiation
   - personality
@@ -622,7 +622,7 @@
   publisher: arXiv
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - critical thinking
   - LLM access timing
@@ -795,7 +795,7 @@
   envs:
   - Collaboration & Co-Creation
   - Human Feedback Loops
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - web agents
   - intervention modeling
@@ -834,7 +834,7 @@
   publisher: FAccT 2026
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - agent index
   - deployed agents
@@ -970,7 +970,7 @@
   publisher: arXiv
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - AlphaEvolve
   - strategic behavior
@@ -1172,7 +1172,7 @@
   publisher: arXiv
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - Writor
   - writing center pedagogy
@@ -1208,7 +1208,7 @@
   envs:
   - Position & Survey
   - Mutual Adaptation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - entanglement
   - cognitive-behavioral drift
@@ -1525,7 +1525,7 @@
   publisher: arXiv
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - coding agents
   - cooperation
@@ -1639,7 +1639,7 @@
   envs:
   - Position & Survey
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - institutional AI
   - governance graph
@@ -2033,7 +2033,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - benchmark
   - agentic misalignment
@@ -2064,7 +2064,7 @@
   envs:
   - Longitudinal HCI Studies
   - Collaboration & Co-Creation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - LLM dependence
   - computer engineering education
@@ -2232,7 +2232,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - governance
   - ethical assurance
@@ -2292,7 +2292,7 @@
   envs:
   - Longitudinal HCI Studies
   - Mutual Adaptation
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - AI adoption
   - image concerns
@@ -2692,7 +2692,7 @@
   envs:
   - Position & Survey
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - monoculture
   - model similarity
@@ -2824,7 +2824,7 @@
   publisher: Brookings working paper 2025
   envs:
   - Position & Survey
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - GPT
   - general-purpose technology
@@ -2898,7 +2898,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - governance-as-a-service
   - multi-agent
@@ -3050,7 +3050,7 @@
   - Collaboration & Co-Creation
   - Mutual Adaptation
   - Longitudinal HCI Studies
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - METR
   - developer productivity
@@ -3185,7 +3185,7 @@
   envs:
   - Collaboration & Co-Creation
   - Longitudinal HCI Studies
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - ChatTutor
   - generative learning
@@ -3363,7 +3363,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - TRiSM
   - multi-agent systems
@@ -3578,7 +3578,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - AI Scientist v2
   - agentic tree search
@@ -3640,7 +3640,7 @@
   publisher: arXiv
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-3
+  phase: phase-3
   keywords:
   - human-AI teams
   - delegation
@@ -3940,7 +3940,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - agentic AI
   - transparency
@@ -4381,7 +4381,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - generative agents
   - simulation
@@ -4417,7 +4417,7 @@
   envs:
   - Collaboration & Co-Creation
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - Virtual Lab
   - multi-agent science
@@ -4544,7 +4544,7 @@
   envs:
   - Human Feedback Loops
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - alignment
   - public will
@@ -4794,7 +4794,7 @@
   envs:
   - Collaboration & Co-Creation
   - Longitudinal HCI Studies
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - debugging
   - help-seeking
@@ -4829,7 +4829,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - AI Scientist
   - Sakana
@@ -5032,7 +5032,7 @@
   envs:
   - Human Feedback Loops
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - Constitutional AI
   - public input
@@ -5149,7 +5149,7 @@
   publisher: NeurIPS 2024
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - GovSim
   - multi-agent cooperation
@@ -5188,7 +5188,7 @@
   publisher: FAccT 2024
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - human oversight
   - EU AI Act
@@ -5224,7 +5224,7 @@
   publisher: arXiv
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - algorithmic collusion
   - oligopoly
@@ -5397,7 +5397,7 @@
   publisher: arXiv
   envs:
   - Longitudinal HCI Studies
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - RECIPE4U
   - EFL
@@ -5528,7 +5528,7 @@
   envs:
   - Collaboration & Co-Creation
   - Mutual Adaptation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - ChatGPT
   - programming
@@ -5564,7 +5564,7 @@
   publisher: NeurIPS 2024
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - secret collusion
   - steganography
@@ -5609,7 +5609,7 @@
   publisher: FAccT 2024
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - AI agents
   - governance
@@ -5648,7 +5648,7 @@
   publisher: CHI 2024 (Best Paper Award)
   envs:
   - Position & Survey
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - metacognition
   - self-regulation
@@ -5697,7 +5697,7 @@
   publisher: OpenAI white paper 2023
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - agentic AI
   - governance
@@ -6020,7 +6020,7 @@
   publisher: Nature 2024
   envs:
   - Position & Survey
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - model collapse
   - recursive training
@@ -6423,7 +6423,7 @@
   publisher: arXiv
   envs:
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - constitutional AI
   - RLAIF
@@ -6594,7 +6594,7 @@
   publisher: ACM TORS 2025
   envs:
   - Human Feedback Loops
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - causal inference
   - CAFL
@@ -6845,7 +6845,7 @@
   publisher: CHI 2022
   envs:
   - Collaboration & Co-Creation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - CoAuthor
   - GPT-3
@@ -7014,7 +7014,7 @@
   envs:
   - Position & Survey
   - Longitudinal HCI Studies
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - street-level bureaucracy
   - caseworkers
@@ -7080,7 +7080,7 @@
   envs:
   - Collaboration & Co-Creation
   - Mutual Adaptation
-  phase: emerging-phase-2
+  phase: phase-2
   keywords:
   - phrase suggestions
   - email composition
@@ -7293,7 +7293,7 @@
   envs:
   - Position & Survey
   - Mutual Adaptation
-  phase: emerging-phase-4
+  phase: phase-4
   keywords:
   - algorithmic audit
   - Gender Shades

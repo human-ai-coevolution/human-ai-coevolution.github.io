@@ -8,6 +8,7 @@ import {
   MAINTAINER_AFFILIATION,
   MAINTAINER_URL,
   REPO_URL,
+  PAPERS_INDEX_URL,
 } from '../lib/site';
 
 const { canonical } = loadAllPapers();
@@ -17,15 +18,13 @@ const lastYear = new Date().getFullYear();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // Four-phase filter cards under the §02 diagram. Each links into the
-// paper index filtered by phase. Phase 4 (Organization) is intentionally
-// empty in the data — no domain has officially entered it — so its card
-// points at emerging-phase-4, the closest existing literature.
+// paper index filtered by phase.
 const phaseCount = (tag: string) => canonical.filter((p) => p.phase === tag).length;
 const phaseCards = [
   { code: 'P1', name: 'Tool',         tag: 'phase-1' },
   { code: 'P2', name: 'Assistant',    tag: 'phase-2' },
   { code: 'P3', name: 'Executor',     tag: 'phase-3' },
-  { code: 'P4', name: 'Organization', tag: 'emerging-phase-4' },
+  { code: 'P4', name: 'Organization', tag: 'phase-4' },
 ].map((c) => ({ ...c, count: phaseCount(c.tag) }));
 const siteOrigin = (Astro.site ?? new URL('https://human-ai-coevolution.github.io'))
   .toString()
@@ -87,6 +86,7 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
   titleOverride="Human–AI Coevolution"
   description={description}
   jsonLd={jsonLd}
+  hideTopBar
 >
 
   {/* ─── Hero / header ─────────────────────────────────────────── */}
@@ -104,7 +104,7 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
           </div>
           <div>
             <dt class="meta-label">Phases</dt>
-            <dd class="meta-value mt-0.5 tabular-nums">4 + 3 emerging</dd>
+            <dd class="meta-value mt-0.5 tabular-nums">4</dd>
           </div>
         </dl>
       </aside>
@@ -143,7 +143,7 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
         <span class="link-sep">·</span>
         <a href={`${base}/blog/`} class="link-row"><Fragment set:html={linkSvg(ICONS.blog)} /><span>Blog post</span></a>
         <span class="link-sep">·</span>
-        <a href={`${base}/papers/`} class="link-row"><Fragment set:html={linkSvg(ICONS.list)} /><span>Paper index</span></a>
+        <a href={`${PAPERS_INDEX_URL}/`} class="link-row"><Fragment set:html={linkSvg(ICONS.list)} /><span>Paper index</span></a>
         <span class="link-sep">·</span>
         <a href="#" class="link-row"><Fragment set:html={linkSvg(ICONS.x)} /><span>X thread</span></a>
         <span class="link-sep">·</span>
@@ -152,15 +152,15 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
     </div>
   </nav>
 
-  {/* ─── §01 Overview ──────────────────────────────────────────── */}
-  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
+  {/* ─── §01 Overview (brief) ──────────────────────────────────── */}
+  <section class="mx-auto max-w-[1180px] px-6 mt-10 reveal">
     <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
       <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
         <p class="meta-label section-no">§01</p>
         <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Overview</p>
       </div>
-      <div class="max-w-[64ch] text-[15.5px] text-ink-700 dark:text-ink-100 leading-[1.78]">
-        <p>Human-AI coevolution is the process by which humans and AI systems shape each other over time. However, most of the work overlooks the evolution of the human side, either treating it as a means to better AI or just ignoring it. We argue that "<a class="a-text" href={`${base}/blog/`}>Human Evolution Must Be Treated as a Goal in Human-AI Coevolution</a>" in order to better utilize AI as it advances, while the higher-quality feedback also drives better AI development. Building on what AI can do, we propose a four-phase framework defined by how much work humans delegate to AI. Based on this framework, we collect <a class="a-text" href={`${base}/papers/`}>{paperCount} awesome works</a>, categorized by the roles of AI and humans in the working system.</p>
+      <div class="max-w-[60ch] text-[16px] text-ink-700 dark:text-ink-100 leading-[1.78]">
+        <p>Most work on AI focuses on making the model smarter. We argue the human side must evolve too — and that <a class="a-text" href={`${base}/blog/`}>human evolution should be treated as a goal of human-AI coevolution</a>, not just a means to better AI. We map four phases of how we use AI and collect <a class="a-text" href={`${PAPERS_INDEX_URL}/`}>{paperCount} works</a> across them.</p>
       </div>
     </div>
   </section>
@@ -182,71 +182,11 @@ const linkSvg = (paths: string) => `<svg viewBox="0 0 24 24" width="14" height="
     </div>
   </section>
 
-  {/* ─── §03 Three-item teaser ─────────────────────────────────── */}
-  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
-    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
-      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
-        <p class="meta-label section-no">§03</p>
-        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Practice this week</p>
-        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
-          Three habits to keep your underlying skills alive even as you delegate more work to AI. <a href={`${base}/blog/#sec-habits`} class="a-text">Read the full guide →</a>
-        </p>
-      </div>
-
-      <div class="max-w-[64ch] grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="frame py-4 px-5">
-          <p class="meta-label">Habit 01</p>
-          <p class="kicker mt-1.5 text-[16px] text-ink-700 dark:text-ink-50">Pre-think</p>
-          <p class="mt-1.5 text-[13.5px] text-ink-500 dark:text-ink-300 leading-relaxed">
-            Before you ask, take ten seconds to note your initial guess at the answer. Then ask. Then compare.
-          </p>
-        </div>
-        <div class="frame py-4 px-5">
-          <p class="meta-label">Habit 02</p>
-          <p class="kicker mt-1.5 text-[16px] text-ink-700 dark:text-ink-50">Prepare</p>
-          <p class="mt-1.5 text-[13.5px] text-ink-500 dark:text-ink-300 leading-relaxed">
-            Write test cases or success rubrics before integrating AI-generated results into real work.
-          </p>
-        </div>
-        <div class="frame py-4 px-5">
-          <p class="meta-label">Habit 03</p>
-          <p class="kicker mt-1.5 text-[16px] text-ink-700 dark:text-ink-50">Disconnect</p>
-          <p class="mt-1.5 text-[13.5px] text-ink-500 dark:text-ink-300 leading-relaxed">
-            Once a week, do a task you usually delegate, entirely without AI.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* ─── §04 List section ──────────────────────────────────────── */}
-  <section class="mx-auto max-w-[1180px] px-6 mt-12 reveal">
-    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
-      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
-        <p class="meta-label section-no">§04</p>
-        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Recently added</p>
-        <p class="mt-3 text-[13px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
-          The newest entries across the four-phase index. <a href={`${base}/papers/`} class="a-text">View all {paperCount} →</a>
-        </p>
-      </div>
-
-      <ol class="list-none p-0 max-w-[64ch]">
-        {canonical.slice(0, 4).map((p) => (
-          <li class="border-t border-paper-300 dark:border-ink-600 py-3 text-[14px] leading-relaxed">
-            <a href={`${base}/papers/${p.slug}/`} class="a-text font-medium text-ink-700 dark:text-ink-50">{p.title}</a>
-            <span class="ml-1.5 text-ink-500 dark:text-ink-300">— {p.authors[0]}{p.authors.length > 1 ? ' et al.' : ''}, {p.year}</span>
-          </li>
-        ))}
-        <li><div class="border-t border-paper-300 dark:border-ink-600"></div></li>
-      </ol>
-    </div>
-  </section>
-
-  {/* ─── §05 Citation ──────────────────────────────────────────── */}
+  {/* ─── §03 Citation ──────────────────────────────────────────── */}
   <section class="mx-auto max-w-[1180px] px-6 mt-12 pb-16 reveal">
     <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-6">
       <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
-        <p class="meta-label section-no">§05</p>
+        <p class="meta-label section-no">§03</p>
         <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Citation</p>
       </div>
       <div class="max-w-[64ch]">

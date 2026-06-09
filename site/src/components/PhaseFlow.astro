@@ -11,6 +11,7 @@
  * (answering / drafting / executing / coordinating) so the four read apart.
  * Turns reveal cumulatively as you scroll (and play back out on scroll up).
  */
+import { PAPERS_INDEX_URL } from '../lib/site';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Card { code: string; name: string; tag: string; count: number; }
 const { phaseCards = [] } = Astro.props as { phaseCards?: Card[] };
@@ -46,7 +47,7 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
           <span class="pf-node pf-node--a pf-ai--1"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bAnswer} /></span>
         </div>
       </div>
-      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(0).tag}`}>
+      <a class="pf-card pf-rev" href={`${PAPERS_INDEX_URL}/?phase=${card(0).tag}`}>
         <p class="pf-code">Phase 1</p>
         <h3 class="pf-name">Tool</h3>
         <p class="pf-body">AI answers your questions; you still do the work. Demands <strong>critical thinking</strong> to judge what it gives you.</p>
@@ -67,7 +68,7 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
           <span class="pf-node pf-node--a pf-ai--2"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bDraft} /></span>
         </div>
       </div>
-      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(1).tag}`}>
+      <a class="pf-card pf-rev" href={`${PAPERS_INDEX_URL}/?phase=${card(1).tag}`}>
         <p class="pf-code">Phase 2</p>
         <h3 class="pf-name">Assistant</h3>
         <p class="pf-body">AI drafts the pieces; you verify and ship. Demands <strong>evaluative expertise</strong> to integrate the artifacts well.</p>
@@ -88,7 +89,7 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
           <span class="pf-node pf-node--a pf-ai--3"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bRun} /></span>
         </div>
       </div>
-      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(2).tag}`}>
+      <a class="pf-card pf-rev" href={`${PAPERS_INDEX_URL}/?phase=${card(2).tag}`}>
         <p class="pf-code">Phase 3</p>
         <h3 class="pf-name">Executor</h3>
         <p class="pf-body">You hand off a whole task; one AI runs the workflow end to end. Demands <strong>metacognitive monitoring</strong> to supervise it.</p>
@@ -109,7 +110,7 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
           <span class="pf-node pf-node--a pf-ai--4"><span class="pf-bot" set:html={bot} /><span class="pf-badge" set:html={bCoord} /></span>
         </div>
       </div>
-      <a class="pf-card pf-rev" href={`${base}/papers?phase=${card(3).tag}`}>
+      <a class="pf-card pf-rev" href={`${PAPERS_INDEX_URL}/?phase=${card(3).tag}`}>
         <p class="pf-code">Phase 4 <span class="pf-fwd">(forward-looking)</span></p>
         <h3 class="pf-name">Organization</h3>
         <p class="pf-body">AI coordinates whole systems of agents; you govern. Demands <strong>systems thinking</strong> to set the rules before you deploy.</p>
@@ -139,6 +140,9 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
   @media (max-width: 760px) {
     .pf-phase { grid-template-columns: 1fr; gap: 14px; }
     .pf::after { display: none; }
+    /* stacked single-column: indent the copy card so it clears the human
+       spine line instead of overlapping it */
+    .pf-card { margin-left: calc(var(--slot) + 12px); }
   }
 
   .pf-convo { display: flex; flex-direction: column; gap: 18px; }
@@ -168,7 +172,7 @@ const bCoord  = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle
 
   /* per-phase AI role badge (corner) */
   .pf-badge {
-    position: absolute; right: -4px; bottom: -4px;
+    position: absolute; right: -9px; bottom: -9px;
     width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center;
     background: theme('colors.paper.50'); border: 1.6px solid theme('colors.accent.DEFAULT');
   }

@@ -300,7 +300,7 @@ export default function PaperBrowser(props: Props) {
   const allPhases = createMemo(() => {
     const c = uniqueCount(candidates().map((p) => p.phase).filter((x): x is string => !!x));
     // Order by PHASE_ORDER from site.ts so the sidebar lists Phase 1 → Framework.
-    const order = ['phase-1', 'emerging-phase-2', 'phase-2', 'emerging-phase-3', 'phase-3', 'emerging-phase-4', 'phase-4', 'framework'];
+    const order = ['phase-1', 'phase-2', 'phase-3', 'phase-4', 'framework'];
     const idx = new Map(order.map((t, i) => [t, i] as const));
     return Array.from(c.entries()).sort((a, b) => (idx.get(a[0]) ?? 99) - (idx.get(b[0]) ?? 99));
   });
