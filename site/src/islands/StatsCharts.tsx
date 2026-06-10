@@ -22,14 +22,14 @@ function paperColors() {
         text: '#e9e6df',
         muted: '#9a978d',
         faint: 'rgba(255,255,255,0.04)',
-        bar: '#76bdb6',                 // teal on dark
+        bar: '#54cfc3',                 // teal on dark
         barAlt: '#9ecdc8',
-        line: '#76bdb6',
+        line: '#54cfc3',
         // Primary axis — five phase bands. We collapse emerging-phase-N
         // into the corresponding main phase for the stacked area / donut
         // so the visual story stays legible.
         phaseColors: {
-          'phase-1':   '#76bdb6',   // teal — Tool
+          'phase-1':   '#54cfc3',   // teal — Tool
           'phase-2':   '#cdb89f',   // brass — Assistant
           'phase-3':   '#9ab0a0',   // olive — Executor
           'phase-4':   '#b89a78',   // bronze — Organization (currently empty)
@@ -38,13 +38,13 @@ function paperColors() {
         // Secondary axis — five theme categories. Slightly desaturated
         // so they don't compete with the phase palette.
         envColors: {
-          'Collaboration & Co-Creation': '#76bdb6',
+          'Collaboration & Co-Creation': '#54cfc3',
           'Mutual Adaptation': '#cdb89f',
           'Human Feedback Loops': '#9ab0a0',
           'Longitudinal HCI Studies': '#b89a78',
           'Position & Survey': '#a8a8b8',
         } as Record<string, string>,
-        donut: ['#76bdb6', '#cdb89f', '#9ab0a0', '#b89a78', '#a8a8b8'],
+        donut: ['#54cfc3', '#cdb89f', '#9ab0a0', '#b89a78', '#a8a8b8'],
         treemapTones: ['#234e4b', '#2c5754', '#35605d', '#3e6966', '#47716e', '#507a77', '#56827f', '#5f8b87'],
         cardBorder: 'rgba(233,230,223,0.08)',
         tooltipBg: '#171b23',
@@ -55,26 +55,26 @@ function paperColors() {
         text: '#2f2d28',
         muted: '#6e6c64',
         faint: 'rgba(0,0,0,0.04)',
-        bar: '#2e6b68',
+        bar: '#12867e',
         barAlt: '#5f928e',
-        line: '#2e6b68',
+        line: '#12867e',
         phaseColors: {                 // teal + brass + olive + bronze family
-          'phase-1':   '#2e6b68',
+          'phase-1':   '#12867e',
           'phase-2':   '#a0826d',
           'phase-3':   '#5b7461',
           'phase-4':   '#7d5e47',
           'framework': '#6b6b87',
         } as Record<string, string>,
         envColors: {
-          'Collaboration & Co-Creation': '#2e6b68',
+          'Collaboration & Co-Creation': '#12867e',
           'Mutual Adaptation': '#a0826d',
           'Human Feedback Loops': '#5b7461',
           'Longitudinal HCI Studies': '#7d5e47',
           'Position & Survey': '#6b6b87',
         } as Record<string, string>,
-        donut: ['#2e6b68', '#a0826d', '#5b7461', '#7d5e47', '#6b6b87'],
+        donut: ['#12867e', '#a0826d', '#5b7461', '#7d5e47', '#6b6b87'],
         // single-hue teal treemap progression
-        treemapTones: ['#2e6b68', '#3d7774', '#4c8380', '#5b8f8c', '#699a97', '#78a6a3', '#87b2af', '#96beba'],
+        treemapTones: ['#12867e', '#3d7774', '#4c8380', '#5b8f8c', '#699a97', '#78a6a3', '#87b2af', '#96beba'],
         cardBorder: 'rgba(31,29,26,0.08)',
         tooltipBg: '#faf9f5',
         tooltipBorder: 'rgba(31,29,26,0.12)',
@@ -94,9 +94,9 @@ function aggregatePhase(tag: string | null | undefined): string | null {
 // Display labels for the 5 aggregated phase keys.
 const PHASE_AGG_LABEL: Record<string, string> = {
   'phase-1':   'P1 · Tool',
-  'phase-2':   'P2 · Assistant (incl. EP2)',
-  'phase-3':   'P3 · Executor (incl. EP3)',
-  'phase-4':   'P4 · Organization (incl. EP4)',
+  'phase-2':   'P2 · Assistant',
+  'phase-3':   'P3 · Executor',
+  'phase-4':   'P4 · Organization',
   'framework': 'Surveys & Position',
 };
 
@@ -124,7 +124,7 @@ function tooltipBase(c: ReturnType<typeof paperColors>) {
     padding: [8, 12],
     textStyle: {
       color: c.text,
-      fontSize: 12,
+      fontSize: 14,
       ...SHARED_TEXT,
     },
     extraCssText: 'box-shadow: 0 4px 14px rgba(0,0,0,0.06); border-radius: 6px;',
@@ -196,7 +196,7 @@ export default function StatsCharts(props: Props) {
       },
       legend: {
         data: phases.map(phaseLabelOf),
-        textStyle: { color: c.muted, fontSize: 11, ...SHARED_TEXT },
+        textStyle: { color: c.muted, fontSize: 13, ...SHARED_TEXT },
         top: 4,
         left: 'center',
         icon: 'roundRect',
@@ -207,13 +207,13 @@ export default function StatsCharts(props: Props) {
       grid: { left: 36, right: 16, top: 56, bottom: 48, containLabel: true },
       xAxis: {
         type: 'category', data: keys, boundaryGap: false,
-        axisLabel: { color: c.muted, fontSize: 10, ...SHARED_TEXT, rotate: 45, margin: 12 },
+        axisLabel: { color: c.muted, fontSize: 12, ...SHARED_TEXT, rotate: 45, margin: 12 },
         axisLine: { lineStyle: { color: c.faint } },
         axisTick: { show: false },
       },
       yAxis: {
         type: 'value',
-        axisLabel: { color: c.muted, fontSize: 10, ...SHARED_TEXT },
+        axisLabel: { color: c.muted, fontSize: 12, ...SHARED_TEXT },
         axisLine: { show: false },
         axisTick: { show: false },
         splitLine: { lineStyle: { color: c.faint, type: 'solid' } },
@@ -315,8 +315,8 @@ export default function StatsCharts(props: Props) {
             return d.count ? `{n|${d.name}}  {v|${d.count}}` : `{n|${d.name}}`;
           },
           rich: {
-            n: { color: '#fbf6ec', fontSize: 11, fontWeight: 600, ...SHARED_TEXT },
-            v: { color: 'rgba(251,246,236,0.78)', fontSize: 10, ...SHARED_TEXT },
+            n: { color: '#fbf6ec', fontSize: 13, fontWeight: 600, ...SHARED_TEXT },
+            v: { color: 'rgba(251,246,236,0.78)', fontSize: 12, ...SHARED_TEXT },
           },
           padding: [0, 6],
         },
@@ -354,7 +354,7 @@ export default function StatsCharts(props: Props) {
       },
       legend: {
         bottom: 6, left: 'center',
-        textStyle: { color: c.muted, fontSize: 11, ...SHARED_TEXT },
+        textStyle: { color: c.muted, fontSize: 13, ...SHARED_TEXT },
         icon: 'circle', itemWidth: 8, itemHeight: 8, itemGap: 16,
         formatter: (name: string) => PHASE_AGG_LABEL[name] ?? name,
       },
@@ -371,7 +371,7 @@ export default function StatsCharts(props: Props) {
           show: true,
           formatter: (p: any) => `{n|${(isMobile ? PHASE_AGG_SHORT : PHASE_AGG_LABEL)[p.name] ?? p.name}}\n{v|${p.value}}`,
           rich: {
-            n: { color: c.text, fontSize: isMobile ? 10 : 12, fontWeight: 600, ...SHARED_TEXT, lineHeight: isMobile ? 14 : 18 },
+            n: { color: c.text, fontSize: isMobile ? 10 : 12, fontWeight: 600, ...SHARED_TEXT, lineHeight: isMobile ? 17 : 21 },
             v: { color: c.muted, fontSize: isMobile ? 9.5 : 11, ...SHARED_TEXT },
           },
           alignTo: 'edge', edgeDistance: isMobile ? 2 : 6,
@@ -410,7 +410,7 @@ export default function StatsCharts(props: Props) {
       },
       legend: {
         bottom: 6, left: 'center',
-        textStyle: { color: c.muted, fontSize: 11, ...SHARED_TEXT },
+        textStyle: { color: c.muted, fontSize: 13, ...SHARED_TEXT },
         icon: 'circle', itemWidth: 8, itemHeight: 8, itemGap: 14,
       },
       series: [{
@@ -450,7 +450,7 @@ export default function StatsCharts(props: Props) {
       xAxis: { type: 'value', show: false },
       yAxis: {
         type: 'category', data: topInst.map(([k]) => k),
-        axisLabel: { color: c.text, fontSize: 11, ...SHARED_TEXT, margin: 12 },
+        axisLabel: { color: c.text, fontSize: 13, ...SHARED_TEXT, margin: 12 },
         axisLine: { show: false }, axisTick: { show: false },
       },
       series: [{
@@ -468,7 +468,7 @@ export default function StatsCharts(props: Props) {
         },
         label: {
           show: true, position: 'right',
-          color: c.muted, fontSize: 10, ...SHARED_TEXT, distance: 6,
+          color: c.muted, fontSize: 12, ...SHARED_TEXT, distance: 6,
         },
         emphasis: { itemStyle: { color: c.bar } },
       }],
@@ -494,7 +494,7 @@ export default function StatsCharts(props: Props) {
       xAxis: { type: 'value', show: false },
       yAxis: {
         type: 'category', data: topA.map(([k]) => k),
-        axisLabel: { color: c.text, fontSize: 11, ...SHARED_TEXT, margin: 12 },
+        axisLabel: { color: c.text, fontSize: 13, ...SHARED_TEXT, margin: 12 },
         axisLine: { show: false }, axisTick: { show: false },
       },
       series: [{
@@ -512,7 +512,7 @@ export default function StatsCharts(props: Props) {
         },
         label: {
           show: true, position: 'right',
-          color: c.muted, fontSize: 10, ...SHARED_TEXT, distance: 6,
+          color: c.muted, fontSize: 12, ...SHARED_TEXT, distance: 6,
         },
       }],
     });
@@ -544,7 +544,7 @@ export default function StatsCharts(props: Props) {
       xAxis: { type: 'value', show: false },
       yAxis: {
         type: 'category', data: topP.map(([k]) => k),
-        axisLabel: { color: c.text, fontSize: 11, ...SHARED_TEXT, margin: 12 },
+        axisLabel: { color: c.text, fontSize: 13, ...SHARED_TEXT, margin: 12 },
         axisLine: { show: false }, axisTick: { show: false },
       },
       series: [{
@@ -562,7 +562,7 @@ export default function StatsCharts(props: Props) {
         },
         label: {
           show: true, position: 'right',
-          color: c.muted, fontSize: 10, ...SHARED_TEXT, distance: 6,
+          color: c.muted, fontSize: 12, ...SHARED_TEXT, distance: 6,
         },
       }],
     });
@@ -594,11 +594,10 @@ export default function StatsCharts(props: Props) {
       {/* ─── Hero: distribution by phase ─────────────────────────── */}
       <section>
         <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
-          <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Distribution by phase</h2>
-          <span class="text-xs text-ink-400 dark:text-ink-300">primary axis · aggregated to 5 bands</span>
+          <h2 class="text-[19px] font-semibold text-ink-700 dark:text-ink-50">Distribution by phase</h2>
         </div>
-        <p class="text-xs text-ink-400 dark:text-ink-300 mb-4 max-w-[64ch]">
-          How papers in the index distribute across the four phases. Emerging-phase entries (EP2 / EP3 / EP4) are folded into the corresponding main phase for legibility — see the full 8-tag breakdown in the per-phase sections of the <a class="a-text" href={`${props.basePath}/`}>landing page</a>.
+        <p class="text-[15px] text-ink-500 dark:text-ink-300 mb-4 max-w-[68ch] leading-relaxed">
+          How papers in the index distribute across the four phases of the framework.
         </p>
         <div ref={(el) => (phaseEl = el)} class="w-full h-[420px]"></div>
       </section>
@@ -606,17 +605,16 @@ export default function StatsCharts(props: Props) {
       {/* ─── Quarterly trend stacked by phase ─────────────────────── */}
       <section>
         <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
-          <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Quarterly publication trend</h2>
-          <span class="text-xs text-ink-400 dark:text-ink-300">stacked by phase</span>
+          <h2 class="text-[19px] font-semibold text-ink-700 dark:text-ink-50">Quarterly publication trend</h2>
         </div>
-        <p class="text-xs text-ink-400 dark:text-ink-300 mb-4 max-w-[64ch]">Papers added per calendar quarter from the earliest preprint date, stacked by phase. Tracks when each phase began accumulating empirical evidence.</p>
+        <p class="text-[15px] text-ink-500 dark:text-ink-300 mb-4 max-w-[68ch] leading-relaxed">Papers added per calendar quarter from the earliest preprint date, stacked by phase. Tracks when each phase began accumulating empirical evidence.</p>
         <div ref={(el) => (trendEl = el)} class="w-full h-[360px]"></div>
       </section>
 
       {/* ─── Keyword bar + long tail ─────────────────────────────── */}
       <section>
         <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50 mb-1">Top keywords</h2>
-        <p class="text-xs text-ink-400 dark:text-ink-300 mb-4 max-w-[64ch]">Width is paper count, darker is more frequent. Click any segment or chip to filter.</p>
+        <p class="text-[15px] text-ink-500 dark:text-ink-300 mb-4 max-w-[68ch] leading-relaxed">Width is paper count, darker is more frequent. Click any segment or chip to filter.</p>
         <div ref={(el) => (kwEl = el)} class="w-full h-[68px]"></div>
         {/* Mobile: bar segments are too narrow for inline labels — name
             the top keywords as full chips directly beneath the bar. */}
@@ -627,7 +625,7 @@ export default function StatsCharts(props: Props) {
         </Show>
         <Show when={longTail().length > 0}>
           <div class="mt-6">
-            <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-300 mb-3">Long tail</div>
+            <div class="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink-400 dark:text-ink-300 mb-3">Long tail</div>
             <KeywordCloud items={longTail()} basePath={props.basePath} />
           </div>
         </Show>
@@ -636,10 +634,9 @@ export default function StatsCharts(props: Props) {
       {/* ─── Secondary axis: theme split ──────────────────────────── */}
       <section>
         <div class="flex items-baseline justify-between mb-1 flex-wrap gap-x-4 gap-y-1">
-          <h2 class="text-base font-semibold text-ink-700 dark:text-ink-50">Theme split</h2>
-          <span class="text-xs text-ink-400 dark:text-ink-300">secondary axis · CC / MA / HF / LH / PS</span>
+          <h2 class="text-[19px] font-semibold text-ink-700 dark:text-ink-50">Theme split</h2>
         </div>
-        <p class="text-xs text-ink-400 dark:text-ink-300 mb-4 max-w-[64ch]">A paper may carry one or more themes. Click a slice to filter.</p>
+        <p class="text-[15px] text-ink-500 dark:text-ink-300 mb-4 max-w-[68ch] leading-relaxed">A paper may carry one or more themes. Click a slice to filter.</p>
         <div ref={(el) => (themeEl = el)} class="w-full h-[320px]"></div>
       </section>
 

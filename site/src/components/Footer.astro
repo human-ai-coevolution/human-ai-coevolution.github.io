@@ -1,83 +1,45 @@
 ---
-import { REPO_URL, ENV_ORDER, ENV_ABBREV, MAINTAINER_NAME, MAINTAINER_AFFILIATION, MAINTAINER_URL } from '../lib/site';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import { MAINTAINER_NAME, MAINTAINER_AFFILIATION, MAINTAINER_URL } from '../lib/site';
 const year = new Date().getFullYear();
 ---
 <footer class="mt-28 border-t border-paper-300 dark:border-ink-600">
-  <div class="mx-auto max-w-[1180px] px-6 py-12">
-
-    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-10">
-
-      <div class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
-        <p class="meta-label">Colophon</p>
-        <p class="mt-3 text-[12.5px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
-          Generated from a single YAML source. Set in Cormorant Garamond and IBM Plex.
-        </p>
-
-        <p class="meta-label mt-8">Affiliated lab</p>
-        <a
-          href={MAINTAINER_URL}
-          target="_blank"
-          rel="noopener"
-          class="mt-3 inline-block rounded-lg bg-white p-2.5 ring-1 ring-paper-300 dark:ring-ink-600 hover:ring-accent/50 dark:hover:ring-accent-dark/50 transition"
-          aria-label="CHATS Lab — Conversation, Human-AI Tech, Safety"
-        >
-          <img
-            src={`${base}/chats-lab-logo.png`}
-            alt="CHATS Lab — Conversation, Human-AI Tech, Safety"
-            width="146"
-            height="110"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-      </div>
-
-      <div class="grid sm:grid-cols-3 gap-x-8 gap-y-6 text-[13px]">
-
-        <div>
-          <p class="meta-label">Index</p>
-          <ul class="mt-3 space-y-1.5">
-            {ENV_ORDER.map((env) => (
-              <li>
-                <a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/papers?env=${encodeURIComponent(env)}`}>
-                  <span class="font-mono text-[10.5px] text-accent dark:text-accent-dark mr-1.5 tabular-nums">{ENV_ABBREV[env]}</span>{env}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p class="meta-label">Pages</p>
-          <ul class="mt-3 space-y-1.5">
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/papers`}>Browse all</a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/blog/`}>Blog</a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/stats`}>Statistics</a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${base}/about`}>About</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="meta-label">Source</p>
-          <ul class="mt-3 space-y-1.5">
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={REPO_URL} target="_blank" rel="noopener">GitHub repo <span class="font-mono">↗</span></a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/issues/new`} target="_blank" rel="noopener">Suggest a paper <span class="font-mono">↗</span></a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/blob/main/papers.yaml`} target="_blank" rel="noopener">papers.yaml <span class="font-mono">↗</span></a></li>
-            <li><a class="text-ink-600 dark:text-ink-200 hover:text-accent dark:hover:text-accent-dark transition-colors" href={`${REPO_URL}/blob/main/CLAUDE.md`} target="_blank" rel="noopener">Entry schema <span class="font-mono">↗</span></a></li>
-          </ul>
-        </div>
-      </div>
+  <div class="mx-auto max-w-[960px] px-6 py-8 text-[12.5px] font-mono uppercase tracking-[0.1em] text-ink-400 dark:text-ink-300">
+    <p class="normal-case tracking-normal text-[13.5px] font-sans text-ink-500 dark:text-ink-300 mb-3">
+      <span class="font-mono text-[12px] uppercase tracking-[0.1em] text-ink-400 dark:text-ink-300 mr-2">Authors:</span>
+      <a href="https://xuli0929.github.io/" target="_blank" rel="noopener" class="author-link">Xu Li</a>,
+      <a href="https://simonucl.github.io/" target="_blank" rel="noopener" class="author-link">Simon Yu</a>,
+      <a href="https://nlp.stanford.edu/~derekch/" target="_blank" rel="noopener" class="author-link">Derek Chong</a>,
+      <a href="https://benjamin-eecs.github.io/" target="_blank" rel="noopener" class="author-link">Bo Liu</a>,
+      <a href="https://qianouma.com/en/about.html" target="_blank" rel="noopener" class="author-link">Qianou Ma</a>,
+      <a href="https://abdulhaim.github.io/" target="_blank" rel="noopener" class="author-link">Marwa Abdulhai</a>,
+      <a href="https://cs.stanford.edu/~diyiy/" target="_blank" rel="noopener" class="author-link">Diyi Yang</a>,
+      <a href="https://www.cs.cmu.edu/~sherryw/" target="_blank" rel="noopener" class="author-link">Tongshuang Wu</a>,
+      <a href="https://hua-shen.org/" target="_blank" rel="noopener" class="author-link">Hua Shen</a>,
+      <a href="https://wyshi.github.io/" target="_blank" rel="noopener" class="author-link">Weiyan Shi</a>
+    </p>
+    <div class="flex flex-col sm:flex-row items-baseline gap-2 justify-between">
+      <div>© {year} <a class="hover:text-accent dark:hover:text-accent-dark transition-colors" href={MAINTAINER_URL} target="_blank" rel="noopener">{MAINTAINER_NAME}</a>, {MAINTAINER_AFFILIATION}</div>
+      <div>Open-source · MIT-licensed · Generated with Astro</div>
     </div>
-
-    <div class="mt-12 pt-6 border-t border-paper-300 dark:border-ink-600 text-[11.5px] font-mono uppercase tracking-[0.1em] text-ink-400 dark:text-ink-300">
-      <div class="flex flex-col sm:flex-row items-baseline gap-2 justify-between">
-        <div>© {year} <a class="hover:text-accent dark:hover:text-accent-dark transition-colors" href={MAINTAINER_URL} target="_blank" rel="noopener">{MAINTAINER_NAME}</a>, {MAINTAINER_AFFILIATION}</div>
-        <div>Open-source · MIT-licensed · Generated with Astro</div>
-      </div>
-      <p class="mt-3 normal-case tracking-normal text-[12px] font-sans text-ink-400 dark:text-ink-300 max-w-[64ch]">
-        Some of the design and scaffolding here is adapted from <a class="hover:text-accent dark:hover:text-accent-dark transition-colors underline underline-offset-[3px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-accent dark:hover:decoration-accent-dark" href="https://github.com/OSU-NLP-Group/GUI-Agents-Paper-List" target="_blank" rel="noopener">OSU-NLP-Group/GUI-Agents-Paper-List</a>. Thanks for their awesome work!
-      </p>
-    </div>
+    <p class="mt-3 normal-case tracking-normal text-[13px] font-sans text-ink-400 dark:text-ink-300 max-w-[64ch]">
+      Some of the design and scaffolding here is adapted from <a class="hover:text-accent dark:hover:text-accent-dark transition-colors underline underline-offset-[3px] decoration-paper-300 dark:decoration-ink-600 hover:decoration-accent dark:hover:decoration-accent-dark" href="https://github.com/OSU-NLP-Group/GUI-Agents-Paper-List" target="_blank" rel="noopener">OSU-NLP-Group/GUI-Agents-Paper-List</a>. Thanks for their awesome work!
+    </p>
   </div>
 </footer>
+
+<style>
+  /* Author byline — plain medium names, accent on hover */
+  .author-link {
+    color: theme('colors.ink.600');
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  :global(html.dark) .author-link { color: theme('colors.ink.200'); }
+  .author-link:hover {
+    color: theme('colors.accent.DEFAULT');
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  :global(html.dark) .author-link:hover { color: theme('colors.accent.dark'); }
+</style>

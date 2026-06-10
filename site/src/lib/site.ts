@@ -9,6 +9,9 @@ export const REPO_RAW_BLOB = `${REPO_URL}/blob/main`;
 // The canonical paper index is hosted separately (chats-lab deployment).
 // The intro site links out to it rather than serving its own.
 export const PAPERS_INDEX_URL = 'https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List';
+// The paper list's GitHub repo — where papers.yaml lives and new papers are
+// contributed. Distinct from REPO_URL (this website's own repo).
+export const PAPERS_REPO_URL = 'https://github.com/CHATS-lab/Awesome-Human-AI-Coevolution-Paper-List';
 
 // Maintainer: the CHATS lab at Northeastern.
 export const MAINTAINER_NAME = 'CHATS-LAB';
