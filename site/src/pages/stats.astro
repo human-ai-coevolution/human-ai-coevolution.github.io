@@ -19,32 +19,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 >
   <article class="mx-auto max-w-[960px] px-6 pt-14 pb-20 reveal-stagger">
 
-    <div class="grid lg:grid-cols-[200px_minmax(0,1fr)] gap-x-16 gap-y-8">
+    <p class="heading-eyebrow">Statistics</p>
+    <h1 class="kicker-lg mt-5 text-ink-700 dark:text-ink-50">
+      Trends across <span class="font-mono tabular-nums">{canonical.length}</span> papers
+    </h1>
+    <p class="mt-4 text-[16px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[60ch]">
+      Canonical entries only. Adjacent papers are excluded so the picture stays scoped.
+    </p>
 
-      <aside class="lg:border-r border-paper-300 dark:border-ink-600 lg:pr-6">
-        <p class="meta-label">Page</p>
-        <p class="kicker mt-2 text-ink-700 dark:text-ink-50">Statistics</p>
-        <p class="mt-6 text-[13.5px] text-ink-500 dark:text-ink-300 leading-relaxed max-w-[14em]">
-          Canonical entries only. Adjacent papers are excluded so the picture stays scoped.
+    <div class="mt-10">
+      <StatsCharts client:only="solid-js" papers={lite} basePath={base} />
+      <noscript>
+        <p class="text-[15px] text-ink-500 dark:text-ink-200">
+          Interactive charts need JavaScript. You can still browse the full list on the
+          <a class="a-text" href={`${base}/papers`}>papers page</a>.
         </p>
-      </aside>
-
-      <div>
-        <p class="heading-eyebrow">Statistics</p>
-        <h1 class="kicker-lg mt-5 text-ink-700 dark:text-ink-50">
-          Trends across <span class="font-mono tabular-nums">{canonical.length}</span> papers
-        </h1>
-
-        <div class="mt-10">
-          <StatsCharts client:only="solid-js" papers={lite} basePath={base} />
-          <noscript>
-            <p class="text-[15px] text-ink-500 dark:text-ink-200">
-              Interactive charts need JavaScript. You can still browse the full list on the
-              <a class="a-text" href={`${base}/papers`}>papers page</a>.
-            </p>
-          </noscript>
-        </div>
-      </div>
+      </noscript>
     </div>
   </article>
 </Base>
