@@ -322,7 +322,7 @@
     content: "";
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse at 8% 12%, rgba(46,107,104,0.05), transparent 50%),
+      radial-gradient(ellipse at 8% 12%, rgba(18,134,126,0.05), transparent 50%),
       radial-gradient(ellipse at 92% 88%, rgba(160,130,109,0.06), transparent 55%);
     pointer-events: none;
   }
@@ -674,7 +674,7 @@
     min-width: 200px;
     height: 10px;
     border-radius: 5px;
-    background: linear-gradient(90deg, #e8f0ef 0%, #a6c8c4 38%, #4e8b86 68%, #214a47 100%);
+    background: linear-gradient(90deg, #e6f2f0 0%, #9fcdc8 38%, #3a948c 68%, #155a54 100%);
   }
   .hm-legend .lbl {
     font-family: var(--mono);
@@ -854,6 +854,74 @@
     .figure-head .label { font-size: 10px; }
   }
 </style>
+<style>
+  /* ---------- dark mode (shares the main site's localStorage 'theme') ---------- */
+  html.dark {
+    --ivory:#10131a;
+    --paper:#171b23;
+    --slate:#f0efe9;
+    --g700:#cfcdc5;
+    --g500:#90919a;
+    --g300:#3b4150;
+    --g200:#2a303c;
+    --g100:#1d222c;
+    --oat:#2a303a;
+    --accent:#54cfc3;
+    --accent-d:#7adcd2;
+    --accent-l:#15302d;
+    --olive:#a3b985;
+    --olive-l:#262e1c;
+    --brass:#c9ab92;
+    --brass-l:#4a4034;
+    --brass-ll:#2c261f;
+  }
+  /* Figure 1 is drawn with fixed inks — keep its card printed-light in dark mode */
+  html.dark .hero-figure { background:#fbfaf6; border-color:rgba(20,20,19,0.18); }
+  html.dark .hero-figure .label { color:#87867f; }
+  html.dark .hero-figure .fig-title { color:#141413; }
+  html.dark .hero-figure figcaption { color:#3d3d3a; }
+
+  /* ---------- theme toggle pill (same as the main site's) ---------- */
+  .theme-pill { appearance:none; background:transparent; border:0; cursor:pointer; padding:0; line-height:0; }
+  .theme-pill__track {
+    position:relative; display:inline-flex; align-items:center; justify-content:space-between;
+    width:64px; height:28px; padding:0 8px; border-radius:9999px;
+    background-color:rgba(0,0,0,0.05); border:1px solid rgba(0,0,0,0.08);
+    transition:background-color 200ms, border-color 200ms;
+  }
+  html.dark .theme-pill__track { background-color:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12); }
+  .theme-pill__icon { position:relative; z-index:2; opacity:0.55; transition:opacity 200ms; }
+  .theme-pill__icon--sun { color:#6b6759; }
+  html.dark .theme-pill__icon--sun { color:#c9bb9c; opacity:0.45; }
+  .theme-pill__icon--moon { color:#4a473d; }
+  html.dark .theme-pill__icon--moon { color:#f5f3ee; opacity:1; }
+  html:not(.dark) .theme-pill__icon--sun { opacity:1; }
+  .theme-pill__thumb {
+    position:absolute; top:50%; left:3px; transform:translateY(-50%);
+    width:22px; height:22px; border-radius:9999px; background-color:#fbf6ec;
+    box-shadow:0 1px 3px rgba(0,0,0,0.18);
+    transition:left 220ms cubic-bezier(0.4,0,0.2,1), background-color 220ms; z-index:1;
+  }
+  html.dark .theme-pill__thumb { left:calc(100% - 25px); background-color:#1d2129; box-shadow:0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06) inset; }
+</style>
+<script>
+  // No-flash theme bootstrap — same key as the main site, so the choice follows you.
+  (function () {
+    try {
+      if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
+    } catch (e) {}
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var root = document.documentElement;
+        var next = root.classList.contains('dark') ? 'light' : 'dark';
+        root.classList.toggle('dark', next === 'dark');
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    });
+  })();
+</script>
 </head>
 <body>
 
@@ -875,6 +943,17 @@
       <a class="sb-gh" href="https://github.com/CHATS-lab/Awesome-Human-AI-Coevolution-Paper-List" target="_blank" rel="noopener" aria-label="View on GitHub">
         <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
       </a>
+      <button id="theme-toggle" type="button" aria-label="Toggle theme" class="theme-pill">
+        <span class="theme-pill__track">
+          <span class="theme-pill__icon theme-pill__icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          </span>
+          <span class="theme-pill__icon theme-pill__icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+          <span class="theme-pill__thumb"></span>
+        </span>
+      </button>
     </div>
   </div>
 </nav>
@@ -916,7 +995,7 @@
               <path d="M0,0 L12,6 L0,12 z" fill="#a0826d"/>
             </marker>
             <marker id="arrClay" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
-              <path d="M0,0 L12,6 L0,12 z" fill="#2e6b68"/>
+              <path d="M0,0 L12,6 L0,12 z" fill="#12867e"/>
             </marker>
           </defs>
 
@@ -927,30 +1006,30 @@
           <!-- ============ TOP ARC: BETTER FEEDBACK (Human → AI) ============ -->
           <text x="500" y="40" text-anchor="middle"
                 font-family="'IBM Plex Sans', system-ui, sans-serif"
-                font-size="34" font-weight="700" fill="#2e6b68"
+                font-size="34" font-weight="700" fill="#12867e"
                 letter-spacing="0.01em">
             Better Feedback
           </text>
 
           <path d="M 770 240 C 700 70, 300 70, 230 240"
-                fill="none" stroke="#2e6b68" stroke-width="3"
+                fill="none" stroke="#12867e" stroke-width="3"
                 stroke-linecap="round" marker-end="url(#arrClay)"/>
 
-          <circle cx="640" cy="115" r="2.8" fill="#2e6b68" opacity="0.55"/>
-          <circle cx="360" cy="115" r="2.8" fill="#2e6b68" opacity="0.55"/>
+          <circle cx="640" cy="115" r="2.8" fill="#12867e" opacity="0.55"/>
+          <circle cx="360" cy="115" r="2.8" fill="#12867e" opacity="0.55"/>
 
           <!-- main chat bubble -->
           <g transform="translate(434, 78)">
-            <rect x="0" y="0" width="90" height="52" rx="10" fill="#ffffff" stroke="#2e6b68" stroke-width="2"/>
-            <line x1="13" y1="17" x2="77" y2="17" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-            <line x1="13" y1="27" x2="67" y2="27" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-            <line x1="13" y1="37" x2="53" y2="37" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-            <path d="M 22 52 L 18 62 L 32 53 z" fill="#ffffff" stroke="#2e6b68" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="0" y="0" width="90" height="52" rx="10" fill="#ffffff" stroke="#12867e" stroke-width="2"/>
+            <line x1="13" y1="17" x2="77" y2="17" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="13" y1="27" x2="67" y2="27" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+            <line x1="13" y1="37" x2="53" y2="37" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+            <path d="M 22 52 L 18 62 L 32 53 z" fill="#ffffff" stroke="#12867e" stroke-width="2" stroke-linejoin="round"/>
           </g>
 
           <!-- secondary thumbs-up bubble -->
           <g transform="translate(534, 96)">
-            <circle cx="19" cy="19" r="19" fill="#2e6b68"/>
+            <circle cx="19" cy="19" r="19" fill="#12867e"/>
             <path d="M 12 23 L 12 17 L 17 17 L 17 23 z" fill="#ffffff"/>
             <path d="M 17 17 C 17 11, 21 9, 23 11 C 23 13, 22 14, 22 15 L 27 15 C 29 15, 29 18, 28 19 C 29 20, 28 22, 27 22 C 28 23, 27 25, 25 25 L 17 25 L 17 17 z"
                   fill="#ffffff"/>
@@ -997,43 +1076,43 @@
 
           <!-- ============ HUMAN BOX (RIGHT) ============ -->
           <g transform="translate(680, 250)">
-            <rect x="-37" y="5" width="260" height="170" rx="18" fill="#2e6b68" opacity="0.09"/>
-            <rect x="-40" width="260" height="170" rx="18" fill="#ffffff" stroke="#2e6b68" stroke-width="2.4"/>
-            <rect x="-38.8" y="1.2" width="257.6" height="167.6" rx="17" fill="#dde9e7" opacity="0.35"/>
+            <rect x="-37" y="5" width="260" height="170" rx="18" fill="#12867e" opacity="0.09"/>
+            <rect x="-40" width="260" height="170" rx="18" fill="#ffffff" stroke="#12867e" stroke-width="2.4"/>
+            <rect x="-38.8" y="1.2" width="257.6" height="167.6" rx="17" fill="#d7ebe8" opacity="0.35"/>
 
             <!-- person -->
-            <circle cx="88" cy="50" r="16" fill="#2e6b68"/>
-            <path d="M 56 108 Q 56 72 88 72 Q 120 72 120 108 L 120 116 L 56 116 z" fill="#2e6b68"/>
+            <circle cx="88" cy="50" r="16" fill="#12867e"/>
+            <path d="M 56 108 Q 56 72 88 72 Q 120 72 120 108 L 120 116 L 56 116 z" fill="#12867e"/>
 
             <!-- gear -->
             <g transform="translate(160, 38)">
-              <circle r="13" fill="#ffffff" stroke="#2e6b68" stroke-width="2.2"/>
-              <circle r="4" fill="#2e6b68"/>
-              <line x1="0" y1="-17" x2="0" y2="-13" stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="0" y1="13"  x2="0" y2="17"  stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="-17" y1="0" x2="-13" y2="0" stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="13" y1="0"  x2="17" y2="0"  stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="-12" y1="-12" x2="-9" y2="-9" stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="9" y1="9"   x2="12" y2="12"  stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="-12" y1="12" x2="-9" y2="9" stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
-              <line x1="9" y1="-9"  x2="12" y2="-12" stroke="#2e6b68" stroke-width="2.2" stroke-linecap="round"/>
+              <circle r="13" fill="#ffffff" stroke="#12867e" stroke-width="2.2"/>
+              <circle r="4" fill="#12867e"/>
+              <line x1="0" y1="-17" x2="0" y2="-13" stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="0" y1="13"  x2="0" y2="17"  stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="-17" y1="0" x2="-13" y2="0" stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="13" y1="0"  x2="17" y2="0"  stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="-12" y1="-12" x2="-9" y2="-9" stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="9" y1="9"   x2="12" y2="12"  stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="-12" y1="12" x2="-9" y2="9" stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="9" y1="-9"  x2="12" y2="-12" stroke="#12867e" stroke-width="2.2" stroke-linecap="round"/>
             </g>
 
             <!-- idea lamp (offset to upper-left so it never overlaps the head) -->
             <g transform="translate(44, 46)">
               <path d="M 0 -8 C -8 -8, -10 0, -6 6 L -5 12 L 5 12 L 6 6 C 10 0, 8 -8, 0 -8 z"
-                    fill="#fff6d6" stroke="#2e6b68" stroke-width="2" stroke-linejoin="round"/>
-              <rect x="-5" y="13" width="10" height="3" rx="1" fill="#2e6b68"/>
-              <rect x="-3" y="16" width="6" height="2" rx="1" fill="#2e6b68"/>
-              <line x1="0" y1="-13" x2="0" y2="-17" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-12" y1="-5" x2="-16" y2="-7" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-              <line x1="12" y1="-5"  x2="16" y2="-7"  stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-              <line x1="-9" y1="-12" x2="-12" y2="-15" stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
-              <line x1="9" y1="-12"  x2="12" y2="-15"  stroke="#2e6b68" stroke-width="2" stroke-linecap="round"/>
+                    fill="#fff6d6" stroke="#12867e" stroke-width="2" stroke-linejoin="round"/>
+              <rect x="-5" y="13" width="10" height="3" rx="1" fill="#12867e"/>
+              <rect x="-3" y="16" width="6" height="2" rx="1" fill="#12867e"/>
+              <line x1="0" y1="-13" x2="0" y2="-17" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+              <line x1="-12" y1="-5" x2="-16" y2="-7" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+              <line x1="12" y1="-5"  x2="16" y2="-7"  stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+              <line x1="-9" y1="-12" x2="-12" y2="-15" stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
+              <line x1="9" y1="-12"  x2="12" y2="-15"  stroke="#12867e" stroke-width="2" stroke-linecap="round"/>
             </g>
 
             <!-- motion sparkles -->
-            <g fill="#2e6b68" opacity="0.7">
+            <g fill="#12867e" opacity="0.7">
               <circle cx="46" cy="98" r="1.8"/>
               <circle cx="155" cy="105" r="1.8"/>
               <circle cx="190" cy="80" r="2"/>
@@ -1042,7 +1121,7 @@
             <!-- label -->
             <text x="90" y="148" text-anchor="middle"
                   font-family="'IBM Plex Sans', system-ui, sans-serif"
-                  font-size="30" font-weight="600" fill="#2e6b68">
+                  font-size="30" font-weight="600" fill="#12867e">
               Human Evolution
             </text>
           </g>
@@ -1081,13 +1160,13 @@
 
           <!-- ============ RIGHT LOOP: BETTER AI UTILIZATION ============ -->
           <path d="M 900 296 C 950 296, 950 404, 900 404"
-                fill="none" stroke="#2e6b68" stroke-width="3"
+                fill="none" stroke="#12867e" stroke-width="3"
                 stroke-linecap="round" marker-end="url(#arrClay)"/>
 
           <!-- rotated loop label, tucked inside the viewBox so it never clips -->
           <text x="0" y="0" text-anchor="middle"
                 font-family="'IBM Plex Sans', system-ui, sans-serif"
-                font-size="29" font-weight="700" fill="#2e6b68"
+                font-size="29" font-weight="700" fill="#12867e"
                 letter-spacing="0.02em"
                 transform="translate(966, 350) rotate(90)">
             Better AI Utilization
@@ -1100,7 +1179,7 @@
           <text x="500" y="624" text-anchor="middle"
                 font-family="'Cormorant Garamond', ui-serif, Georgia, serif"
                 font-style="italic" font-size="37" fill="#3d3d3a">
-            Human evolution drives <tspan fill="#2e6b68" font-weight="500">better AI usage</tspan>, and <tspan fill="#a0826d" font-weight="500">better AI</tspan>.
+            Human evolution drives <tspan fill="#12867e" font-weight="500">better AI usage</tspan>, and <tspan fill="#a0826d" font-weight="500">better AI</tspan>.
           </text>
         </svg>
       </figure>
