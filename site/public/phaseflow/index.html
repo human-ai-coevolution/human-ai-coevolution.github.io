@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Framework animation — Human–AI Coevolution</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #faf9f5;
+      --paper-card: #ffffff;
+      --line: #d1cdbf;
+      --ink-700: #1f1d1a;
+      --ink-500: #4a473f;
+      --ink-400: #6e6c64;
+      --accent: #12867e;
+      --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+      --display: 'Fraunces', ui-serif, Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink-700);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 64px 24px 80px;
+    }
+    .wrap { width: 100%; max-width: 720px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: var(--mono); font-size: 13px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin: 0;
+    }
+    .eyebrow::before { content: ''; width: 34px; height: 2.5px; background: var(--accent); display: inline-block; }
+    h1 {
+      font-family: var(--display); font-weight: 500;
+      font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.12;
+      letter-spacing: -0.012em; margin: 18px 0 0; color: var(--ink-700);
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    .lede { margin: 16px 0 0; font-size: 16px; line-height: 1.65; color: var(--ink-500); max-width: 56ch; }
+    figure {
+      margin: 40px 0 0; padding: 22px;
+      background: var(--paper-card); border: 1px solid var(--line);
+      border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; }
+    figcaption {
+      margin-top: 16px; font-family: var(--mono); font-size: 12px;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-400);
+      display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline;
+    }
+    figcaption a { color: var(--accent); text-decoration: none; }
+    figcaption a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .foot { margin-top: 40px; font-size: 13.5px; color: var(--ink-400); }
+    .foot a { color: var(--accent); text-decoration: none; }
+    .foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Framework</p>
+    <h1>One conversation, <em>evolving</em> across four phases.</h1>
+    <p class="lede">
+      A single chat block that updates in place as it cycles Phase&nbsp;1 → Phase&nbsp;4.
+      The human question types in word by word; the AI response then builds step by step —
+      the task tree and the agent org chart assemble piece by piece. The human chip shows
+      the skill that must <em>evolve</em> (critical thinking → systems thinking), and the AI
+      carries a phase-specific badge (answering → coordinating).
+    </p>
+
+    <figure>
+      <img src="./phaseflow.gif" alt="Animated framework: a single conversation block cycles through four phases. The human question types in word by word, then the AI response builds step by step — the task tree and the agent org chart assemble piece by piece. The human chip shows the evolving skill and the AI carries a phase-specific badge; the side card names the current phase." />
+      <figcaption>
+        <span>phaseflow.gif · 560×490 · loops</span>
+        <a href="./phaseflow.gif" download>Download GIF ↓</a>
+      </figcaption>
+    </figure>
+
+    <p class="foot">Standalone preview — not linked from site navigation.</p>
+  </div>
+</body>
+</html>

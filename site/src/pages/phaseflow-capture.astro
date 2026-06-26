@@ -1,0 +1,314 @@
+---
+/**
+ * Utility route (unlinked) used only to render the framework animation as a
+ * SINGLE conversation block that updates in place across the four phases, so
+ * frames can be screenshotted and assembled into a looping GIF.
+ *
+ * The animation is a flat timeline of frames. Each frame fully determines the
+ * visual state: which phase, how many words of the question are typed, and how
+ * far the AI response has been constructed (data-s reveal steps).
+ *
+ *   ?f=K       deterministic frame K (for screenshot capture)
+ *   ?theme=dark force dark mode
+ *   (no params) plays the whole timeline on a loop (watchable on its own)
+ */
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PhaseFlow capture</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+    <script is:inline>
+      (function () {
+        try {
+          var p = new URLSearchParams(location.search);
+          if (p.get('theme') === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="cap-stage">
+      <p class="pf2-head"><span class="pf2-head-rule"></span>Human&ndash;AI Co-Evolution</p>
+      <p class="pf2-phase"><span class="pf2-pcode" id="code">Phase 1</span><span class="pf2-pname" id="name">Humans Use AI as Tool</span></p>
+      <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+        <symbol id="pf-botsym" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="3"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol>
+        <marker id="pf-mk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs></svg>
+
+      <div class="pf2" id="block" data-ai="0">
+        <div class="pf2-convo">
+          <!-- human turn -->
+          <div class="pf2-row pf2-row--h">
+            <div class="pf2-human">
+              <span class="pf2-node pf2-node--h" id="hnode"></span>
+            </div>
+            <div class="pf2-bub pf2-bub--h">
+              <div class="pf2-hbody">
+                <span class="pf2-hhead">
+                  <span class="pf2-tag">Human</span>
+                  <span class="pf2-use"><span class="pf2-use-ic" id="useic"></span>evolves:&nbsp;<span id="usetx">Critical thinking</span></span>
+                </span>
+                <span class="pf2-content"><span id="q"></span><span class="pf2-caret" id="caret"></span></span>
+              </div>
+            </div>
+          </div>
+          <!-- AI turn -->
+          <div class="pf2-row pf2-row--a">
+            <div class="pf2-bub pf2-bub--a">
+              <div class="pf2-abody">
+                <span class="pf2-ahead">
+                  <span class="pf2-tag pf2-tag--a">AI</span>
+                </span>
+                <div class="pf2-viz" id="viz"></div>
+              </div>
+            </div>
+            <span class="pf2-node pf2-node--a" id="ainode"><span class="pf2-bot" id="aibot"></span><span class="pf2-badge" id="badge"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var SVG = {
+          person: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.4" r="4.1"/><path d="M3.6 20.8c0-4.7 3.8-8.3 8.4-8.3s8.4 3.6 8.4 8.3z"/></svg>',
+          bot: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="3"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>',
+          answer: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M21 21l-4.6-4.6"/></svg>',
+          draft: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l4-1L18.6 8.4a2 2 0 0 0-2.8-2.8L5 16.2 4 20z"/><path d="M14.5 7 17 9.5"/></svg>',
+          run: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>',
+          coord: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M7.9 8.4 10.6 15.8M16.1 8.4 13.4 15.8M8.4 7h7.2"/></svg>',
+          growth: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/></svg>',
+          doc: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h6.5L17 7v13.5H7z"/><path d="M13.5 3.5V7H17"/><path d="M9.5 11h5M9.5 14h5M9.5 17h3"/></svg>',
+        };
+        var VIZ = {
+          answer: '<span class="pf2-system"><span class="pf2-system-tag">AI responds to your queries</span>' +
+            '<span class="pf2-fig"><span class="pf2-ans">' +
+              '<span class="pf2-ln" data-s="1"></span><span class="pf2-ln" data-s="1"></span>' +
+              '<span class="pf2-ln" data-s="2"></span><span class="pf2-ln pf2-ln--short" data-s="2"></span>' +
+            '</span>' +
+            '<span class="pf2-foot" data-s="2">explanation &middot; with worked example</span></span></span>',
+          draft: '<span class="pf2-system"><span class="pf2-system-tag">AI drafts the partial artifacts</span>' +
+            '<span class="pf2-fig">' +
+            '<span class="pf2-draft" data-s="1"><span class="pf2-draft-ic">' + SVG.doc + '</span><span class="pf2-draft-tx">draft</span><span class="pf2-verify">&#10003;</span></span>' +
+            '<span class="pf2-code-lines" data-s="2"><span class="pf2-cl" style="width:196px"></span><span class="pf2-cl pf2-cl--ind" style="width:136px"></span><span class="pf2-cl" style="width:110px"></span></span>' +
+            '<span class="pf2-foot" data-s="2">parseDate.ts &middot; you review &amp; ship</span></span></span>',
+          tree: '<span class="pf2-system"><span class="pf2-system-tag">one agent runs a whole tree of tasks</span>' +
+            '<span class="pf2-fig"><svg class="pf2-tree" viewBox="0 0 206 56" aria-hidden="true">' +
+              '<path class="pf-tw" data-s="2" d="M36 18 H64"/>' +
+              '<path class="pf-tw" data-s="3" d="M64 18 H190"/>' +
+              '<path class="pf-tw" data-s="3" d="M64 18 C 82 18, 82 42, 106 42 H148 C 172 42, 172 18, 190 18"/>' +
+              '<g class="pf-agent" data-s="1"><circle cx="20" cy="18" r="15"/><use href="#pf-botsym" x="9" y="7" width="22" height="22"/></g>' +
+              '<circle class="pf-tdot" data-s="2" cx="64" cy="18" r="4.5"/>' +
+              '<circle class="pf-tdot" data-s="3" cx="106" cy="18" r="4.5"/>' +
+              '<circle class="pf-tdot" data-s="3" cx="106" cy="42" r="4.5"/>' +
+              '<circle class="pf-tdot" data-s="3" cx="148" cy="42" r="4.5"/>' +
+              '<circle class="pf-tend" data-s="4" cx="190" cy="18" r="7.5"/>' +
+              '<path class="pf-tcheck" data-s="5" d="M186 18 l3 3 l5.5 -6.5"/>' +
+            '</svg></span></span>',
+          org: '<span class="pf2-system"><span class="pf2-system-tag">one agent assigns &amp; reviews many agents</span>' +
+            '<span class="pf2-fig"><svg class="pf2-org" viewBox="0 0 192 96" aria-hidden="true">' +
+              '<path class="pf-ow" data-s="2" d="M84 35 C 66 47, 52 53, 42 59" marker-end="url(#pf-mk)"/>' +
+              '<path class="pf-ow" data-s="3" d="M94 38 V59" marker-end="url(#pf-mk)"/>' +
+              '<path class="pf-ow" data-s="4" d="M104 35 C 122 47, 136 53, 146 59" marker-end="url(#pf-mk)"/>' +
+              '<path class="pf-return" data-s="4" d="M168 70 C 190 50, 182 16, 116 13" marker-end="url(#pf-mk)"/>' +
+              '<g class="pf-agent pf-agent--mgr" data-s="1"><circle cx="94" cy="21" r="16.5"/><use href="#pf-botsym" x="82.5" y="9.5" width="23" height="23"/></g>' +
+              '<g class="pf-agent" data-s="2"><circle cx="36" cy="74" r="13"/><use href="#pf-botsym" x="27" y="65" width="18" height="18"/></g>' +
+              '<g class="pf-agent" data-s="3"><circle cx="94" cy="74" r="13"/><use href="#pf-botsym" x="85" y="65" width="18" height="18"/></g>' +
+              '<g class="pf-agent" data-s="4"><circle cx="152" cy="74" r="13"/><use href="#pf-botsym" x="143" y="65" width="18" height="18"/></g>' +
+            '</svg></span></span>',
+        };
+        var PHASES = [
+          { skill: 'Critical thinking',     roleIc: 'answer', viz: 'answer', name: 'Humans Use AI as Tool',         words: ['“How', 'does', 'a', 'Bloom', 'filter', 'work?”'], ai: 2 },
+          { skill: 'Evaluative expertise',  roleIc: 'draft',  viz: 'draft',  name: 'Humans Use AI as Assistant',    words: ['“Write', 'a', '<code>parseDate()</code>', 'helper.”'], ai: 2 },
+          { skill: 'Supervisory judgement', roleIc: 'run',    viz: 'tree',   name: 'Humans Use AI as Executor',     words: ['“Migrate', 'the', 'whole', 'service', 'to', 'TypeScript.”'], ai: 5 },
+          { skill: 'Systems thinking',      roleIc: 'coord',  viz: 'org',    name: 'Humans Use AI as Organization', words: ['“Stand', 'up', 'and', 'run', 'our', 'data', 'platform.”'], ai: 4 },
+        ];
+
+        // Flat timeline: type the question word by word, then construct the AI
+        // response step by step. hold = ms to dwell on each frame (live mode).
+        var FR = [];
+        for (var p = 1; p <= 4; p++) {
+          var d = PHASES[p - 1];
+          for (var w = 1; w <= d.words.length; w++) {
+            FR.push({ p: p, typed: w, ai: 0, hold: w === d.words.length ? 1000 : 105 });
+          }
+          for (var s = 1; s <= d.ai; s++) {
+            var last = s === d.ai;
+            FR.push({ p: p, typed: d.words.length, ai: s, hold: last ? (p === 4 ? 2300 : 1350) : 360 });
+          }
+        }
+
+        var $ = function (id) { return document.getElementById(id); };
+        $('hnode').innerHTML = SVG.person;
+        $('aibot').innerHTML = SVG.bot;
+        $('useic').innerHTML = SVG.growth;
+        var block = $('block');
+        var vphase = 0;
+
+        function apply(fr) {
+          var d = PHASES[fr.p - 1];
+          $('usetx').textContent = d.skill;
+          $('code').textContent = 'Phase ' + fr.p;
+          $('name').textContent = d.name;
+          if (vphase !== fr.p) { $('badge').innerHTML = SVG[d.roleIc]; $('viz').innerHTML = VIZ[d.viz]; vphase = fr.p; }
+          $('q').innerHTML = d.words.slice(0, fr.typed).join(' ');
+          block.setAttribute('data-ai', String(fr.ai));
+          block.setAttribute('data-typed', fr.typed >= d.words.length ? 'done' : 'typing');
+          var els = $('viz').querySelectorAll('[data-s]');
+          for (var i = 0; i < els.length; i++) {
+            els[i].style.visibility = (parseInt(els[i].getAttribute('data-s'), 10) <= fr.ai) ? '' : 'hidden';
+          }
+        }
+
+        var params = new URLSearchParams(location.search);
+        if (params.get('f') !== null) {
+          block.classList.add('no-anim');
+          var k = parseInt(params.get('f'), 10) || 0;
+          if (k < 0) k = 0; if (k >= FR.length) k = FR.length - 1;
+          apply(FR[k]);
+          document.title = 'frames:' + FR.length;
+          window.__frameReady = true;
+        } else {
+          var k = 0;
+          function tick() {
+            var fr = FR[k % FR.length];
+            apply(fr);
+            k++;
+            setTimeout(tick, fr.hold);
+          }
+          tick();
+        }
+      })();
+    </script>
+
+    <style is:global>
+      :root {
+        --paper-50: #ffffff; --paper-100: #faf9f5; --paper-200: #f2f0e8; --paper-300: #e6e3d8; --paper-400: #d1cdbf;
+        --ink-50: #f5f3ee; --ink-100: #e9e6df; --ink-200: #cfcbc1; --ink-300: #9a978d; --ink-400: #6e6c64;
+        --ink-500: #4a473f; --ink-600: #2f2d28; --ink-700: #1f1d1a;
+        --nightbg: #10131a; --accent: #12867e; --accent-dark: #54cfc3;
+        --bg: var(--paper-100); --card: var(--paper-50); --line: var(--paper-300);
+        --txt: var(--ink-700); --muted: var(--ink-400); --acc: var(--accent);
+        --ai-node-bg: var(--paper-50); --ai-node-bd: var(--ink-400); --ai-bub-bg: var(--paper-50);
+        --ai-bub-bd: var(--ink-300); --ai-stroke: var(--ink-600);
+        --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+        --sans: 'IBM Plex Sans', system-ui, sans-serif;
+        --display: 'Fraunces', ui-serif, Georgia, serif;
+      }
+      html.dark {
+        --bg: var(--nightbg); --card: var(--nightbg); --line: var(--ink-600);
+        --txt: var(--ink-50); --muted: var(--ink-300); --acc: var(--accent-dark);
+        --ai-node-bg: var(--nightbg); --ai-node-bd: var(--ink-300); --ai-bub-bg: var(--nightbg);
+        --ai-bub-bd: var(--ink-500); --ai-stroke: var(--ink-100);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); font-family: var(--sans); }
+      .cap-stage { width: 600px; padding: 40px 44px 48px; }
+
+      /* top title + phase label (stacked, no right column) */
+      .pf2-head {
+        display: flex; align-items: center; gap: 14px; margin: 0 0 12px;
+        font-family: var(--display); font-weight: 500; font-size: 30px;
+        letter-spacing: -0.01em; color: var(--txt);
+      }
+      .pf2-head-rule { display: inline-block; width: 40px; height: 3px; background: var(--acc); border-radius: 2px; }
+      .pf2-phase { display: flex; align-items: baseline; gap: 12px; margin: 0 0 30px; padding-left: 54px; }
+      .pf2-pcode { font-family: var(--mono); font-size: 13.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--acc); white-space: nowrap; }
+      .pf2-pname { font-family: var(--display); font-weight: 500; font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; color: var(--txt); }
+
+      .pf2 { position: relative; }
+      .pf2.no-anim * { transition: none !important; animation: none !important; }
+
+      .pf2-convo { display: flex; flex-direction: column; gap: 26px; }
+      .pf2-row { display: flex; align-items: center; gap: 14px; }
+      .pf2-row--h { justify-content: flex-start; }
+      .pf2-row--a { justify-content: flex-end; }
+
+      .pf2-human { display: flex; flex-direction: column; align-items: center; width: 72px; flex: none; }
+      .pf2-node { position: relative; display: grid; place-items: center; border-radius: 999px; flex: none; }
+      .pf2-node--h { width: 56px; height: 56px; background: var(--acc); border: 1.6px solid var(--acc); }
+      .pf2-node--h svg { width: 28px; height: 28px; fill: var(--card); stroke: none; }
+      /* fixed AI node — no longer grows per phase */
+      .pf2-node--a { width: 54px; height: 54px; background: var(--ai-node-bg); border: 1.6px solid var(--ai-node-bd); }
+      .pf2-bot { display: grid; place-items: center; }
+      .pf2-bot svg { width: 31px; height: 31px; fill: none; stroke: var(--ai-stroke); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      /* phase-specific role icon, badged on the AI node's bottom-right */
+      .pf2-badge {
+        position: absolute; right: -6px; bottom: -6px; width: 30px; height: 30px;
+        border-radius: 999px; background: var(--acc); color: var(--card);
+        display: grid; place-items: center; border: 3px solid var(--bg);
+      }
+      .pf2-badge svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+      /* bubbles — frames are fixed-size and identical across phases */
+      .pf2-bub { position: relative; border-radius: 16px; padding: 14px 18px; }
+      .pf2-bub--h { width: 446px; height: 116px; display: flex; align-items: center; background: color-mix(in srgb, var(--accent) 9%, var(--card)); border: 1.4px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+      html.dark .pf2-bub--h { background: color-mix(in srgb, var(--accent-dark) 16%, var(--nightbg)); border-color: color-mix(in srgb, var(--accent-dark) 40%, transparent); }
+      .pf2-bub--h::before { content: ''; position: absolute; left: -7px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 10px; height: 10px; background: inherit; border-left: 1.4px solid color-mix(in srgb, var(--accent) 35%, transparent); border-bottom: 1.4px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+      html.dark .pf2-bub--h::before { border-color: color-mix(in srgb, var(--accent-dark) 40%, transparent); }
+      .pf2-bub--a { width: 422px; height: 222px; display: flex; align-items: stretch; background: var(--ai-bub-bg); border: 1.4px solid var(--ai-bub-bd); }
+      .pf2-bub--a::after { content: ''; position: absolute; right: -7px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 10px; height: 10px; background: inherit; border-right: 1.4px solid var(--ai-bub-bd); border-top: 1.4px solid var(--ai-bub-bd); }
+
+      .pf2-hbody { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+      .pf2-abody { display: flex; flex-direction: column; gap: 9px; width: 100%; height: 100%; opacity: 0; transition: opacity 260ms ease; }
+      #block:not([data-ai="0"]) .pf2-abody { opacity: 1; }
+      .pf2-viz { flex: 1; display: flex; width: 100%; min-height: 0; }
+      .pf2-fig { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 0; }
+
+      .pf2-hhead, .pf2-ahead { display: flex; align-items: center; gap: 12px; }
+      .pf2-tag { font-family: var(--mono); font-size: 14.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--acc); }
+      .pf2-tag--a { color: var(--muted); }
+      .pf2-use {
+        display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 13px;
+        letter-spacing: 0.05em; text-transform: uppercase; color: var(--acc);
+        background: var(--card); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+        border-radius: 999px; padding: 3px 11px 3px 8px; white-space: nowrap;
+      }
+      html.dark .pf2-use { border-color: color-mix(in srgb, var(--accent-dark) 50%, transparent); }
+      .pf2-use-ic { display: inline-grid; place-items: center; }
+      .pf2-use-ic svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+      .pf2-content { font-size: 21px; color: var(--txt); line-height: 1.4; }
+      .pf2-content code { font-family: var(--mono); font-size: 19px; }
+      /* blinking type caret */
+      .pf2-caret { display: inline-block; width: 2px; height: 1.05em; margin-left: 1px; vertical-align: -0.16em; background: var(--acc); animation: pf2-blink 1s steps(2, start) infinite; }
+      #block[data-typed="done"] .pf2-caret { display: none; }
+      @keyframes pf2-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+      /* AI viz blocks */
+      .pf2-system { display: flex; flex-direction: column; gap: 9px; width: 100%; height: 100%; }
+      .pf2-system-tag { font-family: var(--mono); font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+      .pf2-foot { font-family: var(--mono); font-size: 14px; letter-spacing: 0.03em; color: var(--ink-300); }
+      .pf2-ans { display: inline-flex; flex-direction: column; gap: 8px; }
+      .pf2-ln { display: block; height: 5px; border-radius: 3px; background: var(--ink-300); opacity: 0.8; }
+      .pf2-ln:nth-of-type(1) { width: 176px; } .pf2-ln:nth-of-type(2) { width: 228px; } .pf2-ln:nth-of-type(3) { width: 196px; } .pf2-ln--short { width: 124px; }
+      .pf2-draft { display: inline-flex; align-items: center; gap: 11px; }
+      .pf2-draft-ic svg { width: 36px; height: 36px; fill: none; stroke: var(--ink-500); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+      html.dark .pf2-draft-ic svg { stroke: var(--ink-200); }
+      .pf2-draft-tx { font-family: var(--mono); font-size: 15px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-500); }
+      html.dark .pf2-draft-tx { color: var(--ink-300); }
+      .pf2-verify { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 999px; background: var(--ink-500); color: var(--paper-50); font-size: 15px; }
+      html.dark .pf2-verify { background: var(--ink-300); color: var(--nightbg); }
+      .pf2-code-lines { display: inline-flex; flex-direction: column; gap: 7px; align-items: center; }
+      .pf2-cl { display: block; height: 5px; border-radius: 3px; background: var(--ink-200); }
+      .pf2-cl--ind { margin-left: 16px; }
+      .pf2-tree { display: block; width: 264px; height: auto; }
+      .pf2-org { display: block; width: 244px; height: auto; }
+      .pf-tw { fill: none; stroke: var(--ink-300); stroke-width: 1.8; }
+      .pf-tdot { fill: var(--card); stroke: var(--ink-400); stroke-width: 1.7; }
+      .pf-tend { fill: var(--ink-500); } html.dark .pf-tend { fill: var(--ink-300); }
+      .pf-tcheck { fill: none; stroke: var(--paper-50); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; } html.dark .pf-tcheck { stroke: var(--nightbg); }
+      .pf-ow { fill: none; stroke: var(--ink-400); stroke-width: 1.7; stroke-linecap: round; color: var(--ink-400); } html.dark .pf-ow { stroke: var(--ink-300); color: var(--ink-300); }
+      .pf-return { fill: none; stroke: var(--ink-500); stroke-width: 1.5; stroke-dasharray: 3 3.5; stroke-linecap: round; opacity: 0.75; color: var(--ink-500); } html.dark .pf-return { stroke: var(--ink-300); color: var(--ink-300); }
+      .pf-agent circle { fill: var(--ink-500); } html.dark .pf-agent circle { fill: var(--ink-300); }
+      .pf-agent use { fill: none; stroke: var(--paper-50); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; } html.dark .pf-agent use { stroke: var(--nightbg); }
+      .pf-agent--mgr circle { stroke: var(--ink-500); stroke-width: 3.5; paint-order: stroke; } html.dark .pf-agent--mgr circle { stroke: var(--ink-300); }
+    </style>
+  </body>
+</html>
