@@ -68,7 +68,7 @@
 
   /* ---------- site nav bar (mirrors the main site's TopBar) ---------- */
   .sitebar { background: var(--ivory); border-bottom: 1px solid var(--g200); }
-  .sitebar-in { max-width: 1180px; margin: 0 auto; padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 28px; }
+  .sitebar-in { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 28px; }
   .sb-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
   .sb-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: var(--ivory); font-family: var(--serif); font-weight: 600; font-size: 16px; line-height: 1; }
   .sb-name { font-family: var(--serif); font-weight: 500; font-size: 16px; letter-spacing: -0.01em; color: var(--slate); }
@@ -97,8 +97,8 @@
   .theme-pill__thumb { position:absolute; top:50%; left:3px; transform:translateY(-50%); width:22px; height:22px; border-radius:9999px; background-color:#fbf6ec; box-shadow:0 1px 3px rgba(0,0,0,0.18); transition:left 220ms cubic-bezier(0.4,0,0.2,1), background-color 220ms; z-index:1; }
   html.dark .theme-pill__thumb { left:calc(100% - 25px); background-color:#1d2129; box-shadow:0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06) inset; }
 
-  /* ---------- article (single centered column) ---------- */
-  .post { max-width: 680px; margin: 0 auto; padding: 72px 24px 104px; }
+  /* ---------- article (single centered column, matches main-site 960px container) ---------- */
+  .post { max-width: 960px; margin: 0 auto; padding: 64px 24px 104px; }
 
   .post-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
   .post-eyebrow::before { content: ""; width: 30px; height: 2px; background: var(--accent); display: inline-block; }
@@ -115,25 +115,6 @@
   .tldr .lbl { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
   .tldr p { margin: 0 0 12px; font-size: 18px; line-height: 1.62; color: var(--slate); }
   .tldr p:last-child { margin-bottom: 0; }
-
-  /* table of contents — inline by default, fixed left sidebar on wide screens */
-  .toc { margin: 40px 0 0; }
-  .toc .lbl { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--g500); margin-bottom: 10px; }
-  .toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; }
-  .toc li { counter-increment: toc; margin: 0 0 6px; line-height: 1.4; }
-  .toc a { font-size: 13px; color: var(--g700); text-decoration: none; }
-  .toc a:hover { color: var(--accent); }
-  .toc a::before { content: counter(toc, decimal-leading-zero); font-family: var(--mono); font-size: 10.5px; color: var(--accent); margin-right: 9px; }
-
-  @media (min-width: 1180px) {
-    .toc {
-      position: fixed; top: 120px; left: calc(50% - 562px); width: 188px; margin: 0;
-      max-height: calc(100vh - 150px); overflow: auto;
-    }
-    .toc .lbl { font-size: 9.5px; }
-    .toc a { font-size: 12px; }
-    .toc a::before { font-size: 10px; margin-right: 8px; }
-  }
 
   /* sections */
   .post section { margin-top: 64px; }
@@ -224,74 +205,63 @@
 
   <div class="tldr">
     <span class="lbl">TL;DR</span>
-    <p>The race in AI is making machines build their own successors. So do humans still matter? We think yes. Humans are still needed to catch the mistakes AI makes before they cause real harm. But staying capable of doing that doesn't happen on its own. The same convenience that makes AI useful also erodes the skills we need to do the job effectively. That's why we argue that human evolution should be a first-class goal of human-AI co-evolution: humans need to actively practice and sustain those skills.</p>
+    <p>The race in AI is making machines build their own successors. So do humans still matter? <strong>We think yes.</strong> Humans are still needed to catch the mistakes AI makes before they cause real harm. But staying capable of doing that doesn't happen on its own. The same convenience that makes AI useful also erodes the skills we need to do the job effectively. That's why we argue that <strong>human evolution should be a first-class goal of human-AI co-evolution</strong>: humans need to actively practice and sustain those skills.</p>
   </div>
-
-  <nav class="toc" aria-label="Contents">
-    <span class="lbl">Contents</span>
-    <ol>
-      <li><a href="#sec-us">What happens to us?</a></li>
-      <li><a href="#sec-phases">Using AI well isn't one skill</a></li>
-      <li><a href="#sec-institutions">It isn't only on you</a></li>
-      <li><a href="#sec-objections">But won't this stop mattering once AI is good enough?</a></li>
-      <li><a href="#sec-future">The future we're betting on</a></li>
-    </ol>
-  </nav>
 
   <section id="sec-us">
     <h2><span class="idx">01</span>What happens to us?</h2>
-    <p>Lately, most attention in AI has been on the machines themselves. Big labs are even building AI that builds AI. Just this month, Anthropic said its goal is a system "capable of fully autonomously designing and developing its own successor," and forecasts like AI 2027 ask the same question: what comes after the model we have now? The whole conversation is about how far the machines can go.</p>
+    <p>Lately, most attention in AI has been on the machines themselves. Big labs are even building AI that builds AI. Just this month, Anthropic said its goal is a system <em>"capable of fully autonomously designing and developing its own successor,"</em> and forecasts like AI 2027 ask the same question: what comes after the model we have now? The whole conversation is about how far the machines can go.</p>
     <p>But what about us? As AI gets better at doing things for us, what happens to us?</p>
     <p>We still matter, of course, but staying relevant won't always happen automatically. Even very capable systems fail sometimes, and when they do, humans need to step in and fix it. The problem is that the convenience AI brings also quietly removes our chance to practice the underlying skills. And over time, you may find you can't do something as well as you once could.</p>
-    <p>This isn't just a theory. Doctors who trusted AI the most accepted 18 percent more wrong diagnoses than those who trusted it less. Programmers using AI assistants shipped code with security vulnerabilities while feeling more confident it was safe. In both cases, the most concerning part isn't that the AI made a mistake. It's that the people had lost the ability to catch it.</p>
-    <p>And the damage doesn't stop with you. It runs in three directions at once. It weakens you, the person who can no longer catch the error. It degrades the AI itself: every time you accept a polished but wrong answer, your "looks good to me" becomes training data, and the next model learns that sounding confident beats being right. And it spreads to the institutions we all depend on, which we'll come back to.</p>
-    <p>So here's what we're arguing: keeping humans capable shouldn't be a side effect of building better AI. Human evolution should be treated as a first-class goal in human-AI co-evolution.</p>
+    <p>This isn't just a theory. Doctors who trusted AI the most accepted 18 percent more wrong diagnoses than those who trusted it less. Programmers using AI assistants shipped code with security vulnerabilities while feeling <em>more</em> confident it was safe. In both cases, the most concerning part isn't that the AI made a mistake. It's that the people had lost the ability to catch it.</p>
+    <p>And the damage doesn't stop with you. It runs in three directions at once. It weakens you, the person who can no longer catch the error. It degrades the AI itself: every time you accept a polished but wrong answer, your <em>"looks good to me"</em> becomes training data, and the next model learns that sounding confident beats being right. And it spreads to the institutions we all depend on, which we'll come back to.</p>
+    <p>So here's what we're arguing: keeping humans capable shouldn't be a side effect of building better AI. <strong>Human evolution should be treated as a first-class goal in human-AI co-evolution.</strong></p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>AI brings us convenience, but it can still make mistakes. The same convenience it brings also erodes our skills to catch the mistakes. Thus human evolution is needed to keep practicing and sustaining the skills.</p>
+      <p>AI brings us convenience, but it can still make mistakes. The same convenience it brings also erodes our skills to catch the mistakes. <strong>Thus human evolution is needed to keep practicing and sustaining the skills.</strong></p>
     </div>
   </section>
 
   <section id="sec-phases">
     <h2><span class="idx">02</span>Using AI well isn't one skill</h2>
-    <p>What we keep noticing is that "using AI well" changes as you hand over more of the work.</p>
+    <p>What we keep noticing is that <em>"using AI well"</em> <strong>changes as you hand over more of the work</strong>.</p>
     <p>When AI is just something you ask, the risk is that getting an answer is so easy that you stop thinking first and start accepting whatever comes back. And when the AI is wrong, absorbing that mistake undermines your own understanding, just like those doctors. The fix is to keep reasoning for yourself: take a moment to think before you ask, then notice where the AI changed your mind.</p>
     <p>When AI starts producing artifacts for you, the risk is that you get less practice at the skills needed to evaluate them well. As a result, you miss flaws you would once have caught yourself. What helps is knowing what a good result actually requires, and deciding in advance what it has to get right before you accept it, rather than trusting how polished it looks.</p>
     <p>When AI runs a whole workflow on its own, the risk is that watching is harder than doing. From the outside everything seems to run smoothly, but it can quietly drift off track, and you won't notice until it's already done. So you have to decide in advance where you'll check in, and put your attention on the parts that matter most instead of trying to review everything.</p>
     <p>And eventually AI won't just run one task but coordinate many of them, with agents dividing the work among themselves. At that point you can't watch the steps, only the result, and it's hard to tell whether it still matches what you wanted. The skill there is setting the rules up front and then checking samples to see whether the system stayed inside them.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>There's no single skill called "using AI well." It changes as you delegate more, from reasoning, to evaluating, to overseeing, to governing, and each one fades the moment you stop using it.</p>
+      <p>There's no single skill called "using AI well." It changes as you delegate more, <strong>from reasoning, to evaluating, to overseeing, to governing</strong>, and each one fades the moment you stop using it.</p>
     </div>
   </section>
 
   <section id="sec-institutions">
     <h2><span class="idx">03</span>It isn't only on you</h2>
-    <p>We keep saying "you," but this was never only about individuals. The same thing also happens in the institutions we depend on. When students lean on AI without learning the underlying skills, a degree stops telling you what a person can actually do. When nobody in a company can verify what the AI produced, mistakes don't get caught. They get passed along and shipped at scale. And when no one can explain how an AI-driven decision was made, accountability falls apart, and trust goes with it.</p>
+    <p>We keep saying "you," but <strong>this was never only about individuals</strong>. The same thing also happens in the institutions we depend on. When students lean on AI without learning the underlying skills, a degree stops telling you what a person can actually do. When nobody in a company can verify what the AI produced, mistakes don't get caught. They get passed along and shipped at scale. And when no one can explain how an AI-driven decision was made, accountability falls apart, and trust goes with it.</p>
     <p>The good news is that these institutions can also scale human evolution. Schools can teach and test these skills, companies can build checking into the way work moves through them, and society can write rules that keep these systems open enough for a human to actually oversee them.</p>
     <p>Meanwhile, AI developers can evolve the interaction patterns to support this. For example, a chatbot can show how confident it is about each part of its answer and flag what it's unsure of, so you know where to focus your attention. A coding assistant can surface the assumptions it made instead of hiding them behind a clean draft. An agent running a workflow can pause at the key moments and check in rather than running silently to the end. And a system coordinating other agents can summarize what it decided and why, instead of handing you only the final result. All of these lower the effort it takes for a human to keep up the practice at each phase, but the practice still has to be ours.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>This impact of failed human evolution goes beyond the individual. A degree, a company's quality chain, a society's accountability, each breaks the same way, and each can be rebuilt the same way: by making these skills something we teach, test, and require.</p>
+      <p>This impact of failed human evolution goes beyond the individual. A degree, a company's quality chain, a society's accountability, each breaks the same way, and each can be rebuilt the same way: by making these skills something <strong>we teach, test, and require</strong>.</p>
     </div>
   </section>
 
   <section id="sec-objections">
     <h2><span class="idx">04</span>But won't this stop mattering once AI is good enough?</h2>
     <p>It's a fair question, and we've heard it a few ways.</p>
-    <p>One version is "just make the AI more reliable." But better models fail less, not never, and someone still has to step in and decide which risks are acceptable in the first place. That was never the machine's call to make.</p>
-    <p>Another is "we'll adapt naturally, like we always have." Some of that's true. But these skills come from practice, and handing the practice to AI is exactly what takes it away. Practicing on purpose beats waiting to learn the lesson after something has already gone wrong.</p>
-    <p>The last one is "let AI supervise AI." It's a good idea, and we should do it. But a monitor still needs a person to tell it what to watch for, and it can share the same blind spots as the system it's checking. Pile automation on automation with no capable human on top, and you've just built one more thing nobody can really govern.</p>
+    <p>One version is <em>"just make the AI more reliable."</em> But better models <strong>fail less, not never</strong>, and someone still has to step in and decide which risks are acceptable in the first place. That was never the machine's call to make.</p>
+    <p>Another is <em>"we'll adapt naturally, like we always have."</em> Some of that's true. But these skills come from practice, and handing the practice to AI is exactly what takes it away. Practicing on purpose beats waiting to learn the lesson after something has already gone wrong.</p>
+    <p>The last one is <em>"let AI supervise AI."</em> It's a good idea, and we should do it. But a monitor still needs a person to tell it what to watch for, and it can share the same blind spots as the system it's checking. Pile automation on automation with no capable human on top, and you've just built one more thing nobody can really govern.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>Better models, natural adaptation, and AI watching AI do not remove the need for human evolution. Humans still have to decide what's acceptable, choose to keep practicing, and tell the watchdog what to watch for.</p>
+      <p>Better models, natural adaptation, and AI watching AI do not remove the need for human evolution. <strong>Humans still have to decide what's acceptable</strong>, choose to keep practicing, and tell the watchdog what to watch for.</p>
     </div>
   </section>
 
   <section id="sec-future">
     <h2><span class="idx">05</span>The future we're betting on</h2>
-    <p>AI runs fast. Humans see far. The future depends on both.</p>
-    <p>But that future doesn't happen by accident. It takes humans who keep growing, not just the tools they build. The good news is that it starts the next time you open a chat window, in the thirty seconds you take to think before you ask.</p>
+    <p><strong>AI runs fast. Humans see far. The future depends on both.</strong></p>
+    <p>But that future doesn't happen by accident. It takes humans who keep growing, not just the tools they build. The good news is that it starts the next time you open a chat window, <strong>in the thirty seconds you take to think before you ask</strong>.</p>
   </section>
 
   <div class="post-foot">
