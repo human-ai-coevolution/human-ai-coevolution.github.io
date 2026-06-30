@@ -68,7 +68,7 @@
 
   /* ---------- site nav bar (mirrors the main site's TopBar) ---------- */
   .sitebar { background: var(--ivory); border-bottom: 1px solid var(--g200); }
-  .sitebar-in { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 28px; }
+  .sitebar-in { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 28px; }
   .sb-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
   .sb-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: var(--ivory); font-family: var(--serif); font-weight: 600; font-size: 16px; line-height: 1; }
   .sb-name { font-family: var(--serif); font-weight: 500; font-size: 16px; letter-spacing: -0.01em; color: var(--slate); }
@@ -97,8 +97,52 @@
   .theme-pill__thumb { position:absolute; top:50%; left:3px; transform:translateY(-50%); width:22px; height:22px; border-radius:9999px; background-color:#fbf6ec; box-shadow:0 1px 3px rgba(0,0,0,0.18); transition:left 220ms cubic-bezier(0.4,0,0.2,1), background-color 220ms; z-index:1; }
   html.dark .theme-pill__thumb { left:calc(100% - 25px); background-color:#1d2129; box-shadow:0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06) inset; }
 
-  /* ---------- article (single centered column, matches main-site 960px container) ---------- */
-  .post { max-width: 960px; margin: 0 auto; padding: 64px 24px 104px; }
+  /* ---------- layout: prose + sticky scroll-synced chart ---------- */
+  .scrolly { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 56px; max-width: 1120px; margin: 0 auto; padding: 0 24px; align-items: stretch; }
+  .post { min-width: 0; padding: 64px 0 104px; }
+  .chart-col { padding-top: 64px; }
+  .chart-sticky { position: sticky; top: 13vh; }
+  @media (max-width: 980px) {
+    .scrolly { grid-template-columns: 1fr; max-width: 720px; }
+    .chart-col { display: none; }
+  }
+
+  /* ---------- gap chart ---------- */
+  .gapchart-wrap { border: 1px solid var(--g200); border-radius: 14px; background: var(--paper); padding: 16px 16px 14px; }
+  .gapchart-head { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g500); margin: 0 0 10px; line-height: 1.4; }
+  .gapchart-legend { display: flex; flex-wrap: wrap; gap: 5px 14px; margin: 0 0 12px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.01em; color: var(--g500); }
+  .gapchart-legend span { display: inline-flex; align-items: center; }
+  .gapchart-legend .sw { display: inline-block; margin-right: 6px; }
+  .sw-ai { width: 17px; border-top: 2.8px solid var(--accent); }
+  .sw-catch { width: 12px; height: 10px; border-radius: 2px; background: var(--accent); opacity: 0.5; }
+  .sw-gap { width: 12px; height: 10px; border-radius: 2px; background: #D97757; opacity: 0.55; }
+  .gapchart svg { display: block; width: 100%; height: auto; }
+  .achieved-area { fill: var(--accent); opacity: 0.13; }
+  /* direct (in-chart) labels — no legend needed */
+  .lbl-ai { font-family: var(--mono); font-size: 9px; font-weight: 600; fill: var(--accent); }
+  .lbl-gap { font-family: var(--mono); font-size: 9.5px; font-weight: 600; fill: #b4623f; }
+  html.dark .lbl-gap { fill: #e0a48c; }
+  .lbl-catch { font-family: var(--mono); font-size: 9.5px; font-weight: 600; fill: var(--accent-d); }
+  .gapchart-cap { margin: 12px 2px 0; font-size: 13.5px; line-height: 1.55; color: var(--g700); min-height: 3.4em; transition: opacity .28s ease; }
+  .gapchart-cap b { color: var(--accent); font-weight: 600; }
+  /* svg elements (themed via vars) */
+  .ai-line { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+  .ai-area { fill: var(--accent); opacity: 0.10; }
+  .hum-line { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-dasharray: 6 5; stroke-linejoin: round; stroke-linecap: round; }
+  .gap-fill { fill: #D97757; }
+  .head-line { stroke: var(--g300); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .head-dot-ai { fill: var(--accent); }
+  .head-dot-hum { fill: var(--accent); }
+  .axis-base { stroke: var(--g300); stroke-width: 1; }
+  .xlab { font-family: var(--mono); font-size: 9.3px; letter-spacing: 0.01em; fill: var(--g500); }
+  .xlab.on { fill: var(--accent); font-weight: 600; }
+  .skill-lbl { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.03em; fill: var(--accent); }
+  .acc-head { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.05em; fill: var(--accent-d); }
+  .acc-chip rect { fill: var(--paper); stroke: var(--accent); stroke-width: 1; }
+  .acc-chip text { font-family: var(--mono); font-size: 7.5px; fill: var(--accent-d); }
+  .obj-chip { fill: var(--g100); stroke: var(--g300); stroke-width: 0.8; }
+  .obj-txt { font-family: var(--mono); font-size: 9px; fill: var(--g500); }
+  .obj-strike { stroke: #D97757; stroke-width: 1.2; stroke-linecap: round; }
 
   .post-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
   .post-eyebrow::before { content: ""; width: 30px; height: 2px; background: var(--accent); display: inline-block; }
@@ -201,6 +245,7 @@
 </nav>
 
 <!-- ============== ARTICLE ============== -->
+<div class="scrolly">
 <article class="post">
 
   <p class="post-eyebrow">Human–AI Coevolution</p>
@@ -238,13 +283,13 @@
   <section id="sec-phases">
     <h2><span class="idx">02</span>Using AI well isn't one skill</h2>
     <p><strong>What we keep noticing is that "using AI well" changes as you hand over more of the work.</strong></p>
-    <p class="phase-mark"><span class="pm-no">1</span>Human Use AI as Tool</p>
+    <p class="phase-mark" data-cue="p1"><span class="pm-no">1</span>Human Use AI as Tool</p>
     <p>When AI is just something you ask, the risk is that getting an answer is so easy that you stop thinking first and start accepting whatever comes back. And when the AI is wrong, absorbing that mistake undermines your own understanding, just like those doctors. The fix is to keep reasoning for yourself: take a moment to think before you ask, then notice where the AI changed your mind.</p>
-    <p class="phase-mark"><span class="pm-no">2</span>Human Use AI as Assistant</p>
+    <p class="phase-mark" data-cue="p2"><span class="pm-no">2</span>Human Use AI as Assistant</p>
     <p>When AI starts producing artifacts for you, the risk is that you get less practice at the skills needed to evaluate them well. As a result, you miss flaws you would once have caught yourself. What helps is knowing what a good result actually requires, and deciding in advance what it has to get right before you accept it, rather than trusting how polished it looks.</p>
-    <p class="phase-mark"><span class="pm-no">3</span>Human Use AI as Executor</p>
+    <p class="phase-mark" data-cue="p3"><span class="pm-no">3</span>Human Use AI as Executor</p>
     <p>When AI runs a whole workflow on its own, the risk is that watching is harder than doing. From the outside everything seems to run smoothly, but it can quietly drift off track, and you won't notice until it's already done. So you have to decide in advance where you'll check in, and put your attention on the parts that matter most instead of trying to review everything.</p>
-    <p class="phase-mark"><span class="pm-no">4</span>Human Use AI as Organization</p>
+    <p class="phase-mark" data-cue="p4"><span class="pm-no">4</span>Human Use AI as Organization</p>
     <p>And eventually AI won't just run one task but coordinate many of them, with agents dividing the work among themselves. At that point you can't watch the steps, only the result, and it's hard to tell whether it still matches what you wanted. The skill there is setting the rules up front and then checking samples to see whether the system stayed inside them.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
@@ -288,5 +333,215 @@
 
 </article>
 
+<aside class="chart-col" aria-hidden="false">
+  <div class="chart-sticky">
+    <div class="gapchart-wrap">
+      <p class="gapchart-head">AI capability vs. our ability to catch its mistakes</p>
+      <div class="gapchart-legend">
+        <span><i class="sw sw-ai"></i>AI capability</span>
+        <span><i class="sw sw-catch"></i>you resolved</span>
+        <span><i class="sw sw-gap"></i>potential harm</span>
+      </div>
+      <div class="gapchart">
+        <svg id="gap-svg" viewBox="0 0 320 300" role="img" aria-label="Chart: AI capability rises while the human ability to catch mistakes stays flat, opening a risk gap that closes only when humans keep practicing.">
+          <path id="achieved-area" class="achieved-area" d="" />
+          <path id="gap-fill" class="gap-fill" d="" opacity="0.22" />
+          <path id="hum-line" class="hum-line" d="" />
+          <path id="ai-line" class="ai-line" d="" />
+
+          <text id="lbl-ai" class="lbl-ai" x="296" text-anchor="end">AI capability</text>
+          <text id="lbl-gap" class="lbl-gap" text-anchor="middle" opacity="0">potential harm</text>
+          <text id="lbl-catch" class="lbl-catch" text-anchor="middle" opacity="0">you resolved</text>
+
+          <g id="g-inst" opacity="0">
+            <text class="acc-head" x="235" y="115" text-anchor="middle">&#8593; accelerated by</text>
+            <g class="acc-chip"><rect x="197" y="123" width="76" height="14" rx="4"/><text x="235" y="132.6" text-anchor="middle">schools</text></g>
+            <g class="acc-chip"><rect x="197" y="141" width="76" height="14" rx="4"/><text x="235" y="150.6" text-anchor="middle">companies</text></g>
+            <g class="acc-chip"><rect x="197" y="159" width="76" height="14" rx="4"/><text x="235" y="168.6" text-anchor="middle">society</text></g>
+            <g class="acc-chip"><rect x="197" y="177" width="76" height="14" rx="4"/><text x="235" y="186.6" text-anchor="middle">AI interfaces</text></g>
+          </g>
+
+          <g id="g-obj" opacity="0">
+            <g transform="translate(34,30)"><rect class="obj-chip" width="106" height="16" rx="4"/><text class="obj-txt" x="7" y="10">make AI reliable</text><line class="obj-strike" x1="5" y1="8" x2="101" y2="8"/></g>
+            <g transform="translate(34,49)"><rect class="obj-chip" width="106" height="16" rx="4"/><text class="obj-txt" x="7" y="10">adapt naturally</text><line class="obj-strike" x1="5" y1="8" x2="101" y2="8"/></g>
+            <g transform="translate(34,68)"><rect class="obj-chip" width="106" height="16" rx="4"/><text class="obj-txt" x="7" y="10">AI watches AI</text><line class="obj-strike" x1="5" y1="8" x2="101" y2="8"/></g>
+          </g>
+
+          <g id="head" opacity="0">
+            <line id="head-line" class="head-line" x1="0" y1="24" x2="0" y2="256"/>
+            <circle id="head-ai" class="head-dot-ai" r="3.6"/>
+            <circle id="head-hum" class="head-dot-hum" r="3.6"/>
+          </g>
+          <text id="skill" class="skill-lbl" x="0" y="16" text-anchor="middle" opacity="0"></text>
+
+          <line class="axis-base" x1="28" y1="256" x2="296" y2="256"/>
+          <text class="xlab" data-i="0" x="26" y="272" text-anchor="start">Tool</text>
+          <text class="xlab" data-i="1" x="115" y="272" text-anchor="middle">Assistant</text>
+          <text class="xlab" data-i="2" x="196" y="272" text-anchor="middle">Executor</text>
+          <text class="xlab" data-i="3" x="302" y="272" text-anchor="end">Organization</text>
+        </svg>
+      </div>
+      <p class="gapchart-cap" id="gap-cap"></p>
+    </div>
+  </div>
+</aside>
+</div>
+
+<script>
+/* ── Scroll-synced "gap" chart (Architecture C: directive config) ───────────
+   The chart is one continuous figure; each blog section/cue points at a frame.
+   Sections drive the chart's state — they need not map 1:1 to chart phases. */
+(function () {
+  var svg = document.getElementById('gap-svg');
+  if (!svg) return;
+  var mqDesktop = window.matchMedia('(min-width: 981px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // plot geometry
+  var P = { x0: 28, x1: 296, y0: 24, y1: 256 };
+  var XS = [P.x0, P.x0 + (P.x1 - P.x0) / 3, P.x0 + 2 * (P.x1 - P.x0) / 3, P.x1];
+  var Y = function (v) { return P.y1 - (P.y1 - P.y0) * v; };
+
+  // frames (numeric fields lerp; cap/skill are categorical)
+  var SKILLS = ['Critical thinking', 'Evaluative expertise', 'Supervisory judgement', 'Systems thinking'];
+  var F = {
+    risk:   { ai:[.30,.52,.74,.93], hum:[0,0,0,0],         head:0, headOn:0, inst:0, obj:0, skill:-1,
+              cap:'At first the human sits at the bottom — <b>everything AI does is potential harm</b>, unchecked.' },
+    p1:     { ai:[.30,.52,.74,.93], hum:[.10,.17,.24,.31], head:0, headOn:1, inst:0, obj:0, skill:0,
+              cap:'<b>Tool.</b> You ask; AI answers. <b>Critical thinking</b> starts resolving the misses.' },
+    p2:     { ai:[.30,.52,.74,.93], hum:[.17,.30,.43,.54], head:1, headOn:1, inst:0, obj:0, skill:1,
+              cap:'<b>Assistant.</b> AI drafts; you verify. <b>Evaluative expertise</b> resolves more.' },
+    p3:     { ai:[.30,.52,.74,.93], hum:[.24,.42,.59,.74], head:2, headOn:1, inst:0, obj:0, skill:2,
+              cap:'<b>Executor.</b> AI runs the workflow. You check higher up — <b>supervisory judgement</b>.' },
+    p4:     { ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:1, inst:0, obj:0, skill:3,
+              cap:'<b>Organization.</b> AI coordinates many agents. With <b>systems thinking</b> you govern the whole system — <b>nothing is left unresolved</b>.' },
+    inst:   { ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:1, obj:0, skill:-1,
+              cap:'It isn’t only on you — <b>schools, companies, society, and better AI interfaces</b> get everyone here faster.' },
+    obj:    { ai:[.34,.58,.80,1.0], hum:[.34,.58,.80,1.0], head:3, headOn:0, inst:0, obj:1, skill:-1,
+              cap:'Better models, natural adaptation, AI&#8209;watching&#8209;AI — <b>none of them replace a practiced human</b>.' },
+    future: { ai:[.34,.58,.80,1.0], hum:[.34,.58,.80,1.0], head:3, headOn:0, inst:0, obj:0, skill:-1,
+              cap:'<b>AI runs fast. Humans see far.</b> Keep evolving and <b>no harm is left</b>.' },
+  };
+
+  // directive config (document order). interp: blend toward the next frame across the segment.
+  var SCRIPT = [
+    { sel: '#sec-us',            f: 'risk',   interp: false },
+    { sel: '[data-cue="p1"]',    f: 'p1',     interp: true },
+    { sel: '[data-cue="p2"]',    f: 'p2',     interp: true },
+    { sel: '[data-cue="p3"]',    f: 'p3',     interp: true },
+    { sel: '[data-cue="p4"]',    f: 'p4',     interp: true },
+    { sel: '#sec-institutions',  f: 'inst',   interp: false },
+    { sel: '#sec-objections',    f: 'obj',    interp: false },
+    { sel: '#sec-future',        f: 'future', interp: true },
+  ];
+  var anchors = SCRIPT.map(function (d) { return document.querySelector(d.sel); });
+  // drop directives whose anchor is missing (fail soft)
+  var DIRS = SCRIPT.filter(function (d, i) { return anchors[i]; });
+  anchors = anchors.filter(Boolean);
+  if (!DIRS.length) return;
+
+  // svg handles
+  var el = function (id) { return document.getElementById(id); };
+  var gapFill = el('gap-fill'), achievedArea = el('achieved-area'), aiLine = el('ai-line'), humLine = el('hum-line');
+  var headG = el('head'), headLine = el('head-line'), headAi = el('head-ai'), headHum = el('head-hum');
+  var skillT = el('skill'), gInst = el('g-inst'), gObj = el('g-obj');
+  var lblAi = el('lbl-ai'), lblGap = el('lbl-gap'), lblCatch = el('lbl-catch');
+  var cap = el('gap-cap'), xlabs = svg.querySelectorAll('.xlab');
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpArr(a, b, t) { return a.map(function (v, i) { return lerp(v, b[i], t); }); }
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+
+  // interpolate position/value along the 4 x-anchors at continuous head 0..3
+  function atHead(arr, h) { var i = Math.max(0, Math.min(2, Math.floor(h))); return lerp(arr[i], arr[i + 1], h - i); }
+
+  function linePath(arr) { return arr.map(function (v, i) { return (i ? 'L' : 'M') + XS[i].toFixed(1) + ',' + Y(v).toFixed(1); }).join(' '); }
+  function areaPath(arr) { return linePath(arr) + ' L' + P.x1 + ',' + P.y1 + ' L' + P.x0 + ',' + P.y1 + ' Z'; }
+  function gapPath(ai, hum) {
+    var d = 'M' + XS[0] + ',' + Y(ai[0]).toFixed(1);
+    for (var i = 1; i < 4; i++) d += ' L' + XS[i] + ',' + Y(ai[i]).toFixed(1);
+    for (var j = 3; j >= 0; j--) d += ' L' + XS[j] + ',' + Y(hum[j]).toFixed(1);
+    return d + ' Z';
+  }
+
+  var cur = { ai: F.risk.ai.slice(), hum: F.risk.hum.slice(), head: 0, headOn: 0, inst: 0, obj: 0 };
+  var lastCap = '';
+
+  function targetState() {
+    var line = window.innerHeight * 0.5, act = 0;
+    for (var k = 0; k < anchors.length; k++) { if (anchors[k].getBoundingClientRect().top <= line) act = k; else break; }
+    var dir = DIRS[act], A = F[dir.f], next = DIRS[act + 1];
+    var p = 0;
+    if (dir.interp && next) {
+      var a = anchors[act].getBoundingClientRect().top, b = anchors[act + 1].getBoundingClientRect().top;
+      p = clamp01((line - a) / (b - a || 1));
+    }
+    var B = (dir.interp && next) ? F[next.f] : A, e = ease(p);
+    var dom = (!dir.interp || p < 0.5) ? A : B;
+    return {
+      ai: lerpArr(A.ai, B.ai, e), hum: lerpArr(A.hum, B.hum, e),
+      head: lerp(A.head, B.head, e), headOn: lerp(A.headOn, B.headOn, e),
+      inst: lerp(A.inst, B.inst, e), obj: lerp(A.obj, B.obj, e),
+      skill: dom.skill, cap: dom.cap,
+    };
+  }
+
+  function render() {
+    aiLine.setAttribute('d', linePath(cur.ai));
+    achievedArea.setAttribute('d', areaPath(cur.hum)); // olive band: what your evolved skill now catches
+    humLine.setAttribute('d', linePath(cur.hum));
+    gapFill.setAttribute('d', gapPath(cur.ai, cur.hum)); // clay band: the gap (mistakes that slip through)
+    // playhead
+    var hx = lerp(XS[Math.max(0, Math.min(2, Math.floor(cur.head)))], XS[Math.max(0, Math.min(3, Math.floor(cur.head) + 1))], cur.head - Math.floor(cur.head));
+    headG.setAttribute('opacity', cur.headOn.toFixed(3));
+    headLine.setAttribute('x1', hx.toFixed(1)); headLine.setAttribute('x2', hx.toFixed(1));
+    headAi.setAttribute('cx', hx.toFixed(1)); headAi.setAttribute('cy', Y(atHead(cur.ai, cur.head)).toFixed(1));
+    headHum.setAttribute('cx', hx.toFixed(1)); headHum.setAttribute('cy', Y(atHead(cur.hum, cur.head)).toFixed(1));
+    // direct in-chart labels (replace the legend)
+    lblAi.setAttribute('y', (Y(cur.ai[3]) - 7).toFixed(1));
+    var gAi = atHead(cur.ai, 2.2), gHum = atHead(cur.hum, 2.2);
+    lblGap.setAttribute('x', lerp(XS[2], XS[3], 0.2).toFixed(1));
+    lblGap.setAttribute('y', ((Y(gAi) + Y(gHum)) / 2 + 3).toFixed(1));
+    lblGap.setAttribute('opacity', clamp01((gAi - gHum - 0.05) / 0.16).toFixed(3));
+    var cHum = atHead(cur.hum, 1.1);
+    lblCatch.setAttribute('x', lerp(XS[1], XS[2], 0.1).toFixed(1));
+    lblCatch.setAttribute('y', ((Y(cHum) + Y(0)) / 2 + 3).toFixed(1));
+    lblCatch.setAttribute('opacity', clamp01((cHum - 0.05) / 0.16).toFixed(3));
+    // overlays
+    gInst.setAttribute('opacity', cur.inst.toFixed(3));
+    gObj.setAttribute('opacity', cur.obj.toFixed(3));
+    // skill label
+    if (cur.skill >= 0) { skillT.textContent = SKILLS[cur.skill]; skillT.setAttribute('x', hx.toFixed(1)); skillT.setAttribute('opacity', (cur.headOn).toFixed(3)); }
+    else skillT.setAttribute('opacity', '0');
+    // active x label
+    xlabs.forEach(function (t) { t.classList.toggle('on', cur.headOn > 0.4 && +t.getAttribute('data-i') === Math.round(cur.head)); });
+    // caption (categorical → fade on change)
+    if (cur.cap !== lastCap) { lastCap = cur.cap; cap.style.opacity = 0; setTimeout(function () { cap.innerHTML = cur.cap; cap.style.opacity = 1; }, 140); }
+  }
+
+  var running = false, raf = 0;
+  function frame() {
+    var tg = targetState();
+    var k = reduce ? 1 : 0.16;
+    cur.ai = cur.ai.map(function (v, i) { return lerp(v, tg.ai[i], k); });
+    cur.hum = cur.hum.map(function (v, i) { return lerp(v, tg.hum[i], k); });
+    cur.head = lerp(cur.head, tg.head, k); cur.headOn = lerp(cur.headOn, tg.headOn, k);
+    cur.inst = lerp(cur.inst, tg.inst, k); cur.obj = lerp(cur.obj, tg.obj, k);
+    cur.skill = tg.skill; cur.cap = tg.cap;
+    render();
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (!running && mqDesktop.matches) { running = true; raf = requestAnimationFrame(frame); } }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
+  // init paint + run
+  cur.cap = F.risk.cap; cap.innerHTML = F.risk.cap; lastCap = F.risk.cap;
+  render();
+  start();
+  mqDesktop.addEventListener('change', function (e) { if (e.matches) start(); else stop(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
+  })();
+</script>
 </body>
 </html>
