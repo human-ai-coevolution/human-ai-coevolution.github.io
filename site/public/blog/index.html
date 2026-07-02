@@ -111,6 +111,8 @@
   .gapchart-wrap { border: 1px solid var(--g200); border-radius: 14px; background: var(--paper); padding: 16px 16px 14px; }
   .gapchart-head { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g500); margin: 0 0 10px; line-height: 1.4; }
   .gapchart svg { display: block; width: 100%; height: auto; }
+  /* paper-colored halo keeps labels legible when lines pass beneath them */
+  .gapchart svg text { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
   .achieved-area { fill: var(--accent); opacity: 0.13; }
   /* direct (in-chart) labels — no legend needed */
   .lbl-ai { font-family: var(--mono); font-size: 11px; font-weight: 600; fill: var(--accent); }
@@ -164,7 +166,7 @@
   .post p em { font-style: italic; }
 
   /* co-evolution loop gif */
-  .hero-gif { margin: 44px auto 4px; max-width: 683px; background: #FAF9F5; border: 1px solid rgba(20,20,19,0.10); border-radius: 12px; overflow: hidden; }
+  .hero-gif { margin: 44px auto 4px; max-width: 435px; background: #FAF9F5; border: 1px solid rgba(20,20,19,0.10); border-radius: 12px; overflow: hidden; }
   .hero-gif img { display: block; width: 100%; height: auto; }
 
   /* phase marks in the "Using AI well isn't one skill" section */
@@ -258,7 +260,7 @@
   </div>
 
   <figure class="hero-gif">
-    <img src="./assets/coevolution.gif" alt="Animated loop: a human figure and an AI figure evolving together, each making the other stronger." width="683" height="429" loading="lazy" />
+    <img src="./assets/coevolution.gif" alt="Animated loop: a human figure and an AI figure evolving together, each making the other stronger." width="435" height="334" loading="lazy" />
   </figure>
 
   <section id="sec-us">
@@ -502,9 +504,19 @@
     headAi.setAttribute('cx', hx.toFixed(1)); headAi.setAttribute('cy', Y(atHead(cur.ai, cur.head)).toFixed(1));
     headHum.setAttribute('cx', hx.toFixed(1)); headHum.setAttribute('cy', Y(atHead(cur.hum, cur.head)).toFixed(1));
     // direct in-chart labels (replace the legend)
-    lblAi.setAttribute('y', (Y(cur.ai[3]) - 7).toFixed(1));
-    var gAi = atHead(cur.ai, 2.2), gHum = atHead(cur.hum, 2.2);
-    lblGap.setAttribute('x', lerp(XS[2], XS[3], 0.2).toFixed(1));
+    // slide the AI label under the line end while the skill label owns the corner
+    var aiBelow = clamp01((cur.head - 1.6) / 0.5) * clamp01(cur.headOn);
+    lblAi.setAttribute('y', (Y(cur.ai[3]) + lerp(-7, 15, aiBelow)).toFixed(1));
+    // anchor "potential harm" where the band is thickest (skip the playhead column)
+    var gT = 2.2, gBest = -1;
+    [0.6, 1.2, 1.8, 2.2, 2.6].forEach(function (t) {
+      if (cur.headOn > 0.4 && Math.abs(t - cur.head) < 0.45) return;
+      var th = atHead(cur.ai, t) - atHead(cur.hum, t);
+      if (th > gBest) { gBest = th; gT = t; }
+    });
+    var gAi = atHead(cur.ai, gT), gHum = atHead(cur.hum, gT);
+    var gX = lerp(XS[Math.max(0, Math.min(2, Math.floor(gT)))], XS[Math.max(0, Math.min(3, Math.floor(gT) + 1))], gT - Math.floor(gT));
+    lblGap.setAttribute('x', Math.max(72, Math.min(gX, 248)).toFixed(1));
     lblGap.setAttribute('y', ((Y(gAi) + Y(gHum)) / 2 + 3).toFixed(1));
     lblGap.setAttribute('opacity', clamp01((gAi - gHum - 0.05) / 0.16).toFixed(3));
     var cHum = atHead(cur.hum, 1.1);
@@ -514,7 +526,7 @@
     // dashed line = the human, evolving (anchored at the line's left origin; fades once it meets AI)
     var mHum = atHead(cur.hum, 0.05), mAi = atHead(cur.ai, 0.05);
     lblHum.setAttribute('x', '30');
-    lblHum.setAttribute('y', (Y(mHum) - 7).toFixed(1));
+    lblHum.setAttribute('y', (Y(mHum) - 9).toFixed(1));
     lblHum.setAttribute('opacity', clamp01((mAi - mHum - 0.04) / 0.14).toFixed(3));
     // overlays
     gInst.setAttribute('opacity', cur.inst.toFixed(3));
