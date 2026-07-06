@@ -76,13 +76,19 @@
   .sb-links { display: flex; align-items: baseline; gap: 20px; }
   .sb-links a { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--g500); text-decoration: none; }
   .sb-links a:hover { color: var(--g700); }
+  .sb-soon { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--g300); cursor: default; }
   .sb-links a.active { color: var(--accent); text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--accent); }
   .sb-actions { margin-left: auto; display: flex; align-items: center; gap: 18px; }
   .sb-add { display: inline-flex; align-items: center; border: 1px solid var(--accent); border-radius: 8px; padding: 6px 10px; font-family: var(--mono); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); text-decoration: none; transition: background .15s ease, color .15s ease; }
   .sb-add:hover { background: var(--accent); color: var(--ivory); }
   .sb-gh { color: var(--g500); display: inline-flex; }
   .sb-gh:hover { color: var(--g700); }
-  @media (max-width: 720px) { .sb-links, .sb-add { display: none; } }
+  /* mobile: keep the nav links as a compact second row instead of hiding them */
+  @media (max-width: 720px) {
+    .sb-add { display: none; }
+    .sitebar-in { flex-wrap: wrap; height: auto; min-height: 56px; padding-top: 10px; padding-bottom: 10px; row-gap: 6px; }
+    .sb-links { order: 3; width: 100%; gap: 18px; }
+  }
 
   /* ---------- theme toggle pill ---------- */
   .theme-pill { appearance:none; background:transparent; border:0; cursor:pointer; padding:0; line-height:0; }
@@ -127,6 +133,7 @@
   .ai-area { fill: var(--accent); opacity: 0.10; }
   .hum-line { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-dasharray: 6 5; stroke-linejoin: round; stroke-linecap: round; }
   .gap-fill { fill: #D97757; }
+  html.dark .gap-fill { fill: #e0a48c; opacity: 0.26 !important; }
   .head-line { stroke: var(--g300); stroke-width: 1.2; stroke-dasharray: 3 3; }
   .head-dot-ai { fill: var(--accent); }
   .head-dot-hum { fill: var(--accent); }
@@ -168,6 +175,8 @@
   /* co-evolution loop gif */
   .hero-gif { margin: 44px auto 4px; max-width: 435px; background: #FAF9F5; border: 1px solid rgba(20,20,19,0.10); border-radius: 12px; overflow: hidden; }
   .hero-gif img { display: block; width: 100%; height: auto; }
+  html.dark .hero-gif { border-color: rgba(255,255,255,0.16); }
+  html.dark .hero-gif img { filter: brightness(0.94); }
 
   /* phase marks in the "Using AI well isn't one skill" section */
   .phase-mark { display: flex; align-items: center; gap: 11px; margin: 34px 0 0; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
@@ -185,6 +194,13 @@
   .post-foot { margin-top: 80px; padding-top: 26px; border-top: 1px solid var(--g200); font-size: 14px; color: var(--g500); }
   .post-foot a { color: var(--g700); }
   .post-back { display: inline-flex; align-items: center; gap: 7px; margin-top: 22px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); background: var(--accent-l); border-radius: 999px; padding: 8px 16px; text-decoration: none; }
+
+  /* slim site footer */
+  .site-foot { margin-top: 56px; border-top: 1px solid var(--g200); }
+  .site-foot-in { max-width: 1120px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; gap: 10px 28px; justify-content: space-between; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g500); }
+  .site-foot a { color: var(--g700); text-decoration: none; }
+  .site-foot a:hover { color: var(--accent); }
+  .site-foot-nav { display: flex; flex-wrap: wrap; gap: 10px 22px; }
 
   @media (max-width: 600px) { .post { padding: 48px 20px 80px; } }
 </style>
@@ -216,7 +232,7 @@
       <span class="sb-name">Human–AI Coevolution</span>
     </a>
     <div class="sb-links">
-      <a href="#">Paper</a>
+      <span class="sb-soon" title="Preprint in preparation">Paper · soon</span>
       <a href="https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/">Browse</a>
       <a href="../stats/">Stats</a>
       <a class="active" href="./">Blog</a>
@@ -250,7 +266,7 @@
   <div class="post-meta">
     <span>A companion to the position paper</span>
     <span>·</span>
-    <a href="#">Paper</a>
+    <span class="sb-soon" title="Preprint in preparation">Paper · soon</span>
     <a href="https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/">Browse the index</a>
   </div>
 
@@ -380,6 +396,18 @@
 </aside>
 </div>
 
+<!-- ============== SITE FOOTER (slim mirror of the main site's) ============== -->
+<footer class="site-foot">
+  <div class="site-foot-in">
+    <span>© 2026 <a href="https://wyshi.github.io/group.html" target="_blank" rel="noopener">CHATS-LAB</a>, Northeastern University</span>
+    <nav class="site-foot-nav">
+      <a href="../">Home</a>
+      <a href="https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/">Browse the papers &rarr;</a>
+      <a href="https://github.com/CHATS-lab/Awesome-Human-AI-Coevolution-Paper-List" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
 <script>
 /* ── Scroll-synced "gap" chart (Architecture C: directive config) ───────────
    The chart is one continuous figure; each blog section/cue points at a frame.
@@ -498,7 +526,8 @@
     humLine.setAttribute('d', linePath(cur.hum));
     gapFill.setAttribute('d', gapPath(cur.ai, cur.hum)); // clay band: the gap (mistakes that slip through)
     // playhead
-    var hx = lerp(XS[Math.max(0, Math.min(2, Math.floor(cur.head)))], XS[Math.max(0, Math.min(3, Math.floor(cur.head) + 1))], cur.head - Math.floor(cur.head));
+    var hi = Math.max(0, Math.min(2, Math.floor(cur.head)));
+    var hx = lerp(XS[hi], XS[hi + 1], cur.head - hi);
     headG.setAttribute('opacity', cur.headOn.toFixed(3));
     headLine.setAttribute('x1', hx.toFixed(1)); headLine.setAttribute('x2', hx.toFixed(1));
     headAi.setAttribute('cx', hx.toFixed(1)); headAi.setAttribute('cy', Y(atHead(cur.ai, cur.head)).toFixed(1));
@@ -506,7 +535,7 @@
     // direct in-chart labels (replace the legend)
     // slide the AI label under the line end while the skill label owns the corner
     var aiBelow = clamp01((cur.head - 1.6) / 0.5) * clamp01(cur.headOn);
-    lblAi.setAttribute('y', (Y(cur.ai[3]) + lerp(-7, 15, aiBelow)).toFixed(1));
+    lblAi.setAttribute('y', (Y(cur.ai[3]) + lerp(-7, 19, aiBelow)).toFixed(1));
     // anchor "potential harm" where the band is thickest (skip the playhead column)
     var gT = 2.2, gBest = -1;
     [0.6, 1.2, 1.8, 2.2, 2.6].forEach(function (t) {
@@ -516,8 +545,14 @@
     });
     var gAi = atHead(cur.ai, gT), gHum = atHead(cur.hum, gT);
     var gX = lerp(XS[Math.max(0, Math.min(2, Math.floor(gT)))], XS[Math.max(0, Math.min(3, Math.floor(gT) + 1))], gT - Math.floor(gT));
-    lblGap.setAttribute('x', Math.max(72, Math.min(gX, 248)).toFixed(1));
-    lblGap.setAttribute('y', ((Y(gAi) + Y(gHum)) / 2 + 3).toFixed(1));
+    var gXc = Math.max(72, Math.min(gX, 248)), gYc = (Y(gAi) + Y(gHum)) / 2 + 3;
+    lblGap.setAttribute('x', gXc.toFixed(1));
+    lblGap.setAttribute('y', gYc.toFixed(1));
+    // ride parallel to the band so the boundary lines never strike the text
+    var gm1 = (atHead(cur.ai, Math.max(0, gT - 0.4)) + atHead(cur.hum, Math.max(0, gT - 0.4))) / 2;
+    var gm2 = (atHead(cur.ai, Math.min(3, gT + 0.4)) + atHead(cur.hum, Math.min(3, gT + 0.4))) / 2;
+    var gAng = Math.atan2(Y(gm2) - Y(gm1), 0.8 * (P.x1 - P.x0) / 3) * 180 / Math.PI;
+    lblGap.setAttribute('transform', 'rotate(' + gAng.toFixed(1) + ' ' + gXc.toFixed(1) + ' ' + gYc.toFixed(1) + ')');
     lblGap.setAttribute('opacity', clamp01((gAi - gHum - 0.05) / 0.16).toFixed(3));
     var cHum = atHead(cur.hum, 1.1);
     lblCatch.setAttribute('x', lerp(XS[1], XS[2], 0.1).toFixed(1));
@@ -525,14 +560,19 @@
     lblCatch.setAttribute('opacity', clamp01((cHum - 0.05) / 0.16).toFixed(3));
     // dashed line = the human, evolving (anchored at the line's left origin; fades once it meets AI)
     var mHum = atHead(cur.hum, 0.05), mAi = atHead(cur.ai, 0.05);
+    var hY = Y(mHum) - 9;
     lblHum.setAttribute('x', '30');
-    lblHum.setAttribute('y', (Y(mHum) - 9).toFixed(1));
-    lblHum.setAttribute('opacity', clamp01((mAi - mHum - 0.04) / 0.14).toFixed(3));
+    lblHum.setAttribute('y', hY.toFixed(1));
+    // ride parallel to the dashed line; vanish cleanly instead of ghosting
+    var hAng = Math.atan2(Y(atHead(cur.hum, 0.5)) - Y(atHead(cur.hum, 0)), 0.5 * (P.x1 - P.x0) / 3) * 180 / Math.PI;
+    lblHum.setAttribute('transform', 'rotate(' + hAng.toFixed(1) + ' 30 ' + hY.toFixed(1) + ')');
+    var hOp = clamp01((mAi - mHum - 0.04) / 0.14);
+    lblHum.setAttribute('opacity', (hOp < 0.35 ? 0 : hOp).toFixed(3));
     // overlays
     gInst.setAttribute('opacity', cur.inst.toFixed(3));
     gObj.setAttribute('opacity', cur.obj.toFixed(3));
     // skill label
-    if (cur.skill >= 0) { var sk = SKILLS[cur.skill]; skillT.textContent = sk; var halfW = sk.length * 3.1; skillT.setAttribute('x', Math.max(halfW + 2, Math.min(hx, 318 - halfW)).toFixed(1)); skillT.setAttribute('opacity', (cur.headOn).toFixed(3)); }
+    if (cur.skill >= 0) { var sk = SKILLS[cur.skill]; skillT.textContent = sk; var halfW = sk.length * 3.3; skillT.setAttribute('x', Math.max(halfW + 6, Math.min(hx, 314 - halfW)).toFixed(1)); skillT.setAttribute('opacity', (cur.headOn).toFixed(3)); }
     else skillT.setAttribute('opacity', '0');
     // active x label
     xlabs.forEach(function (t) { t.classList.toggle('on', cur.headOn > 0.4 && +t.getAttribute('data-i') === Math.round(cur.head)); });

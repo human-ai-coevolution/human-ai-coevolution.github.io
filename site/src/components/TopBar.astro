@@ -8,7 +8,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 // "Browse" links out. "Paper" will point to the arXiv preprint once it is
 // public — placeholder until then.
 const navItems = [
-  { href: '#',                    label: 'Paper' },
   { href: `${PAPERS_INDEX_URL}/`, label: 'Browse' },
   { href: `${base}/stats`,        label: 'Stats' },
   { href: `${base}/blog/`,        label: 'Blog' },
@@ -17,13 +16,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
 
 <div class="border-b border-paper-300 dark:border-ink-600 bg-paper-100 dark:bg-nightbg">
-  <div class="mx-auto max-w-[960px] px-6 h-14 flex items-center gap-7">
+  <div class="mx-auto max-w-[960px] px-6 min-h-14 py-2 md:py-0 flex flex-wrap md:flex-nowrap items-center gap-x-4 md:gap-x-7 gap-y-1">
     <a href={`${base}/`} class="flex items-center gap-2.5 group shrink-0">
       <span class="grid place-items-center w-7 h-7 rounded-[8px] bg-accent dark:bg-accent-dark text-paper-50 dark:text-nightbg font-display text-[16px] font-semibold leading-none select-none">H</span>
       <span class="font-display text-[16px] font-medium tracking-tight text-ink-700 dark:text-ink-50 group-hover:text-accent dark:group-hover:text-accent-dark transition-colors">{SITE_TITLE}</span>
     </a>
 
-    <nav class="hidden md:flex items-baseline gap-5">
+    <nav class="flex order-last w-full md:order-none md:w-auto items-baseline gap-[18px] md:gap-5">
+      <span class="font-mono text-[12px] uppercase tracking-[0.12em] text-ink-300 dark:text-ink-500 cursor-default select-none" title="Preprint in preparation">Paper · soon</span>
       {navItems.map((item) => {
         const active = currentPath === item.href.replace(/\/$/, '') ||
           (item.href.startsWith(base) && item.href !== `${base}/` && currentPath.startsWith(item.href));
@@ -42,7 +42,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       })}
     </nav>
 
-    <div class="ml-auto flex items-center gap-5">
+    <div class="ml-auto flex items-center gap-3.5 sm:gap-5">
       <a
         href={`${PAPERS_REPO_URL}/issues/new`}
         target="_blank"
