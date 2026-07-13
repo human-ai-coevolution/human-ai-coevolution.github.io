@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Co-evolution — recursive spark</title>
+<style>
+  :root{ --paper:#FAF9F5; --dot:#C9C6BC; --ink:#1F1E1B; --muted:#6B6F6E; --teal:#4CA9B1; --clay:#D97757; }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{ background:var(--paper); color:var(--ink); font-family:Georgia,"Times New Roman",serif; overflow:hidden; }
+  .wordmark{ position:fixed; top:20px; left:clamp(16px,4vw,40px); font-weight:700; font-size:30px; letter-spacing:-.02em; }
+  header.copy{ position:fixed; top:84px; left:clamp(16px,4vw,40px); right:clamp(16px,4vw,40px); max-width:640px; pointer-events:none; z-index:2; }
+  header.copy h1{ font-weight:700; font-size:clamp(34px,6.6vw,56px); line-height:1.05; margin:0 0 10px; letter-spacing:-.01em; }
+  header.copy p{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-size:clamp(15px,2.3vw,20px); line-height:1.5; color:var(--muted); max-width:38ch; }
+  header.copy em{color:var(--teal);font-style:normal;font-weight:700}
+  header.copy strong{color:var(--clay);font-weight:700}
+  canvas{position:fixed; inset:0; width:100%; height:100%; display:block}
+  .controls{ position:fixed; top:18px; right:clamp(16px,4vw,40px); z-index:3; display:flex; gap:8px; }
+  .controls button{
+    font:inherit; font-family:-apple-system,BlinkMacSystemFont,sans-serif; font-size:13px; font-weight:600;
+    color:var(--ink); background:#fff; border:1px solid #E2DCD0; border-radius:9px; padding:8px 13px; cursor:pointer;
+  }
+  .controls button:hover{background:#FBF9F4;border-color:#cfc8ba}
+  .controls button[disabled]{opacity:.55;cursor:default}
+  :focus-visible{outline:2.5px solid var(--teal);outline-offset:2px}
+</style>
+</head>
+<body>
+  <canvas id="c" aria-hidden="true"></canvas>
+
+<script>
+var THEME = { bg:'#FAF9F5', dot:'#C9C6BC' };
+function applyTheme(dark){ THEME.bg = dark ? '#10131a' : '#FAF9F5'; THEME.dot = THEME.bg; document.body.style.background = THEME.bg; }
+(function(){ var dark=false; try { var q=new URLSearchParams(location.search); dark = q.get('theme')==='dark' || document.documentElement.classList.contains('dark') || localStorage.getItem('theme')==='dark'; } catch(e){} applyTheme(dark); })();
+window.addEventListener('storage', function(e){ try { if (e && e.key==='theme') applyTheme(e.newValue==='dark'); } catch(_){} });
+(() => {
+  "use strict";
+
+  // ===== a faithful port of Anthropic's SparkCellularHero engine =====
+  // agent flood-fill that "builds" a glyph cell-by-cell, then a spring-driven
+  // recursive zoom (T = ln(N/FILL)) so the whole glyph becomes one of its cells,
+  // forever. Here the glyph is two intertwined strands (human teal + AI clay).
+
+  const N = 29;                       // grid (was 19 in the original)
+  const C = (N-1)/2;                  // centre index = 14
+  const FILL = 0.78;                  // cell fill fraction
+  const T = Math.log(N / FILL);       // self-similar zoom factor
+  const OPEN = 0.5;                   // opening zoom phase (× T): every loop opens at scale B·exp(OPEN·T)
+  const TICK = 325;                   // ms per simulation tick (1.3× slower than base 250)
+  const idx = (x,y) => N*y + x;
+
+  const TEAL = ['#4CA9B1','#5EB4BB','#49A2AA','#6BBCC2','#4399A1','#7FC4CA','#3F949C','#3C9099'];
+  const CLAY = ['#D97757','#E08B6E','#DD8263','#E29478','#D17A60','#E6A085','#CE6C4C','#C9694C'];
+
+  // ---- seeded RNG (mulberry32 — same as the source) -------------------------
+  function mulberry32(a){
+    return () => { a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a);
+      t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+  }
+
+  // ---- the shape: two figures orbiting — a round-headed human (teal) and a
+  // square-headed robot with antennae (clay), placed diagonally so they circle
+  // each other, hands bridged at the centre. region: 'H' human, 'A' AI, 'X' link.
+  const HUMAN = ["    ###    ","   #####   ","  #######  ","  #######  ","   #####   ","    ###    ",
+                 "   #####   ","  #######  "," ######### ","###########","###########","### ##### #",
+                 "##  ###  ##","    ###    ","   #####   ","   ## ##   ","   ## ##   ","  ### #### ","  ### #### "];
+  const ROBOT = ["    ###    ","     #     ","###########","###########","##  ###  ##","##  ###  ##","###########","###     ###",
+                 "###########","    ###    ","  #######  "," ######### "," ######### "," ######### ","  #######  ","  ##   ##  ",
+                 "  ##   ##  "," ###   ### "];   // monitor head: antenna + solid screen w/ eye+mouth holes + body + legs
+  function buildShape(){
+    const reg = new Map();
+    const place = (bmp, ox, oy, r) => {
+      for (let y=0;y<bmp.length;y++){ const row=bmp[y];
+        for (let x=0;x<row.length;x++) if (row[x]==='#'){
+          const gx=ox+x, gy=oy+y; if (gx<0||gy<0||gx>=N||gy>=N) continue;
+          const i=idx(gx,gy), c=reg.get(i); if (!c) reg.set(i,r); else if (c!==r) reg.set(i,'X');
+        }
+      }
+    };
+    place(HUMAN, 1, 5, 'H');    // human, left
+    place(ROBOT, 15, 5, 'A');   // AI robot, right
+    // bridge their hands at the centre so the shape is one connected piece
+    const line = (x0,y0,x1,y1) => {
+      let dx=Math.abs(x1-x0), dy=Math.abs(y1-y0), sx=x0<x1?1:-1, sy=y0<y1?1:-1, err=dx-dy, x=x0, y=y0;
+      for(;;){ for (let oy=0;oy<=1;oy++) for (let ox=0;ox<=1;ox++){
+          const gx=x+ox, gy=y+oy; if (gx>=0&&gy>=0&&gx<N&&gy<N){ const i=idx(gx,gy); if (!reg.has(i)) reg.set(i,'X'); } }
+        if (x===x1&&y===y1) break; const e2=2*err; if (e2>-dy){err-=dy;x+=sx;} if (e2<dx){err+=dx;y+=sy;} }
+    };
+    line(11,17, 15,17);         // hands meet
+    line(14,16, 14,18);         // shared spark at the centre
+    return reg;
+  }
+
+  const REG = buildShape();                       // idx -> 'H'|'A'|'X'
+  const ON = new Set(REG.keys());
+  // adjacency within the shape (4-neighbours)
+  const ADJ = new Map();
+  for (const i of ON){
+    const x=i%N, y=i/N|0, a=[];
+    for (const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const nx=x+dx, ny=y+dy;
+      if (nx>=0&&ny>=0&&nx<N&&ny<N){ const ni=idx(nx,ny); if (ON.has(ni)) a.push(ni); }
+    }
+    ADJ.set(i,a);
+  }
+  const nbrs = i => ADJ.get(i) || [];
+  // seed = the link cell nearest the centre (the human↔AI handshake), so the
+  // build starts FROM THE MIDDLE and radiates into both figures
+  let SEED = -1, sb = Infinity;
+  for (const i of ON){ if (REG.get(i)!=='X') continue; const d=Math.hypot(i%N-C,(i/N|0)-C); if (d<sb){ sb=d; SEED=i; } }
+  if (SEED<0) for (const i of ON){ const d=Math.hypot(i%N-C,(i/N|0)-C); if (d<sb){ sb=d; SEED=i; } }
+  // anchor the camera on the SEED cell (the handshake): the build starts here and the
+  // recursive zoom collapses toward here, so each loop's seed lands exactly on the
+  // previous figure's collapse point — no positional jump at the seam.
+  const SX = SEED % N, SY = (SEED / N) | 0;
+  const REACH = (() => {
+    const seen = new Set([SEED]), q=[SEED];
+    while (q.length){ for (const n of nbrs(q.shift())) if (!seen.has(n)){ seen.add(n); q.push(n); } }
+    return seen;
+  })();
+  const TOTAL = REACH.size;
+
+  // ---- tiles: textured `full` + flat `solid`, per palette -------------------
+  function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function makeTile(pal, seed, textured){
+    const S=96, cv=document.createElement('canvas'); cv.width=cv.height=S;
+    const a=cv.getContext('2d'); const rnd=mulberry32(seed);
+    a.globalAlpha = textured?0.9:1; a.fillStyle = pal[rnd()*pal.length|0]; a.fillRect(0,0,S,S);
+    if (textured){
+      for (let i=0;i<5;i++){ const x=S*rnd(),y=S*rnd(),rad=S*(0.25+0.35*rnd());
+        const g=a.createRadialGradient(x,y,0,x,y,rad); g.addColorStop(0,pal[rnd()*pal.length|0]); g.addColorStop(1,'rgba(0,0,0,0)');
+        a.globalAlpha=0.16+0.16*rnd(); a.fillStyle=g; a.fillRect(0,0,S,S); }
+      a.globalAlpha=0.06; for (let i=0;i<140;i++){ a.fillStyle=pal[rnd()*pal.length|0]; const s=1+2*rnd(); a.fillRect(S*rnd(),S*rnd(),s,s); }
+    } else {
+      a.globalAlpha=0.18; a.fillStyle='#FFFFFF';                  // a touch brighter when settled
+      const g=a.createRadialGradient(S*0.35,S*0.3,0,S*0.35,S*0.3,S*0.7); g.addColorStop(0,'rgba(255,255,255,0.5)'); g.addColorStop(1,'rgba(255,255,255,0)');
+      a.fillStyle=g; a.fillRect(0,0,S,S);
+    }
+    a.globalAlpha=1; a.globalCompositeOperation='destination-in'; a.fillStyle='#000';
+    roundRect(a,0,0,S,S,S*0.18); a.fill();
+    return cv;
+  }
+  const VARIANTS = 8;
+  const tilesH = { full:[], solid:[] }, tilesA = { full:[], solid:[] };
+  for (let k=0;k<VARIANTS;k++){
+    tilesH.full.push(makeTile(TEAL, 0x9E3779B1*(k+1)>>>0, true));
+    tilesH.solid.push(makeTile(TEAL, 0x9E3779B1*(k+1)>>>0, false));
+    tilesA.full.push(makeTile(CLAY, 0xC2B2AE35*(k+1)>>>0, true));
+    tilesA.solid.push(makeTile(CLAY, 0xC2B2AE35*(k+1)>>>0, false));
+  }
+  const tilesFor = i => {
+    const r = REG.get(i);
+    if (r==='H') return tilesH;
+    if (r==='A') return tilesA;
+    return ((i%N + (i/N|0)) & 1) ? tilesH : tilesA;   // 'X' (crossings) interleave
+  };
+  const variantOf = i => (Math.imul(i,0x9E3779B1)>>>0) % VARIANTS;
+
+  // ---- agent sprite: a tiny copy of the whole assembled knot ----------------
+  function buildThumb(){
+    const S=128, cv=document.createElement('canvas'); cv.width=cv.height=S;
+    const a=cv.getContext('2d'); const cell=S/N, sz=cell*FILL;
+    for (const i of ON){
+      const gx=i%N, gy=i/N|0, t=tilesFor(i), v=variantOf(i);
+      a.drawImage(t.solid[v], gx*cell+(cell-sz)/2, gy*cell+(cell-sz)/2, sz, sz);
+    }
+    return cv;
+  }
+  const THUMB = buildThumb();
+
+  // ---- canvas / layout ------------------------------------------------------
+  const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let dpr=1, S=0, H=0, D=0, E=0, B=0;
+  function layout(){
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio||1));
+    S = innerWidth; H = innerHeight;
+    canvas.width = Math.round(S*dpr); canvas.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.imageSmoothingQuality='high';
+    D = S*0.5; E = H*0.5;
+    B = 0.68 * Math.min(S, H);   // base camera scale — larger so the held figure fills more of the frame
+  }
+
+  // ---- simulation state + rule (port) ---------------------------------------
+  let RNDWALK = mulberry32(0xC1A0DE);   // re-seeded at every loop reset so each build repeats the same walk
+  function fresh(t){ return { cells:new Map(), agents:[], lastTick:t, ticks:0, doneAt:0 }; }
+  function seedAgent(st, t, instant){ st.agents.push({ idx:SEED, prev:SEED, since:t, bornAt: instant?-Infinity:t, dieAt:0 }); }
+
+  function tick(st, now){
+    if (st.doneAt) return;
+    for (;;){
+      // expansion pacing: slower at the start, faster toward the end (same cell order, ~same total time)
+      const step = TICK * (1.25 - 0.5 * (st.cells.size / TOTAL));
+      if (now - st.lastTick < step) break;
+      st.lastTick += step; st.ticks++;
+      const t = st.lastTick;
+      const occupied = new Set(st.agents.filter(a=>!a.dieAt).map(a=>a.idx));
+      const next = [];
+      for (const ag of st.agents){
+        if (ag.dieAt){ if (t-ag.dieAt < 350) next.push(ag); continue; }
+        st.cells.set(ag.idx, t);
+        const open = nbrs(ag.idx).filter(n => !st.cells.has(n) && !occupied.has(n));
+        if (!open.length){ ag.dieAt = t; next.push(ag); continue; }
+        const pick = open[RNDWALK()*open.length|0];
+        ag.prev = ag.idx; ag.idx = pick; ag.since = t; occupied.add(pick); next.push(ag);
+      }
+      st.agents = next;
+      const living = st.agents.filter(a=>!a.dieAt).length;
+      // frontier = empty in-shape cells adjacent to filled ones
+      const seen = new Set(), frontier = [];
+      for (const c of st.cells.keys()) for (const n of nbrs(c))
+        if (!st.cells.has(n) && !seen.has(n)){ seen.add(n); frontier.push(n); }
+      const free = frontier.filter(n => !occupied.has(n));
+      if (!free.length && !living){ st.doneAt = t; return; }
+      // spawn up to a quadratically-growing agent count
+      const r = 3;   // spawn-rate constant — independent of P so every loop builds like the first (P grows forever here)
+      const targetCount = Math.min(56, Math.max(1, Math.floor((st.ticks / r) ** 2)));
+      let count = living;
+      while (count < targetCount && free.length){
+        const j = RNDWALK()*free.length|0, n = free[j];
+        free[j] = free[free.length-1]; free.pop();
+        st.agents.push({ idx:n, prev:n, since:t, bornAt:t, dieAt:0 });
+        occupied.add(n); count++;
+      }
+    }
+  }
+
+  // ---- camera (spring) + generation counter ---------------------------------
+  let state, P=0, F=-0.04*T, R=0, qt=0, running=false, zoomFrom=0;
+  const clamp01 = t => t<0?0:t>1?1:t;
+  const easeOutCubic = t => 1-Math.pow(1-t,3);
+
+  function springTo(target, dt){
+    const steps = Math.max(1, Math.ceil(dt/12)), h = dt/steps;
+    for (let i=0;i<steps;i++){ const acc = 8.1e-7*(target-F) - 0.00153*R; R += acc*h; F += R*h; }
+  }
+
+  // ---- rendering ------------------------------------------------------------
+  function dotGrid(spacing, alpha){
+    if (spacing < 2 || (S/spacing+2)*(H/spacing+2) > 12000) return;
+    // fade in at fine spacings AND back out at very coarse ones, so dots never pop at the loop seam
+    const fade = Math.max(0, Math.min(1,(spacing-2)/7)) * Math.max(0, Math.min(1,(80-spacing)/40)) * alpha;
+    if (fade < 0.01) return;
+    const ox = ((D + spacing/2) % spacing + spacing) % spacing;
+    const oy = ((E + spacing/2) % spacing + spacing) % spacing;
+    ctx.fillStyle = THEME.dot; ctx.globalAlpha = fade;
+    for (let y=oy;y<=H;y+=spacing) for (let x=ox;x<=S;x+=spacing) ctx.fillRect(x-1,y-1,2,2);
+    ctx.globalAlpha = 1;
+  }
+
+  function render(now, scale){
+    ctx.fillStyle = THEME.bg; ctx.fillRect(0,0,S,H);
+    dotGrid(scale/N*2, 1); dotGrid(FILL*scale/N, 1);
+    const L = scale/N; if (L < 0.4) return;
+    const tile = 2*L*FILL;
+
+    // filled cells: flip-in (0–700ms), then textured→solid crossfade (700–2300ms)
+    for (const [i, ft] of state.cells){
+      const x = D + 2*L*(i%N - SX), y = E + 2*L*((i/N|0) - SY);
+      const t = tilesFor(i), v = variantOf(i), age = now - ft;
+      if (age < 700){
+        const sY = easeOutCubic(clamp01(age/700));
+        const h2 = tile*sY;
+        ctx.drawImage(t.solid[v], x - tile/2, y - h2/2, tile, h2);
+      } else {
+        const e = clamp01((age-700)/1600);
+        if (e < 1) ctx.drawImage(t.full[v], x - tile/2, y - tile/2, tile, tile);
+        if (e > 0){ ctx.globalAlpha = e; ctx.drawImage(t.solid[v], x - tile/2, y - tile/2, tile, tile); ctx.globalAlpha = 1; }
+      }
+    }
+    // agents: tiny copies of the whole knot, walking the frontier
+    for (const ag of state.agents){
+      const r = clamp01((now-ag.since)/450), e = 1-(1-r)*(1-r);
+      const px = (ag.prev%N), py = (ag.prev/N|0), cx2 = (ag.idx%N), cy2 = (ag.idx/N|0);
+      const gx = px + (cx2-px)*e, gy = py + (cy2-py)*e;
+      const x = D + 2*L*(gx - SX), y = E + 2*L*(gy - SY);
+      const a = ag.dieAt ? (1-Math.min(1,(now-ag.dieAt)/350))**2 : 1-(1-Math.min(1,(now-ag.bornAt)/350))**3;
+      if (a <= 0) continue;
+      const sz = tile*a;
+      // anchor the mini-knot on its SEED cell (not its centre) so the seam THUMB lands exactly
+      // where the collapsed figure sat — removes the ~12px vertical jump at the loop swap
+      ctx.drawImage(THUMB, x - sz*(SX+0.5)/N, y - sz*(SY+0.5)/N, sz, sz);
+    }
+  }
+
+  const HOLD_MS = 3000;               // pause on the completed icon (live)
+  const GIF_HOLD = 2200;              // hold captured into the GIF
+  let recorder = null;                // GIF capture session, when recording
+  const EXPORT_FPS = 20;
+
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+  function wrapText(target, text, x, y, maxWidth, lineHeight){
+    const words = text.split(/\s+/), lines = [];
+    let line = '';
+    for (const word of words){
+      const test = line ? line + ' ' + word : word;
+      if (target.measureText(test).width > maxWidth && line){
+        lines.push(line); line = word;
+      } else line = test;
+    }
+    if (line) lines.push(line);
+    for (const row of lines){ target.fillText(row, x, y); y += lineHeight; }
+    return y;
+  }
+  // draw the header onto the EXPORT canvas, sized to the export (not the window),
+  // so the title/subhead are always crisp and clearly visible in the GIF
+  function drawExportChrome(target, w, h){
+    target.textBaseline = 'top';
+    const pad = Math.round(w * 0.055);
+    const wordmark = document.querySelector('.wordmark')?.textContent || '';
+    const heading  = document.querySelector('header.copy h1')?.textContent || '';
+    const deck     = document.querySelector('header.copy p')?.textContent || '';
+    // wordmark
+    target.fillStyle = '#1F1E1B';
+    target.font = `700 ${Math.round(w*0.062)}px Georgia, "Times New Roman", serif`;
+    target.fillText(wordmark, pad, Math.round(h*0.035));
+    // title
+    const h1 = Math.round(w * 0.082);
+    target.font = `700 ${h1}px Georgia, "Times New Roman", serif`;
+    let y = wrapText(target, heading, pad, Math.round(h*0.105), w - 2*pad, h1 * 1.08) + Math.round(h1*0.5);
+    // subhead, with "humans" teal and "AI" clay (rest muted)
+    const fs = Math.round(w * 0.037), lh = fs * 1.5, maxW = w - 2*pad;
+    target.font = `${fs}px -apple-system, BlinkMacSystemFont, sans-serif`;
+    const sp0 = target.measureText(' ').width;
+    let cx = pad, cy = y;
+    for (const wd of deck.split(/\s+/)){
+      const bare = wd.replace(/[^A-Za-z]/g,''), teal = /^humans?$/i.test(bare), clay = bare === 'AI';
+      target.font = `${teal||clay ? '700 ' : ''}${fs}px -apple-system, BlinkMacSystemFont, sans-serif`;
+      const ww = target.measureText(wd).width;
+      if (cx + ww > pad + maxW){ cx = pad; cy += lh; }
+      target.fillStyle = teal ? '#4CA9B1' : clay ? '#D97757' : '#6B6F6E';
+      target.fillText(wd, cx, cy); cx += ww + sp0;
+    }
+  }
+  function captureFrame(){
+    if (!recorder) return;
+    const fi = 1000 / recorder.fps;
+    recorder.octx.drawImage(canvas, 0, 0, recorder.w, recorder.h);
+    drawExportChrome(recorder.octx, recorder.w, recorder.h);
+    recorder.gif.addFrame(recorder.octx, { copy:true, delay: Math.round(fi) });
+  }
+  function loop(now){
+    if (!running) return;
+    if (recorder){
+      const rec = recorder, fi = 1000 / rec.fps;
+      now = rec.now + fi; rec.now = now; qt = now;
+      tick(state, now);
+      const held = state.doneAt ? now - state.doneAt : -1;
+      if (held >= GIF_HOLD){
+        render(now, B * Math.exp(P*T - F)); captureFrame();
+        rec.gif.render(); dlBtn.textContent = 'Encoding…'; recorder = null;
+        rAF = requestAnimationFrame(loop); return;
+      }
+      if (held >= 0){
+        render(now, B * Math.exp(P*T - F)); captureFrame();
+        rAF = requestAnimationFrame(loop); return;
+      }
+      const n = -0.04 + 0.34*(state.cells.size/TOTAL);
+      springTo((P + n) * T, fi);
+      render(now, B * Math.exp(P*T - F)); captureFrame();
+      rAF = requestAnimationFrame(loop); return;
+    }
+    const dt = Math.min(50, now - qt); qt = now;
+    tick(state, now);
+    const held = state.doneAt ? now - state.doneAt : -1;
+
+    if (held >= 0 && held < HOLD_MS){           // completed: hold it static & fully visible
+      R = 0; zoomFrom = F;                      // park the spring; remember where the zoom-out starts
+      render(now, B * Math.exp(P*T - F));
+      rAF = requestAnimationFrame(loop); return;
+    }
+
+    if (held < 0){
+      // building → n ramps with fill
+      const n = -0.04 + 0.34*(state.cells.size/TOTAL);
+      springTo((P + n) * T, dt);
+    } else {
+      // post-hold: time-based smoothstep that lands EXACTLY on the one-generation threshold, at rest —
+      // no spring overshoot (size pop) and no dead-stop cut, so the seam matches the next opening perfectly.
+      const ZOUT = 1400;                                   // zoom-out duration (≈ the old spring's felt pace)
+      const z = Math.min(1, (held - HOLD_MS) / ZOUT);
+      F = zoomFrom + ((P + 1 - OPEN)*T - zoomFrom) * (z*z*(3 - 2*z)); R = 0;
+      if (z >= 1){
+        // FULLY RESET to the boot/opening state so every loop is identical to the first:
+        // same camera (P, F, R) AND the same RNG stream → the exact same walk/build every time.
+        P = 0; F = -OPEN*T;
+        RNDWALK = mulberry32(0xC1A0DE);
+        state = fresh(now); seedAgent(state, now, true);   // instant seed (no flash); boot keeps its fade-in intro
+      }
+    }
+
+    render(now, B * Math.exp(P*T - F));
+    rAF = requestAnimationFrame(loop);
+  }
+
+  // ---- boot -----------------------------------------------------------------
+  let rAF = 0;
+  function start(){
+    layout();
+    state = fresh(performance.now()); seedAgent(state, performance.now(), false);
+    P = 0; F = -OPEN*T; R = 0; qt = performance.now(); running = true;   // open more zoomed-in; pulls back as it builds
+    if (reduce){ running = false;
+      // settle a finished knot statically
+      for (const i of REACH) state.cells.set(i, -3000);
+      render(performance.now(), B);
+    } else rAF = requestAnimationFrame(loop);
+  }
+  addEventListener('resize', () => { cancelAnimationFrame(rAF); layout(); if (reduce) render(performance.now(), B); else { qt = performance.now(); rAF = requestAnimationFrame(loop); } });
+  start();
+
+})();
+</script>
+</body>
+</html>
