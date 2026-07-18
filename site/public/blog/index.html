@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AI Is Evolving. Are You? Â· Human-AI Coevolution blog</title>
+<title>AI Is Evolving. Are You? · Human-AI Coevolution blog</title>
 <meta name="description" content="A plain-language companion to the position paper 'Human Evolution Should be Treated as a Goal in Human-AI Co-Evolution.' Why humans still matter as AI builds its own successors, and the skills we have to keep practicing." />
 <meta name="keywords" content="human-AI coevolution, human-AI co-evolution, human-AI collaboration, AI literacy, four-phase framework, AI evolution, position paper, AI agents" />
 <meta name="author" content="CHATS-Lab, Northeastern University" />
@@ -114,7 +114,7 @@
   }
 
   /* ---------- gap chart ---------- */
-  /* no card â the chart sits directly on the page, ai-2027 style */
+  /* no card — the chart sits directly on the page, ai-2027 style */
   .gapchart-wrap { padding: 0; }
   /* stage chip: current stage of the argument, like ai-2027's "Apr 2025" box */
   .gapbar { margin: 0 0 14px; }
@@ -123,7 +123,7 @@
   /* paper-colored halo keeps labels legible when lines pass beneath them */
   .gapchart svg text { paint-order: stroke; stroke: var(--ivory); stroke-width: 3.5px; stroke-linejoin: round; }
   .achieved-area { fill: var(--accent); opacity: 0.13; }
-  /* direct (in-chart) labels â no legend needed */
+  /* direct (in-chart) labels — no legend needed */
   .lbl-ai { font-family: var(--mono); font-size: 12.5px; font-weight: 700; fill: var(--accent); }
   .lbl-gap { font-family: var(--mono); font-size: 12.5px; font-weight: 700; fill: #b4623f; }
   html.dark .lbl-gap { fill: #e0a48c; }
@@ -174,7 +174,7 @@
   .post p em { font-style: italic; }
 
   /* co-evolution loop gif */
-  /* live canvas animation â draws its own background from the site theme,
+  /* live canvas animation — draws its own background from the site theme,
      so it blends seamlessly in both light and dark */
   .hero-gif { margin: 44px auto 4px; max-width: 435px; }
   .hero-gif iframe { display: block; width: 100%; aspect-ratio: 435 / 334; border: 0; }
@@ -184,7 +184,7 @@
   .phase-mark .pm-no { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 999px; background: var(--accent); color: var(--ivory); font-size: 11.5px; line-height: 1; }
   .phase-mark + p { margin-top: 8px; }
 
-  /* takeaway â minimal blockquote, not a filled box */
+  /* takeaway — minimal blockquote, not a filled box */
   .takeaway { margin: 26px 0 0; padding-left: 20px; border-left: 3px solid var(--accent); }
   .takeaway .lbl { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .takeaway p { margin: 0; font-size: 16.5px; line-height: 1.62; color: var(--slate); }
@@ -207,7 +207,7 @@
 </style>
 
 <script>
-  // No-flash theme bootstrap â same key as the main site, so the choice follows you.
+  // No-flash theme bootstrap — same key as the main site, so the choice follows you.
   (function () {
     try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
     document.addEventListener('DOMContentLoaded', function () {
@@ -230,10 +230,10 @@
   <div class="sitebar-in">
     <a class="sb-brand" href="../">
       <span class="sb-mark">H</span>
-      <span class="sb-name">HumanâAI Coevolution</span>
+      <span class="sb-name">Human–AI Coevolution</span>
     </a>
     <div class="sb-links">
-      <span class="sb-soon" title="Preprint in preparation">Paper Â· soon</span>
+      <span class="sb-soon" title="Preprint in preparation">Paper · soon</span>
       <a href="https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/">Browse</a>
       <a href="../stats/">Stats</a>
       <a class="active" href="./">Blog</a>
@@ -262,7 +262,7 @@
 <div class="scrolly">
 <article class="post">
 
-  <p class="post-eyebrow">HumanâAI Coevolution</p>
+  <p class="post-eyebrow">Human–AI Coevolution</p>
   <h1 class="post-title">AI Is Evolving. <em>Are You?</em></h1>
   <div class="tldr">
     <span class="lbl">TL;DR</span>
@@ -395,7 +395,7 @@
 <!-- ============== SITE FOOTER (slim mirror of the main site's) ============== -->
 <footer class="site-foot">
   <div class="site-foot-in">
-    <span>Â© 2026 <a href="https://wyshi.github.io/group.html" target="_blank" rel="noopener">CHATS-LAB</a>, Northeastern University</span>
+    <span>© 2026 <a href="https://wyshi.github.io/group.html" target="_blank" rel="noopener">CHATS-LAB</a>, Northeastern University</span>
     <nav class="site-foot-nav">
       <a href="../">Home</a>
       <a href="https://chats-lab.github.io/Awesome-Human-AI-Coevolution-Paper-List/">Browse the papers &rarr;</a>
@@ -405,9 +405,9 @@
 </footer>
 
 <script>
-/* ââ Scroll-synced "gap" chart (Architecture C: directive config) âââââââââââ
+/* ── Scroll-synced "gap" chart (Architecture C: directive config) ───────────
    The chart is one continuous figure; each blog section/cue points at a frame.
-   Sections drive the chart's state â they need not map 1:1 to chart phases. */
+   Sections drive the chart's state — they need not map 1:1 to chart phases. */
 (function () {
   var svg = document.getElementById('gap-svg');
   if (!svg) return;
@@ -424,16 +424,16 @@
   var F = {
     risk:   { bar:'W/o Evolving', prog:.03, ai:[.30,.52,.74,.95], hum:[0,0,0,0],         head:0, headOn:0, inst:0, obj:0, skill:-1,
               cap:'As AI capability keeps advancing, humans who can’t catch its errors <b>let the potential harm become real</b>.' },
-    p1:     { bar:'Phase 1 Â· Tool', prog:.17, ai:[.30,.52,.74,.95], hum:[.10,.17,.24,.31], head:0, headOn:1, inst:0, obj:0, skill:0,
+    p1:     { bar:'Phase 1 · Tool', prog:.17, ai:[.30,.52,.74,.95], hum:[.10,.17,.24,.31], head:0, headOn:1, inst:0, obj:0, skill:0,
               cap:'<b>Humans Use AI as Tool.</b> You ask; AI answers. <b>Critical thinking</b> starts resolving the misses.' },
-    p2:     { bar:'Phase 2 Â· Assistant', prog:.31, ai:[.30,.52,.74,.95], hum:[.17,.30,.43,.54], head:1, headOn:1, inst:0, obj:0, skill:1,
+    p2:     { bar:'Phase 2 · Assistant', prog:.31, ai:[.30,.52,.74,.95], hum:[.17,.30,.43,.54], head:1, headOn:1, inst:0, obj:0, skill:1,
               cap:'<b>Humans Use AI as Assistant.</b> AI drafts; you verify. <b>Evaluative expertise</b> resolves more.' },
-    p3:     { bar:'Phase 3 Â· Executor', prog:.45, ai:[.30,.52,.74,.95], hum:[.24,.42,.59,.74], head:2, headOn:1, inst:0, obj:0, skill:2,
+    p3:     { bar:'Phase 3 · Executor', prog:.45, ai:[.30,.52,.74,.95], hum:[.24,.42,.59,.74], head:2, headOn:1, inst:0, obj:0, skill:2,
               cap:'<b>Humans Use AI as Executor.</b> AI runs the workflow. You pick the checkpoints, with <b>supervisory judgement</b>.' },
-    p4:     { bar:'Phase 4 Â· Organization', prog:.60, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:1, inst:0, obj:0, skill:3,
+    p4:     { bar:'Phase 4 · Organization', prog:.60, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:1, inst:0, obj:0, skill:3,
               cap:'<b>Humans Use AI as Organization.</b> AI coordinates many agents. With <b>systems thinking</b> you govern the whole system, and <b>nothing is left unresolved</b>.' },
     inst:   { bar:'Acceleration', prog:.74, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:1, obj:0, skill:-1,
-              cap:'It isnât only on you. <b>Schools, companies, society, and better AI interfaces</b> get everyone here faster.' },
+              cap:'It isn’t only on you. <b>Schools, companies, society, and better AI interfaces</b> get everyone here faster.' },
     obj:    { bar:'Alter View', prog:.88, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:0, obj:1, curve:0, skill:-1,
               cap:'Better models, natural adaptation, AI&#8209;watching&#8209;AI, <b>none of them replace the need for human evolution</b>.' },
     future: { bar:'Co-Evolving', prog:1, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:0, obj:0, skill:-1,
@@ -475,7 +475,7 @@
   function atHead(arr, h) { var i = Math.max(0, Math.min(2, Math.floor(h))); return lerp(arr[i], arr[i + 1], h - i); }
 
   function ptY(arr) { return arr.map(function (v) { return Y(v); }); }
-  // Catmull-Rom â cubic beziers; k=0 yields straight segments, k=1 a smooth curve
+  // Catmull-Rom → cubic beziers; k=0 yields straight segments, k=1 a smooth curve
   function segsXY(X, Y2, k) {
     var d = '', n = X.length;
     for (var i = 0; i < n - 1; i++) {
@@ -573,7 +573,7 @@
     else skillT.setAttribute('opacity', '0');
     // active x label
     xlabs.forEach(function (t) { t.classList.toggle('on', cur.headOn > 0.4 && +t.getAttribute('data-i') === Math.round(cur.head)); });
-    // caption (categorical â fade on change)
+    // caption (categorical → fade on change)
     if (cur.bar && cur.bar !== lastBar) {
       lastBar = cur.bar;
       gbLabel.style.opacity = 0;
