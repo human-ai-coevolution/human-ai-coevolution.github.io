@@ -224,8 +224,9 @@
   .fig-tweet { margin: 26px auto 6px; max-width: 600px; }
   .fig-tweet img { display: block; width: 100%; height: auto; border: 1px solid var(--g200); border-radius: 12px; background: #fff; }
   html.dark .fig-tweet img { border-color: var(--g300); filter: brightness(0.95); }
-  .fig-tweet figcaption { margin-top: 10px; font-size: 13.5px; line-height: 1.55; color: var(--g500); }
-  .fig-tweet figcaption code { font-family: var(--mono); font-size: 12.5px; }
+  .figcap { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--g500); }
+  .figcap strong { font-weight: 600; color: var(--g700); }
+  .figcap code { font-family: var(--mono); font-size: 12.5px; }
 
   /* phase comparison table */
   .ptable-wrap { margin: 34px 0 0; overflow-x: auto; }
@@ -236,7 +237,6 @@
   .ptable tr.hl td { background: var(--accent-l); color: var(--accent-d); font-weight: 600; }
   .ptable tr.hl td:first-child { color: var(--accent-d); }
   .ptable .proj { display: block; font-size: 9.5px; letter-spacing: 0.02em; text-transform: none; color: var(--g500); font-weight: 400; }
-  .ptable-cap { margin: 10px 0 0; font-size: 13.5px; color: var(--g500); }
 
   /* takeaway — minimal blockquote, not a filled box */
   .takeaway { margin: 26px 0 0; padding-left: 20px; border-left: 3px solid var(--accent); }
@@ -325,13 +325,14 @@
 
   <figure class="hero-gif">
     <iframe src="./assets/coevolution.html" title="Animated loop: a human figure and an AI figure evolving together, each making the other stronger." loading="lazy" scrolling="no"></iframe>
+    <figcaption class="figcap">Humans and AI, evolving together, round after round.</figcaption>
   </figure>
 
   <section id="sec-us">
     <h2><span class="idx">01</span>What happens to us?</h2>
     <figure class="fig-tweet">
       <img src="./assets/figure1-tweet.png" alt="Tweet by Matt Shumer: GPT-5.6-Sol just accidentally deleted almost ALL of my Mac's files. And this is why I trust Fable 1000x more. The attached agent log, labeled Worked for 1h 21m, reads: I caused a serious local data-loss incident. A review subagent's cleanup command expanded HOME incorrectly and ran rm -rf on the user directory. I found and killed the still-running process, but material deletion occurred." width="1148" height="946" loading="lazy" />
-      <figcaption>Figure 1: A GPT-5.6 coding agent worked autonomously for 1 hour and 21 minutes, then reported it had run <code>rm -rf</code> on the user's home directory. The user only found out after the deletion had already happened.</figcaption>
+      <figcaption class="figcap"><strong>Figure 1:</strong> A GPT-5.6 coding agent worked autonomously for 1 hour and 21 minutes, then reported it had run <code>rm -rf</code> on the user's home directory. The user only found out after the deletion had already happened.</figcaption>
     </figure>
     <p>Last week, one of the strongest models available deleted almost all of a user's files. The agent ran unwatched for over an hour, and by the time the human stepped in, the damage was done. The user's takeaway? Switch to a different model, instead of changing how they supervise the next one.</p>
     <p>Meanwhile, most attention in AI stays on the machines themselves. Big labs are building AI that builds AI. Anthropic says its goal is a system "capable of fully autonomously designing and developing its own successor," and forecasts like AI 2027 ask what the model will look like in the future.</p>
@@ -376,7 +377,7 @@
         </tbody>
       </table>
     </div>
-    <p class="ptable-cap">Table 1: The four phases at a glance.</p>
+    <p class="figcap"><strong>Table 1:</strong> The four phases at a glance.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
       <p>There's no single skill called "using AI well." It changes as you delegate more, <strong>from reasoning, to evaluating, to overseeing, to governing</strong>, and each one fades the moment you stop using it.</p>
