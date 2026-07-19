@@ -17,7 +17,9 @@
 <meta property="og:description" content="Why humans still matter as AI builds its own successors, and the skills we have to keep practicing." />
 <meta property="og:url" content="https://human-ai-coevolution.github.io/blog/" />
 <meta property="og:locale" content="en_US" />
+<meta property="og:image" content="https://human-ai-coevolution.github.io/blog/assets/figure1-tweet.png" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://human-ai-coevolution.github.io/blog/assets/figure1-tweet.png" />
 <meta name="twitter:title" content="AI Is Evolving. Are You?" />
 <meta name="twitter:description" content="Why humans still matter as AI builds its own successors, and the skills we have to keep practicing." />
 
@@ -137,6 +139,39 @@
   .hum-line { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-dasharray: 6 5; stroke-linejoin: round; stroke-linecap: round; }
   .gap-fill { fill: #D97757; }
   html.dark .gap-fill { fill: #e0a48c; opacity: 0.26 !important; }
+
+  /* co-evolution loop states (State A broken / State B healthy) */
+  .loop-title { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.05em; fill: var(--slate); }
+  .lp-lbl { font-family: var(--mono); font-size: 10.5px; font-weight: 700; }
+  .lp-tag { font-family: var(--mono); font-size: 10px; font-style: italic; }
+  #g-loop .lp-arc { stroke-width: 2.4; stroke-linecap: round; }
+  #g-loop .lp-h circle, #g-loop .lp-h path { stroke: none; }
+  #g-loop .lp-a rect { fill: none; stroke-width: 2.2; }
+  #g-loop .lp-a .lp-ant, #g-loop .lp-a .lp-eye, #g-loop .lp-a .lp-ear { fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  /* State A: broken, desaturated */
+  .loop-bad .lp-h circle, .loop-bad .lp-h path { fill: var(--g500); }
+  .loop-bad .lp-a rect, .loop-bad .lp-a path { stroke: var(--g500); }
+  .loop-bad .lp-top .lp-arc { stroke: var(--g300); } .loop-bad .lp-top .lp-head { fill: var(--g300); }
+  .loop-bad .lp-bot .lp-arc { stroke: #b4623f; opacity: 0.75; } .loop-bad .lp-bot .lp-head { fill: #b4623f; opacity: 0.75; }
+  .loop-bad .lp-lbl-top { fill: var(--g500); }
+  .loop-bad .lp-lbl-bot, .loop-bad .lp-tag { fill: #b4623f; }
+  .loop-bad #loop-title { opacity: 0; }
+  html.dark .loop-bad .lp-bot .lp-arc { stroke: #e0a48c; }
+  html.dark .loop-bad .lp-bot .lp-head { fill: #e0a48c; }
+  html.dark .loop-bad .lp-lbl-bot, html.dark .loop-bad .lp-tag { fill: #e0a48c; }
+  /* State B: healthy, full saturation */
+  .loop-good .lp-h circle, .loop-good .lp-h path { fill: var(--accent); }
+  .loop-good .lp-a rect, .loop-good .lp-a path { stroke: #D97757; }
+  .loop-good .lp-top .lp-arc { stroke: var(--accent); } .loop-good .lp-top .lp-head { fill: var(--accent); }
+  .loop-good .lp-bot .lp-arc { stroke: #D97757; } .loop-good .lp-bot .lp-head { fill: #D97757; }
+  .loop-good .lp-lbl-top { fill: var(--accent-d); }
+  .loop-good .lp-lbl-bot { fill: #b4623f; }
+  html.dark .loop-good .lp-lbl-bot { fill: #e0a48c; }
+  .loop-good .lp-tag { display: none; }
+  /* label pairs gated by state */
+  .loop-bad .lg-good { display: none; }
+  .loop-good .lg-bad { display: none; }
+
   .head-line { stroke: var(--g300); stroke-width: 1.2; stroke-dasharray: 3 3; }
   .head-dot-ai { fill: var(--accent); }
   .head-dot-hum { fill: var(--accent); }
@@ -183,6 +218,25 @@
   .phase-mark { display: flex; align-items: center; gap: 11px; margin: 34px 0 0; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
   .phase-mark .pm-no { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 999px; background: var(--accent); color: var(--ivory); font-size: 11.5px; line-height: 1; }
   .phase-mark + p { margin-top: 8px; }
+
+
+  /* Figure 1: embedded tweet */
+  .fig-tweet { margin: 26px auto 6px; max-width: 600px; }
+  .fig-tweet img { display: block; width: 100%; height: auto; border: 1px solid var(--g200); border-radius: 12px; background: #fff; }
+  html.dark .fig-tweet img { border-color: var(--g300); filter: brightness(0.95); }
+  .fig-tweet figcaption { margin-top: 10px; font-size: 13.5px; line-height: 1.55; color: var(--g500); }
+  .fig-tweet figcaption code { font-family: var(--mono); font-size: 12.5px; }
+
+  /* phase comparison table */
+  .ptable-wrap { margin: 34px 0 0; overflow-x: auto; }
+  .ptable { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 13px; line-height: 1.45; }
+  .ptable th, .ptable td { padding: 8px 9px; border: 1px solid var(--g200); text-align: left; vertical-align: top; color: var(--g700); }
+  .ptable thead th { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); background: var(--g100); }
+  .ptable th:first-child, .ptable td:first-child { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g500); white-space: nowrap; background: transparent; }
+  .ptable tr.hl td { background: var(--accent-l); color: var(--accent-d); font-weight: 600; }
+  .ptable tr.hl td:first-child { color: var(--accent-d); }
+  .ptable .proj { display: block; font-size: 9.5px; letter-spacing: 0.02em; text-transform: none; color: var(--g500); font-weight: 400; }
+  .ptable-cap { margin: 10px 0 0; font-size: 13.5px; color: var(--g500); }
 
   /* takeaway — minimal blockquote, not a filled box */
   .takeaway { margin: 26px 0 0; padding-left: 20px; border-left: 3px solid var(--accent); }
@@ -275,40 +329,65 @@
 
   <section id="sec-us">
     <h2><span class="idx">01</span>What happens to us?</h2>
-    <p>Lately, most attention in AI has been on the machines themselves. Big labs are even building AI that builds AI. Just this month, Anthropic said its goal is a system "capable of fully autonomously designing and developing its own successor," and forecasts like AI 2027 ask the same question: what comes after the model we have now?</p>
-    <p><strong>But what about us? As AI gets better at doing things for us, what happens to us?</strong></p>
-    <p>We still matter, of course, but staying relevant won't always happen automatically. Even very capable systems fail sometimes, and when they do, humans need to step in and fix it. The problem is that the convenience AI brings also quietly removes our chance to practice the underlying skills. And over time, you may find you can't do something as well as you once could.</p>
-    <p>This isn't just a theory. Doctors who trusted AI the most accepted 18 percent more wrong diagnoses than those who trusted it less. Programmers using AI assistants shipped code with security vulnerabilities while feeling more confident it was safe. In both cases, the most concerning part isn't that the AI made a mistake. It's that the people had lost the ability to catch it.</p>
-    <p>And the damage doesn't stop with you. It runs in three directions at once. It weakens you, the person who can no longer catch the error. It degrades the AI itself: every time you accept a polished but wrong answer, your "looks good to me" becomes training data, and the next model learns that sounding confident beats being right. And it spreads to the institutions we all depend on, which we'll come back to.</p>
+    <figure class="fig-tweet">
+      <img src="./assets/figure1-tweet.png" alt="Tweet by Matt Shumer: GPT-5.6-Sol just accidentally deleted almost ALL of my Mac's files. And this is why I trust Fable 1000x more. The attached agent log, labeled Worked for 1h 21m, reads: I caused a serious local data-loss incident. A review subagent's cleanup command expanded HOME incorrectly and ran rm -rf on the user directory. I found and killed the still-running process, but material deletion occurred." width="1148" height="946" loading="lazy" />
+      <figcaption>Figure 1: A GPT-5.6 coding agent worked autonomously for 1 hour and 21 minutes, then reported it had run <code>rm -rf</code> on the user's home directory. The user only found out after the deletion had already happened.</figcaption>
+    </figure>
+    <p>Last week, one of the strongest models available deleted almost all of a user's files. The agent ran unwatched for over an hour, and by the time the human stepped in, the damage was done. The user's takeaway? Switch to a different model, instead of changing how they supervise the next one.</p>
+    <p>Meanwhile, most attention in AI stays on the machines themselves. Big labs are building AI that builds AI. Anthropic says its goal is a system "capable of fully autonomously designing and developing its own successor," and forecasts like AI 2027 ask what the model will look like in the future.</p>
+    <p><strong>But what about us? As AI gets better at doing things for us, can we remain capable of using AI well and responsibly?</strong></p>
+    <p>That ability doesn't maintain itself. The convenience AI brings quietly removes our chance to practice the underlying skills. Doctors who trusted AI the most accepted 18 percent more wrong diagnoses. Programmers using AI assistants shipped more insecure code while feeling more confident it was safe. The concerning part isn't that the AI made mistakes, it's that the people had lost the ability to catch them.</p>
     <p>So here's what we're arguing: keeping humans capable shouldn't be a side effect of building better AI. <strong>Human evolution should be treated as a first-class goal in human-AI co-evolution.</strong></p>
+  </section>
+
+  <section id="sec-evolution">
+    <h2><span class="idx">02</span>"Evolution," but not that kind</h2>
+    <p>Before going further, let's be clear about the term. We are not asking you to evolve biologically, like growing a third eye to watch your AI agents run. The evolution we're talking about is about skills, and it only happens on purpose. We use the word because it captures the same idea of adapting to a changing environment. The environment here is AI that keeps getting more capable, taking over more of our work.</p>
+    <p>Researchers have studied automation bias and skill loss for decades. What's new is the continuity: humans can delegate more complex work to each generation of AI, so the skills we need keep changing too.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>AI brings us convenience, but it can still make mistakes. That same convenience erodes our ability to catch them. <strong>Human evolution means keeping that ability practiced and alive.</strong></p>
+      <p>Human evolution here means intentionally keeping and growing the skills to use AI well, within your own lifetime. <strong>It doesn't happen by default.</strong></p>
     </div>
   </section>
 
   <section id="sec-phases">
-    <h2><span class="idx">02</span>Using AI well isn't one skill</h2>
-    <p><strong>What we keep noticing is that "using AI well" changes as you hand over more of the work.</strong></p>
+    <h2><span class="idx">03</span>Using AI well isn't one skill</h2>
+    <p><strong>What we keep saying is that "using AI well" changes as you hand over more of the work.</strong> We see four phases, and each one asks for a different skill.</p>
     <p class="phase-mark" data-cue="p1"><span class="pm-no">1</span>Humans Use AI as Tool</p>
-    <p>When AI is just something you ask, the risk is that getting an answer is so easy that you stop thinking first and start accepting whatever comes back. And when the AI is wrong, absorbing that mistake undermines your own understanding, just like those doctors. The fix is to keep reasoning for yourself: take a moment to think before you ask, then notice where the AI changed your mind.</p>
+    <p>Back in 2022, most of us met AI as a chatbot: you type a question, it types an answer. In the early days you probably double-checked everything it said. Then it kept being right, and the checking quietly stopped. The risk is that getting an answer is so easy that you stop thinking first and start accepting whatever comes back. When the AI is wrong, absorbing that mistake undermines your own understanding, just like those doctors. The fix: take a moment to think before you ask, then notice where the AI changed your mind.</p>
     <p class="phase-mark" data-cue="p2"><span class="pm-no">2</span>Humans Use AI as Assistant</p>
-    <p>When AI starts producing artifacts for you, the risk is that you get less practice at the skills needed to evaluate them well. As a result, you miss flaws you would once have caught yourself. What helps is knowing what a good result actually requires, and deciding in advance what it has to get right before you accept it, rather than trusting how polished it looks.</p>
+    <p>A year later, AI moved into the work itself: writing your code or building your tables. You no longer produce the artifact, you review it and integrate it into your work. The risk is that evaluation skill comes from understanding how things work, and that understanding comes from producing. Skip producing long enough and you may miss flaws you would once have caught. The fix here is knowing what a good result requires, and deciding in advance what it has to get right before you accept it, rather than trusting how polished it looks.</p>
     <p class="phase-mark" data-cue="p3"><span class="pm-no">3</span>Humans Use AI as Executor</p>
-    <p>When AI runs a whole workflow on its own, the risk is that watching is harder than doing. From the outside everything seems to run smoothly, but it can quietly drift off track, and you won't notice until it's already done. So you have to decide in advance where you'll check in, and put your attention on the parts that matter most instead of trying to review everything.</p>
+    <p>This is where most of us are now. Agents run whole workflows: they browse, write, execute, and self-correct for an hour without you. The risk is that watching is harder than doing. From the outside everything seems fine, but it can quietly drift, and you won't notice until it's done. That's exactly the incident we opened with: the agent worked alone for 81 minutes, and the human arrived after the files were gone. The fix: decide in advance where you'll check in, and put your attention on the steps that can cause the most damage.</p>
     <p class="phase-mark" data-cue="p4"><span class="pm-no">4</span>Humans Use AI as Organization</p>
-    <p>And eventually AI won't just run one task but coordinate many of them, with agents dividing the work among themselves. At that point you can't watch the steps, only the result, and it's hard to tell whether it still matches what you wanted. The skill there is setting the rules up front and then checking samples to see whether the system stayed inside them.</p>
+    <p>And for the projection, AI won't just run one task but coordinate many of them, with agents dividing the work among themselves. At that point you can't watch the steps, only the result, so it's hard to tell whether the result still matches what you wanted. The skill there is setting the rules up front and then checking samples to see whether the system stayed inside them.</p>
+    <p>These phases don't replace each other. Even when you use AI as an organization, you may still chat, review drafts, or watch agents, often all in one project. Each phase just adds one more skill to keep alive.</p>
+    <div class="ptable-wrap">
+      <table class="ptable">
+        <thead>
+          <tr><th></th><th>Phase 1: Tool</th><th>Phase 2: Assistant</th><th>Phase 3: Executor</th><th>Phase 4: Organization <span class="proj">(projection)</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>You delegate</td><td>finding answers</td><td>producing artifacts</td><td>running workflows</td><td>coordinating work</td></tr>
+          <tr><td>The risk</td><td>accepting without thinking</td><td>missing flaws</td><td>silent drift</td><td>unverifiable outcomes</td></tr>
+          <tr class="hl"><td>Skill to keep</td><td>reasoning</td><td>evaluating</td><td>overseeing</td><td>governing</td></tr>
+          <tr><td>The practice</td><td>think before you ask</td><td>set pass criteria first</td><td>define checkpoints</td><td>set rules, audit samples</td></tr>
+          <tr><td>AI can help by</td><td>showing uncertainty</td><td>surfacing assumptions</td><td>pausing for review</td><td>summarizing decisions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ptable-cap">The four phases at a glance.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>There's no single skill called "using AI well." It changes as you delegate more, from reasoning, to evaluating, to overseeing, to governing, and each one fades the moment you stop using it.</p>
+      <p>There's no single skill called "using AI well." It changes as you delegate more, <strong>from reasoning, to evaluating, to overseeing, to governing</strong>, and each one fades the moment you stop using it.</p>
     </div>
   </section>
 
   <section id="sec-institutions">
-    <h2><span class="idx">03</span>It isn't only on you</h2>
-    <p><strong>We keep saying "you," but this was never only about individuals.</strong> The same thing also happens in the institutions we depend on. When students lean on AI without learning the underlying skills, a degree stops telling you what a person can actually do. When nobody in a company can verify what the AI produced, mistakes don't get caught. They get passed along and shipped at scale. And when no one can explain how an AI-driven decision was made, accountability falls apart, and trust goes with it.</p>
-    <p>The good news is that these institutions can also scale human evolution. Schools can teach and test these skills, companies can build checking into the way work moves through them, and society can write rules that keep these systems open enough for a human to actually oversee them.</p>
-    <p>Meanwhile, AI developers can evolve the interaction patterns to support this. For example, a chatbot can show how confident it is about each part of its answer and flag what it's unsure of, so you know where to focus your attention. A coding assistant can surface the assumptions it made instead of hiding them behind a clean draft. An agent running a workflow can pause at the key moments and check in rather than running silently to the end. And a system coordinating other agents can summarize what it decided and why, instead of handing you only the final result. All of these lower the effort it takes for a human to keep up the practice at each phase, but the practice still has to be ours.</p>
+    <h2><span class="idx">04</span>It isn't only on you</h2>
+    <p><strong>We keep saying "you," but this was never only about individuals.</strong> Failed human evolution also affects the AI we train and the institutions we depend on.</p>
+    <p>Start with the AI. Every time you accept a flawed output you didn't catch, that acceptance may flow back into training as a correctness signal, reinforcing the model's existing biases. On the other side, AI developers can design interaction patterns that support human evolution. A chatbot can flag which parts of its answer it's unsure of. A coding assistant can surface the assumptions it made instead of hiding them behind a clean draft. An agent can pause at key moments instead of running silently to the end. A multi-agent system can summarize what it decided and why. Each of these lowers the effort of staying in practice at each phase, but the practice still has to be ours.</p>
+    <p>The same thing also happens in the institutions we depend on. When students lean on AI without learning the underlying skills, a degree stops telling you what a person can actually do. When nobody in a company can verify what the AI produced, mistakes don't get caught. They get passed along and shipped at scale. And when no one can explain how an AI-driven decision was made, accountability falls apart, and trust goes with it. The good news is that these institutions can also scale human evolution. Schools can teach and test these skills, companies can build checking into the way work moves through them, and society can write rules that keep these systems open enough for a human to actually oversee them.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
       <p>The cost of failing to evolve goes beyond the individual. A degree, a company's quality chain, a society's accountability, each breaks the same way, and each can be rebuilt the same way: <strong>by making these skills something we teach, test, and require.</strong></p>
@@ -316,21 +395,27 @@
   </section>
 
   <section id="sec-objections">
-    <h2><span class="idx">04</span>But won't this stop mattering once AI is good enough?</h2>
+    <h2><span class="idx">05</span>But won't this stop mattering once AI is good enough?</h2>
     <p>It's a fair question, and we've heard it a few ways.</p>
-    <p>One version is "just make the AI more reliable." <strong>But better models fail less, not never, and someone still has to step in and decide which risks are acceptable in the first place.</strong> That was never the machine's call to make.</p>
-    <p>Another is "we'll adapt naturally, like we always have." Some of that's true. But these skills come from practice, and handing the practice to AI is exactly what takes it away. Practicing on purpose beats waiting to learn the lesson after something has already gone wrong.</p>
-    <p>The last one is "let AI supervise AI." It's a good idea, and we should do it. But a monitor still needs a person to tell it what to watch for, and it can share the same blind spots as the system it's checking. Pile automation on automation with no capable human on top, and you've just built one more thing nobody can really govern.</p>
+    <p>The first is "just make the AI more reliable." Remember the user from our opening incident? Their takeaway was to switch to a model they trust 1000x more. It's an understandable reaction, and better models do fail less. <strong>But less is not never, and the next failure will find them supervising the same way they did before.</strong> Besides, someone still has to decide which risks are acceptable in the first place. That was never the machine's call to make.</p>
+    <p>The second is "we'll adapt naturally, like we always have." Some of that's true. But these skills come from practice, and handing the practice to AI is exactly what takes it away. Natural adaptation works when using the tool exercises the skill. Here, using the tool replaces the skill. Practicing on purpose beats waiting to learn the lesson after something has already gone wrong.</p>
+    <p>The last is "let AI supervise AI." It's a good idea, and we should do it. But a monitor still needs a person to tell it what to watch for, and it can share the same blind spots as the system it's checking. Notice that "telling the watchdog what to watch for" is itself the governing skill from Phase 4. Pile automation on automation with no capable human on top, and you've just built one more thing nobody can really govern.</p>
     <div class="takeaway">
       <span class="lbl">The takeaway</span>
-      <p>Better models, natural adaptation, and AI watching AI do not remove the need for human evolution. <strong>Humans still have to decide what's acceptable, choose to keep practicing, and tell the watchdog what to watch for.</strong></p>
+      <p>Better models, natural adaptation, and AI watching AI don't remove the need for human evolution. <strong>Humans still have to decide what's acceptable, choose to keep practicing, and tell the watchdog what to watch for.</strong></p>
     </div>
   </section>
 
   <section id="sec-future">
-    <h2><span class="idx">05</span>The future we're betting on</h2>
+    <h2><span class="idx">06</span>The future we're betting on</h2>
     <p><strong>AI brings the speed. Humans bring the direction. The future depends on both.</strong></p>
-    <p>But that future doesn't happen by accident. It takes humans who keep growing, not just the tools they build. The good news is that it starts the next time you open a chat window, in the thirty seconds you take to think before you ask.</p>
+    <p>That's the bet behind everything above: models will keep getting stronger, agents will run longer, and the phases will keep advancing whether we're ready or not. What doesn't advance on its own is us. Human evolution, keeping the right skill alive at each phase, is the part no lab can ship for you.</p>
+    <p>It starts the next time you open a chat window, spending thirty seconds to think before you ask. It continues the next time you write down what an artifact must get right before you accept it, and the next time you decide where an agent should pause before you let it run for an hour.</p>
+    <p>The user in our opening story switched models. You can make the other choice.</p>
+    <div class="takeaway">
+      <span class="lbl">The takeaway</span>
+      <p>AI keeps evolving by design. Human evolution only happens on purpose. <strong>Start with thirty seconds.</strong></p>
+    </div>
   </section>
 
   <div class="post-foot">
@@ -348,6 +433,7 @@
       </div>
       <div class="gapchart">
         <svg id="gap-svg" viewBox="0 0 320 300" role="img" aria-label="Chart: AI capability rises while the human ability to catch mistakes stays flat, opening a risk gap that closes only when humans keep practicing.">
+          <g id="g-main">
           <path id="achieved-area" class="achieved-area" d="" />
           <path id="gap-fill" class="gap-fill" d="" opacity="0.22" />
           <path id="hum-line" class="hum-line" d="" />
@@ -384,6 +470,38 @@
           <text class="xlab" data-i="1" x="115" y="272" text-anchor="middle">Assistant</text>
           <text class="xlab" data-i="2" x="186" y="272" text-anchor="middle">Executor</text>
           <text class="xlab" data-i="3" x="302" y="272" text-anchor="end">Organization</text>
+        </g>
+          <g id="g-loop" opacity="0" class="loop-bad" aria-hidden="true">
+            <text id="loop-title" class="loop-title" x="160" y="34" text-anchor="middle">Human-AI Co-Evolution</text>
+            <!-- human (left) -->
+            <g class="lp-h">
+              <circle cx="62" cy="128" r="13"/>
+              <path d="M40 178 c0-16 10-26 22-26 s22 10 22 26 z"/>
+            </g>
+            <!-- robot (right) -->
+            <g class="lp-a">
+              <path class="lp-ant" d="M258 112 v-9 h-10"/>
+              <rect x="236" y="112" width="44" height="34" rx="8"/>
+              <path class="lp-eye" d="M250 124 v10 M266 124 v10"/>
+              <path class="lp-ear" d="M230 129 h6 M280 129 h6"/>
+            </g>
+            <!-- top arrow: AI -> Human (points left) -->
+            <g class="lp-top">
+              <path class="lp-arc" d="M238 100 C 205 56, 115 56, 82 100" fill="none"/>
+              <path class="lp-head" d="M90 88 L82 100 L96 101 Z"/>
+            </g>
+            <!-- bottom arrow: Human -> AI (points right) -->
+            <g class="lp-bot">
+              <path class="lp-arc" d="M82 190 C 115 234, 205 234, 238 190" fill="none"/>
+              <path class="lp-head" d="M230 202 L238 190 L224 189 Z"/>
+            </g>
+            <text class="lp-lbl lp-lbl-top lg-bad"  x="160" y="60" text-anchor="middle">more convenience, less practice</text>
+            <text class="lp-lbl lp-lbl-top lg-good" x="160" y="60" text-anchor="middle">new skills to keep alive</text>
+            <text class="lp-lbl lp-lbl-bot lg-bad"  x="160" y="242" text-anchor="middle">uncaught mistakes as "correct" signals</text>
+            <text class="lp-lbl lp-lbl-bot lg-good" x="160" y="242" text-anchor="middle">honest feedback, better models</text>
+            <text class="lp-tag lg-bad" x="160" y="262" text-anchor="middle">"looks good to me" &#128077;</text>
+          </g>
+
         </svg>
       </div>
       <p class="gapchart-cap" id="gap-cap"></p>
@@ -436,8 +554,8 @@
               cap:'It isn’t only on you. <b>Schools, companies, society, and better AI interfaces</b> get everyone here faster.' },
     obj:    { bar:'Alter View', prog:.88, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:0, obj:1, curve:0, skill:-1,
               cap:'Better models, natural adaptation, AI&#8209;watching&#8209;AI, <b>none of them replace the need for human evolution</b>.' },
-    future: { bar:'Co-Evolving', prog:1, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:0, obj:0, skill:-1,
-              cap:'<b>AI brings the speed. Humans bring the direction.</b> Keep evolving and <b>no harm slips through</b>.' },
+    loopgood: { bar:'Co-Evolving', prog:1, ai:[.30,.52,.74,.95], hum:[.30,.52,.74,.95], head:3, headOn:0, inst:0, obj:0, skill:-1, loop:2,
+              cap:'<b>AI brings the speed. Humans bring the direction.</b> Kept in practice, the loop lifts both sides.' },
   };
 
   // directive config (document order). interp: blend toward the next frame across the segment.
@@ -447,9 +565,9 @@
     { sel: '[data-cue="p2"]',    f: 'p2',     interp: true },
     { sel: '[data-cue="p3"]',    f: 'p3',     interp: true },
     { sel: '[data-cue="p4"]',    f: 'p4',     interp: true },
-    { sel: '#sec-institutions',  f: 'inst',   interp: false },
+    { sel: '#sec-institutions',  f: 'inst',  interp: false },
     { sel: '#sec-objections',    f: 'obj',    interp: false },
-    { sel: '#sec-future',        f: 'future', interp: true },
+    { sel: '#sec-future',        f: 'loopgood', interp: false },
   ];
   var anchors = SCRIPT.map(function (d) { return document.querySelector(d.sel); });
   // drop directives whose anchor is missing (fail soft)
@@ -513,11 +631,16 @@
       head: lerp(A.head, B.head, e), headOn: lerp(A.headOn, B.headOn, e),
       inst: lerp(A.inst, B.inst, e), obj: lerp(A.obj, B.obj, e),
       curve: lerp(A.curve || 0, B.curve || 0, e),
-      skill: dom.skill, cap: dom.cap, bar: dom.bar, prog: lerp(A.prog, B.prog, e),
+      skill: dom.skill, cap: dom.cap, bar: dom.bar, prog: lerp(A.prog, B.prog, e), loop: dom.loop || 0,
     };
   }
 
+  var gMain = el('g-main'), gLoop = el('g-loop');
   function render() {
+    var lk = cur.loopK || 0;
+    gMain.setAttribute('opacity', (1 - lk).toFixed(3));
+    gLoop.setAttribute('opacity', lk.toFixed(3));
+    if (cur.loopMode) gLoop.setAttribute('class', cur.loopMode === 2 ? 'loop-good' : 'loop-bad');
     aiLine.setAttribute('d', linePath(cur.ai));
     achievedArea.setAttribute('d', areaPath(cur.hum)); // olive band: what your evolved skill now catches
     humLine.setAttribute('d', linePath(cur.hum));
@@ -592,6 +715,7 @@
     cur.inst = lerp(cur.inst, tg.inst, k); cur.obj = lerp(cur.obj, tg.obj, k);
     cur.curve = lerp(cur.curve, tg.curve, k);
     cur.skill = tg.skill; cur.cap = tg.cap; cur.bar = tg.bar;
+    cur.loopMode = tg.loop; cur.loopK = lerp(cur.loopK || 0, tg.loop ? 1 : 0, k);
     cur.prog = lerp(cur.prog || 0, tg.prog, k);
     render();
     raf = requestAnimationFrame(frame);
