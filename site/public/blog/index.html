@@ -107,11 +107,11 @@
 
   /* ---------- layout: prose + sticky scroll-synced chart ---------- */
   .scrolly { display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: 48px; justify-content: space-between; max-width: 960px; margin: 0 auto; padding: 0 24px; align-items: stretch; }
-  .post { min-width: 0; padding: 64px 0 104px; }
+  .post { min-width: 0; padding: 56px 0 104px; }
   .chart-col { padding-top: 64px; }
   .chart-sticky { position: sticky; top: 13vh; }
   @media (max-width: 980px) {
-    .scrolly { grid-template-columns: 1fr; max-width: 720px; }
+    .scrolly { grid-template-columns: 1fr; max-width: 960px; }
     .chart-col { display: none; }
   }
 
@@ -186,8 +186,9 @@
   .obj-txt { font-family: var(--mono); font-size: 11px; font-weight: 600; fill: var(--g500); }
   .obj-strike { stroke: #D97757; stroke-width: 1.2; stroke-linecap: round; }
 
-  .post-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
-  .post-eyebrow::before { content: ""; width: 30px; height: 2px; background: var(--accent); display: inline-block; }
+  .post-eyebrow, .post p.post-eyebrow { display: inline-flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 16px; line-height: 1.6; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6c64; margin: 0; }
+  html.dark .post-eyebrow, html.dark .post p.post-eyebrow { color: #9a978d; }
+  .post-eyebrow::before { content: ""; width: 36px; height: 2.5px; background: var(--accent); display: inline-block; }
 
   .post-title { font-family: var(--serif); font-weight: 500; font-size: clamp(2.2rem, 5vw, 3rem); line-height: 1.1; letter-spacing: -0.018em; color: var(--slate); margin: 20px 0 0; }
   .post-title em { font-style: italic; color: var(--accent); }
